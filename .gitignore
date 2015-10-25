@@ -1,2 +1,6 @@
 src/multiboot_header
+src/multiboot_header.o
 src/boot
+src/boot.o
+isofiles/boot/kernel.bin
+os.iso
