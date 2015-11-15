@@ -24,13 +24,6 @@ start:
     ; shouldn't ever happen
     hlt
 
-bits 32
-error:
-    mov dword [0xb8000], 0x4f524f45
-    mov dword [0xb8004], 0x4f3a4f52
-    mov dword [0xb8008], 0x4f204f20
-    mov byte  [0xb800a], al
-
 setup_page_tables:
     ; P4, P3 and P2
     ; P4 --> point first entry to (first entry in) P3
