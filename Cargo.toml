@@ -1,0 +1,7 @@
+[package]
+name = "myos"
+version = "0.1.0"
+authors = ["Steve Klabnik <steve@steveklabnik.com>", "Amit Aryeh Levy <amit@amitlevy.com>"]
+
+[lib]
+crate-type = ["staticlib"]
