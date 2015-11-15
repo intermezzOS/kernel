@@ -5,3 +5,6 @@ authors = ["Steve Klabnik <steve@steveklabnik.com>", "Amit Aryeh Levy <amit@amit
 
 [lib]
 crate-type = ["staticlib"]
+
+[dependencies]
+rlibc = "0.1.4"
