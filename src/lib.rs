@@ -15,6 +15,7 @@ pub extern fn kmain() {
     let color = 0x4f;
     let hello = "Hello from Rust world!";
 
+    clear_console(vga);
     print_center_string(hello, color, vga);
 }
 
@@ -45,5 +46,20 @@ fn print_string(s: &str, color: u8, location: *mut u8) {
         }
     }
 
+}
+
+/// Clears the console
+fn clear_console(location: *mut u8) {
+    let color = 0xff;
+    let c = ' ' as u8;
+    for i in 0..CONSOLE_SIZE {
+        unsafe {
+            let location = location.offset((i * 2) as isize);
+            *location = c;
+
+            let location = location.offset(1 as isize);
+            *location = color;
+        }
+    }
 }
 
