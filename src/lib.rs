@@ -7,6 +7,8 @@
 
 extern crate rlibc;
 
+pub mod support; // For Rust lang items
+
 #[no_mangle]
 pub extern fn kmain() {
     let vga = 0xb8000 as *mut u8;
@@ -43,8 +45,3 @@ fn print_string(s: &str, color: u8, location: *mut u8) {
 
 }
 
-#[lang = "eh_personality"] extern fn eh_personality() {}
-#[lang = "panic_fmt"] fn panic_fmt() -> ! { loop {} }
-
-#[lang = "begin_unwind"]
-pub extern fn begin_unwind() {}
