@@ -13,9 +13,23 @@ pub extern fn kmain() {
     let color = 0x4f;
     let hello = "Hello from Rust world!";
 
-    print_string(hello, color, vga);
+    print_center_string(hello, color, vga);
 }
 
+/// Prints a string in the center of the screen.
+///
+/// Only works for short strings, less than a full line.
+fn print_center_string(s: &str, color: u8, location: *mut u8) {
+    // we offset by the length because we need two bytes per letter
+    let mut offset = 2000;
+    offset -= s.len() as isize;
+
+    let location = unsafe { location.offset(offset) };
+
+    print_string(s, color, location);
+}
+
+/// Prints a string
 fn print_string(s: &str, color: u8, location: *mut u8) {
     for (i, c) in s.bytes().enumerate() {
         unsafe {
