@@ -10,13 +10,13 @@ assembly_object_files := $(patsubst src/arch/$(arch)/%.asm, \
 
 .PHONY: all clean run iso
 
-all: $(kernel)
+all: $(iso)
 
 clean:
 	rm -r build
 
 run: $(iso)
-	qemu-system-x86_64 -hda $(iso)
+	qemu-system-x86_64 -cdrom $(iso)
 
 iso: $(iso)
 
@@ -26,6 +26,9 @@ $(iso): $(kernel)
 	cp $(grub_cfg) build/isofiles/boot/grub
 	grub-mkrescue -o $(iso) build/isofiles 2> /dev/null
 	rm -r build/isofiles
+
+.PHONY: kernel
+kernel: $(kernel)
 
 $(kernel): $(assembly_object_files) $(linker_script)
 	ld -n -T $(linker_script) -o $(kernel) $(assembly_object_files)
