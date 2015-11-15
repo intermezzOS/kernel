@@ -11,6 +11,7 @@ SECTIONS {
 
     .text :
     {
+        *(.boot)
         *(.text)
     }
 }
