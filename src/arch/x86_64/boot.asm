@@ -7,7 +7,7 @@ start:
     mov esp, stack_top
 
     ; setup paging
-    call setup_page_tables
+    call set_up_page_tables
     call enable_paging
 
     lgdt [gdt64.pointer]
@@ -24,7 +24,7 @@ start:
     ; shouldn't ever happen
     hlt
 
-setup_page_tables:
+set_up_page_tables:
     ; P4, P3 and P2
     ; P4 --> point first entry to (first entry in) P3
     mov eax, p3_table
