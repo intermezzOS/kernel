@@ -27,11 +27,11 @@ fn print_center_string(s: &str, color: u8, location: *mut u8) {
 
     let location = unsafe { location.offset(offset) };
 
-    print_string(s, color, location);
+    kprintf(s, color, location);
 }
 
 /// Prints a string
-fn print_string(s: &str, color: u8, location: *mut u8) {
+fn kprintf(s: &str, color: u8, location: *mut u8) {
     for (i, c) in s.bytes().enumerate() {
         unsafe {
             let location = location.offset((i * 2) as isize);
