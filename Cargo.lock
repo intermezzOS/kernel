@@ -2,8 +2,13 @@
 name = "myos"
 version = "0.1.0"
 dependencies = [
+ "kprintf 0.1.0",
  "rlibc 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
+
+[[package]]
+name = "kprintf"
+version = "0.1.0"
 
 [[package]]
 name = "rlibc"

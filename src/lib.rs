@@ -2,6 +2,9 @@
 #![no_std]
 
 extern crate rlibc;
+extern crate kprintf;
+
+use kprintf::kprintf;
 
 pub mod support; // For Rust lang items
 
@@ -28,20 +31,6 @@ fn print_center_string(s: &str, color: u8, location: *mut u8) {
     let location = unsafe { location.offset(offset) };
 
     kprintf(s, color, location);
-}
-
-/// Prints a string
-fn kprintf(s: &str, color: u8, location: *mut u8) {
-    for (i, c) in s.bytes().enumerate() {
-        unsafe {
-            let location = location.offset((i * 2) as isize);
-            *location = c;
-
-            let location = location.offset(1 as isize);
-            *location = color;
-        }
-    }
-
 }
 
 /// Clears the console
