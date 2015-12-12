@@ -28,7 +28,10 @@ Make sure you have a nightly Rust. Any recent nightly should do. Other requireme
 
 If you have all that, it’s time to deal with `libcore`. Until [this
 issue](https://github.com/rust-lang/rfcs/issues/1364) is resolved, you’ll need
-to build your own `libcore`. To do that:
+to build your own `libcore`.
+
+To do that, you can either use
+[`nightly-libcore`](https://github.com/phil-opp/nightly-libcore), or do this:
 
 ```bash
 $ git clone https://github.com/rust-lang/rust.git
