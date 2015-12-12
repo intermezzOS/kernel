@@ -1,5 +1,5 @@
 [package]
-name = "myos"
+name = "nucleus"
 version = "0.1.0"
 authors = ["Steve Klabnik <steve@steveklabnik.com>", "Amit Aryeh Levy <amit@amitlevy.com>"]
 

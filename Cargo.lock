@@ -1,5 +1,5 @@
 [root]
-name = "myos"
+name = "nucleus"
 version = "0.1.0"
 dependencies = [
  "kprintf 0.1.0",
