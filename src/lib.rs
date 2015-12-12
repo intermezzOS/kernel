@@ -2,9 +2,7 @@
 #![no_std]
 
 extern crate rlibc;
-extern crate kprintf;
-
-use kprintf::kprintf;
+extern crate vga;
 
 pub mod support; // For Rust lang items
 
@@ -34,7 +32,7 @@ fn print_center_string(s: &str, color: u8, location: *mut u8) {
 
     let location = unsafe { location.offset(offset) };
 
-    kprintf(s, color, location);
+    vga::kprintf(s, color, location);
 }
 
 /// Clears the console

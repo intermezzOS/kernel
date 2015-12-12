@@ -2,16 +2,16 @@
 name = "nucleus"
 version = "0.1.0"
 dependencies = [
- "kprintf 0.1.0",
  "rlibc 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "vga 0.1.0",
 ]
-
-[[package]]
-name = "kprintf"
-version = "0.1.0"
 
 [[package]]
 name = "rlibc"
 version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "vga"
+version = "0.1.0"
 

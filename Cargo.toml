@@ -8,4 +8,4 @@ crate-type = ["staticlib"]
 
 [dependencies]
 rlibc = "0.1.4"
-kprintf = { path = "kprintf" }
+vga = { path = "vga" }
