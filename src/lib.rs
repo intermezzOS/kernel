@@ -11,7 +11,7 @@ pub mod support; // For Rust lang items
 #[no_mangle]
 pub extern fn kmain() {
     let vga = 0xb8000 as *mut u8;
-    let color = 0x4f;
+    let color = 0x0a;
     let hello = "Hello from Rust world!";
 
     clear_console(vga);
@@ -35,7 +35,7 @@ fn print_center_string(s: &str, color: u8, location: *mut u8) {
 
 /// Clears the console
 fn clear_console(location: *mut u8) {
-    let color = 0xff;
+    let color = 0x0a;
     let c = ' ' as u8;
     for i in 0..CONSOLE_SIZE {
         unsafe {
