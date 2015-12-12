@@ -19,9 +19,6 @@ Resources:
 
 ## Building
 
-First of all, at the moment, this only works on `x86_64` Linux. I need to set
-up a proper cross compiler. It’s early stages, and I’m lazy. :wink:
-
 Make sure you have a nightly Rust. Any recent nightly should do. Other requirements:
 
 * `nasm`
@@ -29,7 +26,43 @@ Make sure you have a nightly Rust. Any recent nightly should do. Other requireme
 * `grub-mkrescue`
 * `qemu-system-x86_64`
 
-If you have all that, type:
+If you have all that, it’s time to deal with `libcore`. Until [this
+issue](https://github.com/rust-lang/rfcs/issues/1364) is resolved, you’ll need
+to build your own `libcore`. To do that:
+
+```bash
+$ git clone https://github.com/rust-lang/rust.git
+$ cd rust
+```
+
+Then apply [this
+patch](https://github.com/thepowersgang/rust-barebones-kernel/blob/master/libcore_nofp.patch).
+
+Afterwards:
+
+```
+$ cd ..
+$ mkdir -p build
+$ rustc --target x86_64-unknown-nucleus-gnu -Z no-landing-pads \
+    --cfg disable_float \
+    --out-dir build/ \
+    rust/src/libcore/lib.rs
+```
+
+Now, you have a `build/libcore.rlib` file. It needs to be in a place `Cargo`
+can find it. I use [`multirust`](https://github.com/brson/multirust), so for
+me:
+
+```
+$ mkdir -p ~/.multirust/toolchains/nightly/lib/rustlib/x86_64-unknown-nucleus-gnu/lib
+$ cp build/libcore.rlib ~/.multirust/toolchains/nightly/lib/rustlib/x86_64-unknown-nucleus-gnu/lib
+```
+
+Whew! Hopefully this won’t be a big deal in the future. For a writeup on why
+this is needed, see [this
+post](http://www.randomhacks.net/2015/11/11/bare-metal-rust-custom-target-kernel-space/).
+
+After all that setup, it’s as easy as:
 
 ```bash
 $ make run

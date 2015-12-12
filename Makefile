@@ -8,7 +8,7 @@ assembly_source_files := $(wildcard src/arch/$(arch)/*.asm)
 assembly_object_files := $(patsubst src/arch/$(arch)/%.asm, \
     build/arch/$(arch)/%.o, $(assembly_source_files))
 
-target ?= $(arch)-unknown-linux-gnu
+target ?= $(arch)-unknown-nucleus-gnu
 rust_os := target/$(target)/debug/libnucleus.a
 
 .PHONY: all clean run iso kernel
