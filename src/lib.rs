@@ -28,6 +28,10 @@ fn print_center_string(s: &str, color: u8, location: *mut u8) {
     let mut offset = CONSOLE_SIZE / 2;
     offset -= s.len() as isize;
 
+    if s.len() % 2 != 0 {
+        offset -= 1;
+    }
+
     let location = unsafe { location.offset(offset) };
 
     kprintf(s, color, location);
