@@ -8,7 +8,7 @@ http://jvns.ca/blog/2014/03/12/the-rust-os-story/ is a wonderful example of the
 spirit of this project. The Rust bits are outdated, the “Let’s learn things!
 Learning is great!” attitude is very much not.
 
-![screenshot][screenshot.png]
+![screenshot](screenshot.png)
 
 Resources:
 
