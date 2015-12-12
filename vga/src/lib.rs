@@ -1,6 +1,6 @@
 #![no_std]
 
-pub const CONSOLE_SIZE : isize = 4000;
+const CONSOLE_SIZE: isize = 4000;
 
 /// Prints a string
 pub fn kprintf(s: &str, color: u8) {
