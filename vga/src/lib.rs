@@ -46,7 +46,7 @@ struct VgaCell {
     color: ColorCode,
 }
 
-static mut BUFFER: Mutex<VgaBuffer> = Mutex::new(VgaBuffer {
+static BUFFER: Mutex<VgaBuffer> = Mutex::new(VgaBuffer {
     buffer: [VgaCell {
         character: ' ' as u8,
         color: DEFAULT_COLOR,
@@ -110,13 +110,11 @@ impl VgaBuffer {
 
 /// Prints a string
 pub fn kprintf(s: &str, color: ColorCode) {
-    unsafe {
-        let mut b = BUFFER.lock();
-        for byte in s.bytes() {
-            b.write_byte(byte, color);
-        }
-        b.flush();
+    let mut b = BUFFER.lock();
+    for byte in s.bytes() {
+        b.write_byte(byte, color);
     }
+    b.flush();
 }
 
 pub fn kprintfln(s: &str, color: ColorCode) {
@@ -126,10 +124,8 @@ pub fn kprintfln(s: &str, color: ColorCode) {
 
 /// Clears the console
 pub fn clear_console() {
-    unsafe {
-        let mut b = BUFFER.lock();
-        b.clear();
-    }
+    let mut b = BUFFER.lock();
+    b.clear();
 }
 
 #[allow(non_snake_case)]
