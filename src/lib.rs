@@ -7,7 +7,7 @@ extern crate vga;
 pub mod support; // For Rust lang items
 
 #[no_mangle]
-pub extern fn kmain() {
+pub extern "C" fn kmain() {
     let color = vga::DEFAULT_COLOR;
     let hello = "Hello from Rust world!";
 

@@ -19,11 +19,9 @@ struct VgaCell {
 
 static mut BUFFER: Mutex<VgaBuffer> = Mutex::new(VgaBuffer {
     buffer: [VgaCell {
-            character: ' ' as u8,
-            color: DEFAULT_COLOR,
-        };
-        (CONSOLE_ROWS * CONSOLE_COLS * 2) as usize
-    ],
+        character: ' ' as u8,
+        color: DEFAULT_COLOR,
+    }; (CONSOLE_ROWS * CONSOLE_COLS * 2) as usize],
     position: 0,
 });
 
@@ -44,7 +42,10 @@ impl VgaBuffer {
         } else {
             let cell = &mut self.buffer[self.position];
 
-            *cell = VgaCell { character: byte, color: color };
+            *cell = VgaCell {
+                character: byte,
+                color: color,
+            };
 
             self.position += 1;
         }
@@ -66,7 +67,10 @@ impl VgaBuffer {
     fn clear(&mut self) {
         for i in 0..(CONSOLE_ROWS * CONSOLE_COLS * 2) {
             let cell = &mut self.buffer[i as usize];
-            *cell = VgaCell { character: ' ' as u8, color: DEFAULT_COLOR };
+            *cell = VgaCell {
+                character: ' ' as u8,
+                color: DEFAULT_COLOR,
+            };
         }
 
         self.reset_position();
@@ -101,4 +105,6 @@ pub fn clear_console() {
 
 #[allow(non_snake_case)]
 #[no_mangle]
-pub extern fn _Unwind_Resume() -> ! { panic!("lol"); }
+pub extern "C" fn _Unwind_Resume() -> ! {
+    panic!("lol");
+}
