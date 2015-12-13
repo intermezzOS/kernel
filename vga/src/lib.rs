@@ -61,6 +61,11 @@ pub fn kprintf(s: &str, color: u8) {
     }
 }
 
+pub fn kprintfln(s: &str, color: u8) {
+    kprintf(s, color);
+    kprintf("\n", color);
+}
+
 /// Clears the console
 pub fn clear_console() {
     let space = ' ' as u8;

@@ -12,7 +12,6 @@ pub extern fn kmain() {
     let hello = "Hello from Rust world!";
 
     vga::clear_console();
-    vga::kprintf(hello, color);
-    vga::kprintf("\n", color);
-    vga::kprintf(hello, color);
+    vga::kprintfln(hello, color);
+    vga::kprintfln(hello, color);
 }
