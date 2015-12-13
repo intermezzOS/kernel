@@ -6,15 +6,44 @@ extern crate spin;
 
 use spin::Mutex;
 
-pub const DEFAULT_COLOR: u8 = 0x0a;
+pub const DEFAULT_COLOR: ColorCode = ColorCode::new(Color::LightGreen, Color::Black);
 const CONSOLE_COLS: isize = 80;
 const CONSOLE_ROWS: isize = 24;
+
+#[repr(u8)]
+pub enum Color {
+   Black = 0,
+   Blue = 1,
+   Green = 2,
+   Cyan = 3,
+   Red = 4,
+   Magenta = 5,
+   Brown = 6,
+   LightGray = 7,
+   DarkGray = 8,
+   LightBlue = 9,
+   LightGreen = 10,
+   LightCyan = 11,
+   LightRed = 12,
+   LightMagenta = 13,
+   Yellow = 14,
+   White = 15,
+}
+
+#[derive(Copy, Clone)]
+pub struct ColorCode(u8);
+
+impl ColorCode {
+    const fn new(foreground: Color, background: Color) -> ColorCode {
+        ColorCode((background as u8) << 4 | (foreground as u8))
+    }
+}
 
 #[derive(Copy,Clone)]
 #[repr(C)]
 struct VgaCell {
     character: u8,
-    color: u8,
+    color: ColorCode,
 }
 
 static mut BUFFER: Mutex<VgaBuffer> = Mutex::new(VgaBuffer {
@@ -31,7 +60,7 @@ struct VgaBuffer {
 }
 
 impl VgaBuffer {
-    fn write_byte(&mut self, byte: u8, color: u8) {
+    fn write_byte(&mut self, byte: u8, color: ColorCode) {
         if byte == ('\n' as u8) {
             // to get the current line, we divide by the length of a line
             let current_line = (self.position as isize) / CONSOLE_COLS;
@@ -80,7 +109,7 @@ impl VgaBuffer {
 }
 
 /// Prints a string
-pub fn kprintf(s: &str, color: u8) {
+pub fn kprintf(s: &str, color: ColorCode) {
     unsafe {
         let mut b = BUFFER.lock();
         for byte in s.bytes() {
@@ -90,7 +119,7 @@ pub fn kprintf(s: &str, color: u8) {
     }
 }
 
-pub fn kprintfln(s: &str, color: u8) {
+pub fn kprintfln(s: &str, color: ColorCode) {
     kprintf(s, color);
     kprintf("\n", color);
 }
