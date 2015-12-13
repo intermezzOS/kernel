@@ -6,57 +6,83 @@ extern crate spin;
 
 use spin::Mutex;
 
-const CONSOLE_SIZE: isize = 4000;
 const CONSOLE_COLS: isize = 80;
-//const CONSOLE_LINES: isize = 24;
+const CONSOLE_ROWS: isize = 24;
+const DEFAULT_COLOR: u8 = 0x0a;
 
-static mut buffer: Mutex<VgaBuffer> = Mutex::new(VgaBuffer {
-    location: 0xb8000 as *mut u8,
+#[derive(Copy,Clone)]
+#[repr(C)]
+struct VgaCell {
+    character: u8,
+    color: u8,
+}
+
+static mut BUFFER: Mutex<VgaBuffer> = Mutex::new(VgaBuffer {
+    buffer: [VgaCell {
+            character: ' ' as u8,
+            color: DEFAULT_COLOR,
+        };
+        (CONSOLE_ROWS * CONSOLE_COLS * 2) as usize
+    ],
     position: 0,
 });
 
 struct VgaBuffer {
-    location: *mut u8,
+    buffer: [VgaCell; (CONSOLE_ROWS * CONSOLE_COLS * 2) as usize],
     position: usize,
 }
 
 impl VgaBuffer {
     fn write_byte(&mut self, byte: u8, color: u8) {
         if byte == ('\n' as u8) {
-            // two bytes per logical position
-            let line_length = CONSOLE_COLS * 2;
-
             // to get the current line, we divide by the length of a line
-            let current_line = (self.position as isize) / line_length;
+            let current_line = (self.position as isize) / CONSOLE_COLS;
 
             let next_line = current_line + 1;
 
-            self.position = (next_line * line_length) as usize;
+            self.position = (next_line * CONSOLE_COLS) as usize;
         } else {
-            unsafe {
-                let location = self.location.offset(self.position as isize);
+            let cell = &mut self.buffer[self.position];
 
-                *location = byte;
-                let location = location.offset(1);
-                *location = color;
+            *cell = VgaCell { character: byte, color: color };
 
-                self.position = self.position + 2;
-            }
+            self.position += 1;
         }
     }
 
     fn reset_position(&mut self) {
         self.position = 0;
     }
+
+    fn flush(&self) {
+        unsafe {
+            let vga = 0xb8000 as *mut u8;
+            let length = self.buffer.len();
+            let buffer: *const u8 = core::mem::transmute(&self.buffer);
+            core::intrinsics::copy_nonoverlapping(buffer, vga, length);
+        }
+    }
+
+    fn clear(&mut self) {
+        for i in 0..(CONSOLE_ROWS * CONSOLE_COLS * 2) {
+            let cell = &mut self.buffer[i as usize];
+            *cell = VgaCell { character: ' ' as u8, color: DEFAULT_COLOR };
+        }
+
+        self.reset_position();
+
+        self.flush();
+    }
 }
 
 /// Prints a string
 pub fn kprintf(s: &str, color: u8) {
     unsafe {
-        let mut b = buffer.lock();
+        let mut b = BUFFER.lock();
         for byte in s.bytes() {
             b.write_byte(byte, color);
         }
+        b.flush();
     }
 }
 
@@ -67,16 +93,9 @@ pub fn kprintfln(s: &str, color: u8) {
 
 /// Clears the console
 pub fn clear_console() {
-    let space = ' ' as u8;
-    let color = 0x0a;
-
     unsafe {
-        let mut b = buffer.lock();
-        for _ in 0..CONSOLE_SIZE {
-            b.write_byte(space, color);
-        }
-
-        b.reset_position();
+        let mut b = BUFFER.lock();
+        b.clear();
     }
 }
 
