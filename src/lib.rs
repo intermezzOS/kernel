@@ -13,4 +13,6 @@ pub extern fn kmain() {
 
     vga::clear_console();
     vga::kprintf(hello, color);
+    vga::kprintf("\n", color);
+    vga::kprintf(hello, color);
 }

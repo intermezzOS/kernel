@@ -8,6 +8,8 @@ extern crate rlibc;
 use spin::Mutex;
 
 const CONSOLE_SIZE: isize = 4000;
+const CONSOLE_COLS: isize = 80;
+//const CONSOLE_LINES: isize = 24;
 
 static mut buffer: Mutex<VgaBuffer> = Mutex::new(VgaBuffer {
     location: 0xb8000 as *mut u8,
@@ -21,14 +23,26 @@ struct VgaBuffer {
 
 impl VgaBuffer {
     fn write_byte(&mut self, byte: u8, color: u8) {
-        unsafe {
-            let location = self.location.offset(self.position as isize);
+        if byte == ('\n' as u8) {
+            // two bytes per logical position
+            let line_length = CONSOLE_COLS * 2;
 
-            *location = byte;
-            let location = location.offset(1);
-            *location = color;
+            // to get the current line, we divide by the length of a line
+            let current_line = (self.position as isize) / line_length;
 
-            self.position = self.position + 2;
+            let next_line = current_line + 1;
+
+            self.position = (next_line * line_length) as usize;
+        } else {
+            unsafe {
+                let location = self.location.offset(self.position as isize);
+
+                *location = byte;
+                let location = location.offset(1);
+                *location = color;
+
+                self.position = self.position + 2;
+            }
         }
     }
 
