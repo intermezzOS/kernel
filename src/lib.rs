@@ -8,7 +8,7 @@ pub mod support; // For Rust lang items
 
 #[no_mangle]
 pub extern fn kmain() {
-    let color = 0x0a;
+    let color = vga::DEFAULT_COLOR;
     let hello = "Hello from Rust world!";
 
     vga::clear_console();

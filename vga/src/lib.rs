@@ -6,9 +6,9 @@ extern crate spin;
 
 use spin::Mutex;
 
+pub const DEFAULT_COLOR: u8 = 0x0a;
 const CONSOLE_COLS: isize = 80;
 const CONSOLE_ROWS: isize = 24;
-const DEFAULT_COLOR: u8 = 0x0a;
 
 #[derive(Copy,Clone)]
 #[repr(C)]
