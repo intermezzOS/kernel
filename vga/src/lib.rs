@@ -3,7 +3,6 @@
 #![no_std]
 
 extern crate spin;
-extern crate rlibc;
 
 use spin::Mutex;
 
