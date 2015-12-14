@@ -5,6 +5,7 @@
 extern crate spin;
 
 use spin::Mutex;
+use core::fmt;
 
 pub const DEFAULT_COLOR: ColorCode = ColorCode::new(Color::LightGreen, Color::Black);
 const CONSOLE_COLS: isize = 80;
@@ -46,7 +47,7 @@ struct VgaCell {
     color: ColorCode,
 }
 
-static BUFFER: Mutex<VgaBuffer> = Mutex::new(VgaBuffer {
+pub static BUFFER: Mutex<VgaBuffer> = Mutex::new(VgaBuffer {
     buffer: [VgaCell {
         character: ' ' as u8,
         color: DEFAULT_COLOR,
@@ -54,7 +55,7 @@ static BUFFER: Mutex<VgaBuffer> = Mutex::new(VgaBuffer {
     position: 0,
 });
 
-struct VgaBuffer {
+pub struct VgaBuffer {
     buffer: [VgaCell; (CONSOLE_ROWS * CONSOLE_COLS * 2) as usize],
     position: usize,
 }
@@ -84,7 +85,7 @@ impl VgaBuffer {
         self.position = 0;
     }
 
-    fn flush(&self) {
+    pub fn flush(&self) {
         unsafe {
             let vga = 0xb8000 as *mut u8;
             let length = self.buffer.len();
@@ -108,18 +109,30 @@ impl VgaBuffer {
     }
 }
 
-/// Prints a string
-pub fn kprintf(s: &str, color: ColorCode) {
-    let mut b = BUFFER.lock();
-    for byte in s.bytes() {
-        b.write_byte(byte, color);
+impl fmt::Write for VgaBuffer {
+    fn write_str(&mut self, s: &str) -> ::core::fmt::Result {
+        let color = DEFAULT_COLOR;
+        for byte in s.bytes() {
+            self.write_byte(byte, color)
+        }
+        Ok(())
     }
-    b.flush();
 }
 
-pub fn kprintfln(s: &str, color: ColorCode) {
-    kprintf(s, color);
-    kprintf("\n", color);
+#[macro_export]
+macro_rules! kprintln {
+    ($fmt:expr) => (kprint!(concat!($fmt, "\n")));
+    ($fmt:expr, $($arg:tt)*) => (kprint!(concat!($fmt, "\n"), $($arg)*));
+}
+
+#[macro_export]
+macro_rules! kprint {
+    ($($arg:tt)*) => ({
+        use core::fmt::Write;
+        let mut b = $crate::BUFFER.lock();
+        b.write_fmt(format_args!($($arg)*)).unwrap();
+        b.flush();
+    });
 }
 
 /// Clears the console

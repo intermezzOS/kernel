@@ -2,16 +2,22 @@
 #![no_std]
 
 extern crate rlibc;
+
+#[macro_use]
 extern crate vga;
 
 pub mod support; // For Rust lang items
 
 #[no_mangle]
 pub extern "C" fn kmain() {
-    let color = vga::DEFAULT_COLOR;
-    let hello = "Hello from Rust world!";
-
     vga::clear_console();
-    vga::kprintfln(hello, color);
-    vga::kprintfln(hello, color);
+
+    kprintln!("Hello from Rust world!");
+    kprint!("Hello");
+    kprintln!(" again!");
+
+    let x = 5;
+    let p = &x;
+
+    kprintln!("Hello a final time: {:p}", p);
 }
