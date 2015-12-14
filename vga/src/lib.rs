@@ -9,7 +9,7 @@ use core::fmt;
 
 pub const DEFAULT_COLOR: ColorCode = ColorCode::new(Color::LightGreen, Color::Black);
 const CONSOLE_COLS: isize = 80;
-const CONSOLE_ROWS: isize = 24;
+const CONSOLE_ROWS: isize = 25;
 
 #[repr(u8)]
 pub enum Color {
@@ -88,7 +88,7 @@ impl VgaBuffer {
     pub fn flush(&self) {
         unsafe {
             let vga = 0xb8000 as *mut u8;
-            let length = self.buffer.len();
+            let length = self.buffer.len() * 2;
             let buffer: *const u8 = core::mem::transmute(&self.buffer);
             core::intrinsics::copy_nonoverlapping(buffer, vga, length);
         }
