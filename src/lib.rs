@@ -6,6 +6,8 @@ extern crate rlibc;
 #[macro_use]
 extern crate vga;
 
+extern crate keyboard;
+
 pub mod support; // For Rust lang items
 
 #[no_mangle]

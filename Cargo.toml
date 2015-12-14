@@ -9,3 +9,4 @@ crate-type = ["staticlib"]
 [dependencies]
 rlibc = "0.1.4"
 vga = { path = "vga" }
+keyboard = { path = "keyboard" }

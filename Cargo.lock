@@ -2,9 +2,14 @@
 name = "nucleus"
 version = "0.1.0"
 dependencies = [
+ "keyboard 0.1.0",
  "rlibc 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
  "vga 0.1.0",
 ]
+
+[[package]]
+name = "keyboard"
+version = "0.1.0"
 
 [[package]]
 name = "rlibc"
