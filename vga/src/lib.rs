@@ -66,7 +66,29 @@ impl VgaBuffer {
             // to get the current line, we divide by the length of a line
             let current_line = (self.position as isize) / CONSOLE_COLS;
 
-            let next_line = current_line + 1;
+            let next_line = if current_line + 1 > CONSOLE_ROWS {
+
+                let end = CONSOLE_ROWS * CONSOLE_COLS;
+
+                for i in CONSOLE_COLS..(end) {
+                    let prev = i - CONSOLE_COLS;
+                    self.buffer[prev as usize] = self.buffer[i as usize];
+
+                }
+
+                // blank out the last row
+                for i in (end - CONSOLE_COLS)..(end) {
+                    let cell = &mut self.buffer[i as usize];
+                    *cell = VgaCell {
+                        character: ' ' as u8,
+                        color: DEFAULT_COLOR,
+                    };
+                }
+
+                CONSOLE_ROWS - 1
+            } else {
+                current_line + 1
+            };
 
             self.position = (next_line * CONSOLE_COLS) as usize;
         } else {
