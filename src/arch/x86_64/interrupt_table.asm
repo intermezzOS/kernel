@@ -14,7 +14,7 @@ section .data
 %macro IDT_ENTRY 1
     extern interrupt_handler_%1
     ;TODO: remove the word data exceeds bounds warning
-    DW (interrupt_handler_%1 - 0x200000)  ;offset_low
+    DW (interrupt_handler_%1 - 0x100000)  ;offset_low
     DW 0x8              ;text segment
 
     %ifdef H%1_IST
@@ -24,7 +24,7 @@ section .data
     %endif
 
     DB 0x8e             ;type_addr: present+interrupt_gate
-    DW 0x20             ;offset_middle
+    DW 0x10             ;offset_middle
     DQ 0                ;offset_high and zero2
 %endmacro
 
