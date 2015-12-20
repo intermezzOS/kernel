@@ -1,0 +1,9 @@
+language: rust
+script:
+  - make
+  - make book
+after_success:
+  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash deploy.sh
+env:
+  global:
+    secure: 3qPPMBLGl8ZTtrz8V4eocYWmtxc00jsx1Yj83r2eORzdvJwB3CvcVfX4Bu9j3BHWjR+MMXDqo1uWGMYIzQXb4TQS3WQiurpazdl7yHq8qbRMooPCTlwpTnee/UzBArVHENl1dwTn+tNJB1lGJwM2v+2YH7YjlGuArciTQWciumzGMJpZRqp1BCvb+PUBKgxyt3QBulzeZRcRaTgUVof1xQYtJo3MFwF54BMy/a5PrswMD9beBzrZKtZr7I5YqNcFSQvDBpWJdp2auPYThENaHd+znE84Fi/yhnfKdatpUWipkwnfZ+jO9Dp8byaKsmtXTtUsnSw4vOGtucwagP5Z3h9FUxokuRAYGX4g4Jt4gq7lg83/a2jfQfSpfFkjW7L7YqKJIYCH7oiV6DIRjy5bXn987OklGVlz5iJoKv7WmkfzGduv68ZEavYkh0/2U0WbGzu+b6LqumWlER8l8vRA6a01wZB7NRAtltQBEcWejX6p1ZV2tWuXLuISHmw74y/Ng8sjmhwMRxePg0wc1F/6ygOoq8nfS71tG5CP6yyXDxBxJUKJHf6CumbplvfHP0ZKtjmXywyDXwPWVPEHPIN/VHR6MLBRY7ZnsH99+0Od7/MaXggyyUJ2XfOzVroOQah12D1xEG/rZ6+quwOobB5vg2BBUbCdavU3vsvt2Zw9eis=
