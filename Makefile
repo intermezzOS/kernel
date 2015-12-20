@@ -44,3 +44,7 @@ build/arch/$(arch)/%.o: src/arch/$(arch)/%.asm
 	mkdir -p $(shell dirname $@)
 	nasm -g -felf64 $< -o $@
 
+docs: book
+
+book: docs/book/
+	cd docs && mdbook build
