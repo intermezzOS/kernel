@@ -32,6 +32,7 @@ pub enum Color {
 }
 
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub struct ColorCode(u8);
 
 impl ColorCode {
