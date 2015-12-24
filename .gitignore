@@ -1,1 +1,3 @@
-docs/book
+*.o
+os.iso
+isofiles/boot/kernel.bin
