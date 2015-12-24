@@ -1,14 +1,3 @@
 language: rust
 rust:
   - nightly
-before_script:
-  - cargo install mdbook
-script:
-  - mkdir docs/book
-  - PATH=$PATH:/home/travis/.cargo/bin make book
-after_success:
-  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash deploy.sh
-env:
-  global:
-    secure: "uQ8nfMkRqM/fS1uprv9vKq+YjHwbrIzE6kpldTXnqCH3LiptTIEWY82DRUyLSEkoK9h/WgDC1iCKo6MwCjrFxaoiu3p9mZXnsOM6OrKg2OYcIeaY2oph7oe8ZJn8E3qUkXYAxUKL5f7nRd7dSNF/Pwl3fWahe/TP+u+oNlpOD4Q+TocBseBoYZSZFVna/TrP1t4xKF4dBw4rEAI7o3W21NPjkHeLmcwIzUMCBu1mePaEe/YhSnAOREFLy8a8Qoq0b9npkUFsni0xlQDlSUxOPR2G6ckD9SIahxpPQTD6yYRqHzlw7xBt69ctc0aTsRzoLSCNtDnxRYyUeEjZxxE+Zbjso4ra9smXhBueSYGc769CTVHljWnXfOXpBa2rRHbjDUGm7im9y3k//nu8mIRj8knKXbYBj5ngyhumhTndsMhXUUcLmIfdXfSY6efEm5C8ytZCGmfAre2eCNZO04zwUZw2FfWfTnnE//xaU/1q2JiLK4f5IYvAe4KzgJc2CiJ22xYN98K1A4mtC/LjJMWLwV414OZOYgMrZJCMckGIYzaAvSGCWteWE0KMKe/1D6gWt50qv/alFQ0gX9lUGKR9MyMJVKPVBFyBoe7ZxGg3g60keHKE7HSBGNFKBj1X3NX+zxT3nDRKrtGwn9vJwWn/L/dSJ6JQqYu8nNP3MusMTZk="
-
