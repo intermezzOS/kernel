@@ -2,7 +2,7 @@ language: rust
 rust:
   - nightly
 script:
-  - make
+  - make build
 addons:
   apt:
     packages:
