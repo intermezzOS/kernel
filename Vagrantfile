@@ -19,10 +19,10 @@ Vagrant.configure(2) do |config|
   # documentation for more information about their specific syntax and use.
    config.vm.provision "shell", inline: <<-SHELL
       sudo apt-get update
-      sudo apt-get install nasm -y
-      sudo apt-get install xorriso -y
-      sudo apt-get install git -y
-      sudo apt-get install vim -y
+      sudo apt-get install -y nasm
+      sudo apt-get install -y xorriso
+      sudo apt-get install -y git
+      sudo apt-get install -y vim
       sudo apt-get install -y qemu
       sudo apt-get install -y make
       sudo apt-get install -y binutils
