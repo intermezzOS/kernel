@@ -3,3 +3,7 @@ rust:
   - nightly
 script:
   - make
+addons:
+  apt:
+    packages:
+      - nasm
