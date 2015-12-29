@@ -27,3 +27,8 @@ see this:
 ![screenshot](screenshot.png)
 
 Okay indeed!
+
+## License
+
+This project is dual licensed under Apache2/MIT. See the two `LICENSE-*` files
+for details.
