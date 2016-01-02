@@ -1,4 +1,6 @@
 default: run
+	
+build: build/kernel.bin
 
 .PHONY: clean
 
