@@ -13,15 +13,15 @@ build/boot.o: boot.asm
 build/kernel.bin: build/multiboot_header.o build/boot.o linker.ld
 	ld -n -o build/kernel.bin -T linker.ld build/multiboot_header.o build/boot.o
 
-isofiles: build/kernel.bin grub.cfg
+build/isofiles: build/kernel.bin grub.cfg
 	mkdir -p build/isofiles/boot/grub
 	cp grub.cfg build/isofiles/boot/grub
 	cp build/kernel.bin build/isofiles/boot/
 
-os.iso: isofiles
+build/os.iso: build/isofiles
 	grub-mkrescue -o build/os.iso build/isofiles
 
-run: os.iso
+run: build/os.iso
 	qemu-system-x86_64 -cdrom build/os.iso
 
 clean: 
