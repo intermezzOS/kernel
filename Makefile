@@ -11,8 +11,12 @@ boot.o: boot.asm
 kernel.bin: multiboot_header.o boot.o linker.ld
 	ld -n -o kernel.bin -T linker.ld multiboot_header.o boot.o
 
-os.iso: kernel.bin
+isofiles: kernel.bin grub.cfg
+	mkdir -p isofiles/boot/grub
+	cp grub.cfg isofiles/boot/grub
 	cp kernel.bin isofiles/boot/
+
+os.iso: isofiles
 	grub-mkrescue -o os.iso isofiles
 
 build: os.iso
@@ -24,5 +28,5 @@ clean:
 	rm -f multiboot_header.o
 	rm -f boot.o
 	rm -f kernel.bin
-	rm -f isofiles/boot/kernel.bin
+	rm -rf isofiles
 	rm -f os.iso
