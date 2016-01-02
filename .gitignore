@@ -1,3 +1,4 @@
 *.o
 os.iso
 isofiles/boot/kernel.bin
+kernel.bin
