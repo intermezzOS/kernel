@@ -1,6 +1,6 @@
 default: run
 
-.PHONY: clean build
+.PHONY: clean
 
 build/multiboot_header.o: multiboot_header.asm
 	mkdir -p build
