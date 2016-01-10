@@ -1,0 +1,16 @@
+{
+        "llvm-target": "x86_64-unknown-none-gnu",
+        "target-endian": "little",
+        "target-pointer-width": "64",
+        "os": "nucleus",
+        "arch": "x86_64",
+        "data-layout": "e-p:64:64:64-i1:8:8-i8:8:8-i16:16:16-i32:32:32-i64:64:64-f32:32:32-f64:64:64-v64:64:64-v128:128:128-a0:0:64-s0:64:64-f80:128:128-n8:16:32:64-S128",
+        "pre-link-args": [ "-m64" ],
+        "cpu": "x86-64",
+        "features": "-mmx,-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-3dnow,-3dnowa,-avx,-avx2",
+        "disable-redzone": true,
+        "eliminate-frame-pointer": true,
+        "linker-is-gnu": true,
+        "no-compiler-rt": true,
+        "archive-format": "gnu"
+}

@@ -6,27 +6,11 @@ See [the website](http://intermezzos.github.io/) for more.
 Also, feel free to join us at `#intermezzOS` on Freenode’s IRC network, if you
 want to chat.
 
-We’re currently in the process of re-building from scratch, to properly
-document things as we go along. Check the `dev` branch for the code
-we had before this redux.
+## Organization
 
-## Requirements
-
-Right now, things are only guaranteed to work on 64-bit Linux.
-
-* `nasm`
-* `ld`
-* `grub-mkrescue`, possibly with `xorriso`, depending on your package manager
-* `qemu`, specifically `qemu-system-x86_64`
-
-## CURRENT STATUS
-
-Right now, if you run `make` you’ll
-see this:
-
-![screenshot](screenshot.png)
-
-Okay indeed!
+Each sub-directory contains the full source code at the end of the related
+chapter of the book. Some chapters might have further sub-chapter directories
+as well.
 
 ## License
 
