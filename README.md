@@ -7,7 +7,7 @@ Also, feel free to join us at `#intermezzOS` on Freenode’s IRC network, if you
 want to chat.
 
 We’re currently in the process of re-building from scratch, to properly
-document things as we go along. Check the `original_backup` branch for the code
+document things as we go along. Check the `dev` branch for the code
 we had before this redux.
 
 ## Requirements
