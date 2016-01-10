@@ -2,7 +2,7 @@ language: rust
 rust:
   - nightly
 script:
-  - cd chapter_three/3.5-make && make build
+  - cd chapter_3/3.5-make && make build
 addons:
   apt:
     packages:
