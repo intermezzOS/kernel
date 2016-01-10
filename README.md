@@ -12,6 +12,9 @@ Each sub-directory contains the full source code at the end of the related
 chapter of the book. Some chapters might have further sub-chapter directories
 as well.
 
+The `src` directory contains the latest version of the code. The chapters
+should end up building up to what’s in `src`.
+
 ## License
 
 This project is dual licensed under Apache2/MIT. See the two `LICENSE-*` files
