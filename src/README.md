@@ -1,6 +1,6 @@
-# Nucleus
+# IntermezzOS
 
-This is a small hobby OS, written in Rust. It is not particularly serious. I’m
+This is a hobby OS, written in Rust. It is not particularly serious. I’m
 not yet at the point where I have to actually worry about design decisions, so
 we’ll see what it ends up like.
 
@@ -8,7 +8,6 @@ http://jvns.ca/blog/2014/03/12/the-rust-os-story/ is a wonderful example of the
 spirit of this project. The Rust bits are outdated, the “Let’s learn things!
 Learning is great!” attitude is very much not.
 
-![screenshot](screenshot.png)
 
 Resources:
 
