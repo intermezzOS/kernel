@@ -4,4 +4,4 @@ version = "0.1.0"
 authors = ["Steve Klabnik <steve@steveklabnik.com>"]
 
 [dependencies]
-spin = "0.3.4"
+spin = "0.3.5"

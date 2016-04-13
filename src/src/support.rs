@@ -6,6 +6,3 @@ fn panic_fmt() -> ! {
     loop {}
 }
 
-#[lang = "begin_unwind"]
-pub extern "C" fn begin_unwind() {
-}

@@ -7,6 +7,6 @@ authors = ["Steve Klabnik <steve@steveklabnik.com>", "Amit Aryeh Levy <amit@amit
 crate-type = ["staticlib"]
 
 [dependencies]
-rlibc = "0.1.4"
+rlibc = "1.0.0"
 vga = { path = "vga" }
 keyboard = { path = "keyboard" }
