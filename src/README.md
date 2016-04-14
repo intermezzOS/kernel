@@ -45,7 +45,7 @@ Afterwards:
 ```
 $ cd ..
 $ mkdir -p build
-$ rustc --target x86_64-unknown-nucleus-gnu -Z no-landing-pads \
+$ rustc --target x86_64-unknown-intermezzos-gnu -Z no-landing-pads \
     --cfg disable_float \
     --out-dir build/ \
     rust/src/libcore/lib.rs
@@ -56,8 +56,8 @@ can find it. I use [`multirust`](https://github.com/brson/multirust), so for
 me:
 
 ```
-$ mkdir -p ~/.multirust/toolchains/nightly/lib/rustlib/x86_64-unknown-nucleus-gnu/lib
-$ cp build/libcore.rlib ~/.multirust/toolchains/nightly/lib/rustlib/x86_64-unknown-nucleus-gnu/lib
+$ mkdir -p ~/.multirust/toolchains/nightly/lib/rustlib/x86_64-unknown-intermezzos-gnu/lib
+$ cp build/libcore.rlib ~/.multirust/toolchains/nightly/lib/rustlib/x86_64-unknown-intermezzos-gnu/lib
 ```
 
 Whew! Hopefully this won’t be a big deal in the future. For a writeup on why

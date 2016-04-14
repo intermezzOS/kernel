@@ -8,8 +8,8 @@ assembly_source_files := $(wildcard src/arch/$(arch)/*.asm)
 assembly_object_files := $(patsubst src/arch/$(arch)/%.asm, \
     build/arch/$(arch)/%.o, $(assembly_source_files))
 
-target ?= $(arch)-unknown-nucleus-gnu
-rust_os := target/$(target)/debug/libnucleus.a
+target ?= $(arch)-unknown-intermezzos-gnu
+rust_os := target/$(target)/debug/libintermezzos.a
 
 .PHONY: all clean run iso kernel
 

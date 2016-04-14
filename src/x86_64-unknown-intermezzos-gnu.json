@@ -2,7 +2,7 @@
         "llvm-target": "x86_64-unknown-none-gnu",
         "target-endian": "little",
         "target-pointer-width": "64",
-        "os": "nucleus",
+        "os": "intermezzos",
         "arch": "x86_64",
         "pre-link-args": [ "-m64" ],
         "cpu": "x86-64",
