@@ -10,6 +10,8 @@ assembly_object_files := $(patsubst src/arch/$(arch)/%.asm, \
 
 target ?= $(arch)-unknown-intermezzos-gnu
 rust_os := target/$(target)/debug/libintermezzos.a
+libcore_dir := build/libcore/target/x86_64-unknown-intermezzos-gnu/release
+libcore := $(libcore_dir)/libcore.rlib
 
 .PHONY: all clean run iso kernel
 
@@ -36,8 +38,18 @@ kernel: $(kernel)
 $(kernel): cargo $(rust_os) $(assembly_object_files) $(linker_script)
 	ld -n --gc-sections -T $(linker_script) -o $(kernel) $(assembly_object_files) $(rust_os)
 
-cargo:
-	cargo build --target $(target)
+build/libcore:
+	mkdir -p build
+	git clone https://github.com/intermezzOS/libcore build/libcore
+
+libcore: $(libcore)
+
+$(libcore): build/libcore
+	cp $(target).json build/libcore
+	cd build/libcore && cargo build --release --features disable_float --target=$(target)
+
+cargo: libcore
+	RUSTFLAGS="-L $(libcore_dir)" cargo build --target $(target)
 
 # compile assembly files
 build/arch/$(arch)/%.o: src/arch/$(arch)/%.asm

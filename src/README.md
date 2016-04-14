@@ -18,51 +18,30 @@ Resources:
 
 ## Building
 
-Make sure you have a nightly Rust. Any recent nightly should do. Other requirements:
+Make sure you have this Rust:
+
+```bash
+$ rustc --version
+rustc 1.9.0-nightly (b622c3e08 2016-04-11)
+```
+
+It has to be this one. Exactly this one. This is the nightly for `2016-04-12`,
+even though the date says `11`. They’re off sometimes.
+
+If you don’t have Rust installed, you can do this:
+
+```bash
+$ curl -sf https://static.rust-lang.org/rustup.sh | sudo sh -- --channel=nightly --date=2016-04-12
+```
+
+If you use a tool like multirust or rustup, use that.
+
+Then get this stuff:
 
 * `nasm`
 * `ld`
 * `grub-mkrescue`
 * `qemu-system-x86_64`
-
-If you have all that, it’s time to deal with `libcore`. Until [this
-issue](https://github.com/rust-lang/rfcs/issues/1364) is resolved, you’ll need
-to build your own `libcore`.
-
-To do that, you can either use
-[`nightly-libcore`](https://github.com/phil-opp/nightly-libcore), or do this:
-
-```bash
-$ git clone https://github.com/rust-lang/rust.git
-$ cd rust
-```
-
-Then apply [this
-patch](https://github.com/thepowersgang/rust-barebones-kernel/blob/master/libcore_nofp.patch).
-
-Afterwards:
-
-```
-$ cd ..
-$ mkdir -p build
-$ rustc --target x86_64-unknown-intermezzos-gnu -Z no-landing-pads \
-    --cfg disable_float \
-    --out-dir build/ \
-    rust/src/libcore/lib.rs
-```
-
-Now, you have a `build/libcore.rlib` file. It needs to be in a place `Cargo`
-can find it. I use [`multirust`](https://github.com/brson/multirust), so for
-me:
-
-```
-$ mkdir -p ~/.multirust/toolchains/nightly/lib/rustlib/x86_64-unknown-intermezzos-gnu/lib
-$ cp build/libcore.rlib ~/.multirust/toolchains/nightly/lib/rustlib/x86_64-unknown-intermezzos-gnu/lib
-```
-
-Whew! Hopefully this won’t be a big deal in the future. For a writeup on why
-this is needed, see [this
-post](http://www.randomhacks.net/2015/11/11/bare-metal-rust-custom-target-kernel-space/).
 
 After all that setup, it’s as easy as:
 
