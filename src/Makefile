@@ -1,3 +1,6 @@
+SHELL := /bin/bash
+export PATH := $(HOME)/opt/bin:$(PATH)
+
 arch ?= x86_64
 kernel := build/kernel-$(arch).bin
 iso := build/os-$(arch).iso
@@ -36,7 +39,7 @@ $(iso): $(kernel)
 kernel: $(kernel)
 
 $(kernel): cargo $(rust_os) $(assembly_object_files) $(linker_script)
-	ld -n --gc-sections -T $(linker_script) -o $(kernel) $(assembly_object_files) $(rust_os)
+	x86_64-pc-elf-ld -n --gc-sections -T $(linker_script) -o $(kernel) $(assembly_object_files) $(rust_os)
 
 build/libcore:
 	mkdir -p build
