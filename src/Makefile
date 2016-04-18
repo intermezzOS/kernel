@@ -17,9 +17,16 @@ libcore := $(libcore_dir)/libcore.rlib
 
 all: $(iso)
 
-clean:
+distclean:
 	rm -rf build
 	rm -rf target
+
+clean:
+	rm -rf build/isofiles
+	rm -rf build/arch
+	rm -rf target
+	rm -f $(kernel)
+	rm -f $(iso)
 
 run: $(iso)
 	qemu-system-x86_64 -cdrom $(iso)
