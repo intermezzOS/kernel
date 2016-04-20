@@ -13,7 +13,7 @@ extern crate keyboard;
 pub mod support; // For Rust lang items
 
 #[no_mangle]
-pub extern "C" fn kmain() {
+pub extern "C" fn kmain() -> ! {
     vga::clear_console();
 
     unsafe { enable_interrupts() };
