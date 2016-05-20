@@ -1,5 +1,3 @@
-extern setup_interrupt_table
-
 global long_mode_start
 
 section .text
