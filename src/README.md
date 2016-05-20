@@ -40,7 +40,7 @@ Then get this stuff:
 
 * `nasm`
 * `ld`
-* `grub-mkrescue`
+* `grub-mkrescue`: you may also need to install `xorriso`
 * `qemu-system-x86_64`
 
 After all that setup, it’s as easy as:
