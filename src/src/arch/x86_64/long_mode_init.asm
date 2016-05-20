@@ -8,7 +8,6 @@ long_mode_start:
 
     call setup_SSE
     call remap_PIC
-    call setup_interrupt_table
 
     extern kmain
     call kmain
