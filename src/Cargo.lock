@@ -11,6 +11,9 @@ dependencies = [
 [[package]]
 name = "interrupts"
 version = "0.1.0"
+dependencies = [
+ "vga 0.1.0",
+]
 
 [[package]]
 name = "keyboard"
