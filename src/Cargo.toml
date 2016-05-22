@@ -10,3 +10,4 @@ crate-type = ["staticlib"]
 rlibc = "1.0.0"
 vga = { path = "vga" }
 keyboard = { path = "keyboard" }
+interrupts = { path = "interrupts" }
