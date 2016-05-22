@@ -8,7 +8,7 @@ extern crate rlibc;
 #[macro_use]
 extern crate vga;
 
-extern crate keyboard;
+extern crate interrupts;
 
 pub mod support; // For Rust lang items
 
@@ -16,7 +16,7 @@ pub mod support; // For Rust lang items
 pub extern "C" fn kmain() -> ! {
     vga::clear_console();
 
-    unsafe { enable_interrupts() };
+    unsafe { interrupts::enable() };
 
     kprintln!("Hello from Rust world!");
     kprint!("Hello");
@@ -30,9 +30,6 @@ pub extern "C" fn kmain() -> ! {
     loop { }
 }
 
-pub unsafe fn enable_interrupts() {
-    asm!("sti" :::: "volatile");
-}
 
 #[no_mangle]
 pub extern "C" fn interrupt_handler(interrupt_number: isize, error_code: isize) {
@@ -42,7 +39,7 @@ pub extern "C" fn interrupt_handler(interrupt_number: isize, error_code: isize) 
     }
     unsafe{
         send_eoi(interrupt_number);
-        enable_interrupts();
+        interrupts::enable();
     };
 }
 
@@ -61,7 +58,7 @@ pub extern fn keyboard_handler(interrupt_number: isize, key_code: usize) {
     kprintln!("Key code!: {}", key_code);
     unsafe{
         send_eoi(interrupt_number);
-        enable_interrupts()
+        interrupts::enable();
     }
     assert!(interrupt_number == 33);
 }
