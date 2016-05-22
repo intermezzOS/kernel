@@ -101,15 +101,6 @@ interrupt_handler_33:        ; keyboard
 
 section .text
 
-%macro push_xmm 1
-    sub rsp, 16
-    movdqu [rsp], xmm%1
-%endmacro
-%macro pop_xmm 1
-    movdqu  xmm%1, [rsp]
-    add     rsp, 16
-%endmacro
-
 ; Stack must contain rax on top the interrupt frame below. The interrupt
 ; handler address must then be passed in rax.
 push_registers_and_call_handler:
@@ -129,12 +120,38 @@ push_registers_and_call_handler:
     push r14
     push r15
 
-    ;push xmm registers
-    %assign i 0
-    %rep 16
-        push_xmm i
-    %assign i i+1
-    %endrep
+    sub rsp, 16
+    movdqu [rsp], xmm0
+    sub rsp, 16
+    movdqu [rsp], xmm1
+    sub rsp, 16
+    movdqu [rsp], xmm2
+    sub rsp, 16
+    movdqu [rsp], xmm3
+    sub rsp, 16
+    movdqu [rsp], xmm4
+    sub rsp, 16
+    movdqu [rsp], xmm5
+    sub rsp, 16
+    movdqu [rsp], xmm6
+    sub rsp, 16
+    movdqu [rsp], xmm7
+    sub rsp, 16
+    movdqu [rsp], xmm8
+    sub rsp, 16
+    movdqu [rsp], xmm9
+    sub rsp, 16
+    movdqu [rsp], xmm10
+    sub rsp, 16
+    movdqu [rsp], xmm11
+    sub rsp, 16
+    movdqu [rsp], xmm12
+    sub rsp, 16
+    movdqu [rsp], xmm13
+    sub rsp, 16
+    movdqu [rsp], xmm14
+    sub rsp, 16
+    movdqu [rsp], xmm15
 
     mov rdi, [rsp + 376]    ; interrupt number
     mov rsi, [rsp + 384]    ; error code
@@ -148,12 +165,38 @@ push_registers_and_call_handler:
 pop_registers_and_iret:
     mov rsp, rdi
 
-    ;pop xmm registers
-    %assign i 15
-    %rep 16
-        pop_xmm i
-    %assign i i-1
-    %endrep
+    movdqu  xmm15, [rsp]
+    add     rsp, 16
+    movdqu  xmm14, [rsp]
+    add     rsp, 16
+    movdqu  xmm13, [rsp]
+    add     rsp, 16
+    movdqu  xmm12, [rsp]
+    add     rsp, 16
+    movdqu  xmm11, [rsp]
+    add     rsp, 16
+    movdqu  xmm10, [rsp]
+    add     rsp, 16
+    movdqu  xmm9, [rsp]
+    add     rsp, 16
+    movdqu  xmm8, [rsp]
+    add     rsp, 16
+    movdqu  xmm7, [rsp]
+    add     rsp, 16
+    movdqu  xmm6, [rsp]
+    add     rsp, 16
+    movdqu  xmm5, [rsp]
+    add     rsp, 16
+    movdqu  xmm4, [rsp]
+    add     rsp, 16
+    movdqu  xmm3, [rsp]
+    add     rsp, 16
+    movdqu  xmm2, [rsp]
+    add     rsp, 16
+    movdqu  xmm1, [rsp]
+    add     rsp, 16
+    movdqu  xmm0, [rsp]
+    add     rsp, 16
 
     pop r15
     pop r14
@@ -174,9 +217,3 @@ pop_registers_and_iret:
     add rsp, 16 ;remove interrupt number and error code
 
     iretq
-
-.hang:
-    cli
-    hlt
-    jmp .hang
-
