@@ -7,18 +7,271 @@ extern general_protection_fault_handler;
 extern pagefault_handler;
 extern keyboard_handler;
 
-%assign i 0
-%rep 256
-    global interrupt_handler_%[i]
-%assign i i+1
-%endrep
+global isr0
+global isr1
+global isr2
+global isr3
+global isr4
+global isr5
+global isr6
+global isr7
+global isr8
+global isr9
+global isr10
+global isr11
+global isr12
+global isr13
+global isr14
+global isr15
+global isr16
+global isr17
+global isr18
+global isr19
+global isr20
+global isr21
+global isr22
+global isr23
+global isr24
+global isr25
+global isr26
+global isr27
+global isr28
+global isr29
+global isr30
+global isr31
+global isr32
+global isr33
+global isr34
+global isr35
+global isr36
+global isr37
+global isr38
+global isr39
+global isr40
+global isr41
+global isr42
+global isr43
+global isr44
+global isr45
+global isr46
+global isr47
+global isr48
+global isr49
+global isr50
+global isr51
+global isr52
+global isr53
+global isr54
+global isr55
+global isr56
+global isr57
+global isr58
+global isr59
+global isr60
+global isr61
+global isr62
+global isr63
+global isr64
+global isr65
+global isr66
+global isr67
+global isr68
+global isr69
+global isr70
+global isr71
+global isr72
+global isr73
+global isr74
+global isr75
+global isr76
+global isr77
+global isr78
+global isr79
+global isr80
+global isr81
+global isr82
+global isr83
+global isr84
+global isr85
+global isr86
+global isr87
+global isr88
+global isr89
+global isr90
+global isr91
+global isr92
+global isr93
+global isr94
+global isr95
+global isr96
+global isr97
+global isr98
+global isr99
+global isr100
+global isr101
+global isr102
+global isr103
+global isr104
+global isr105
+global isr106
+global isr107
+global isr108
+global isr109
+global isr110
+global isr111
+global isr112
+global isr113
+global isr114
+global isr115
+global isr116
+global isr117
+global isr118
+global isr119
+global isr120
+global isr121
+global isr122
+global isr123
+global isr124
+global isr125
+global isr126
+global isr127
+global isr128
+global isr129
+global isr130
+global isr131
+global isr132
+global isr133
+global isr134
+global isr135
+global isr136
+global isr137
+global isr138
+global isr139
+global isr140
+global isr141
+global isr142
+global isr143
+global isr144
+global isr145
+global isr146
+global isr147
+global isr148
+global isr149
+global isr150
+global isr151
+global isr152
+global isr153
+global isr154
+global isr155
+global isr156
+global isr157
+global isr158
+global isr159
+global isr160
+global isr161
+global isr162
+global isr163
+global isr164
+global isr165
+global isr166
+global isr167
+global isr168
+global isr169
+global isr170
+global isr171
+global isr172
+global isr173
+global isr174
+global isr175
+global isr176
+global isr177
+global isr178
+global isr179
+global isr180
+global isr181
+global isr182
+global isr183
+global isr184
+global isr185
+global isr186
+global isr187
+global isr188
+global isr189
+global isr190
+global isr191
+global isr192
+global isr193
+global isr194
+global isr195
+global isr196
+global isr197
+global isr198
+global isr199
+global isr200
+global isr201
+global isr202
+global isr203
+global isr204
+global isr205
+global isr206
+global isr207
+global isr208
+global isr209
+global isr210
+global isr211
+global isr212
+global isr213
+global isr214
+global isr215
+global isr216
+global isr217
+global isr218
+global isr219
+global isr220
+global isr221
+global isr222
+global isr223
+global isr224
+global isr225
+global isr226
+global isr227
+global isr228
+global isr229
+global isr230
+global isr231
+global isr232
+global isr233
+global isr234
+global isr235
+global isr236
+global isr237
+global isr238
+global isr239
+global isr240
+global isr241
+global isr242
+global isr243
+global isr244
+global isr245
+global isr246
+global isr247
+global isr248
+global isr249
+global isr250
+global isr251
+global isr252
+global isr253
+global isr254
+global isr255
+
+extern
 
 section .interrupt_handlers
 
 ; special handlers
 
 %macro HANDLER_WITH_ERRCODE 2
-    interrupt_handler_%1:
+    isr%1:
         push qword %1
         push rax
         mov rax, %2
@@ -39,7 +292,7 @@ HANDLER_WITH_ERRCODE 11, interrupt_handler
 HANDLER_WITH_ERRCODE 12, interrupt_handler
 
 %define H13
-interrupt_handler_13:        ; general protection fault
+isr13:        ; general protection fault
     sub rsp, 8      ; make room for rip (replaces interrupt number)
     push rax
 
@@ -53,7 +306,7 @@ interrupt_handler_13:        ; general protection fault
     jmp push_registers_and_call_handler
 
 %define H14
-interrupt_handler_14:        ; pagefault
+isr14:        ; pagefault
     sub rsp, 8      ; make room for cr2 (replaces interrupt number)
     push rax
 
@@ -66,7 +319,7 @@ interrupt_handler_14:        ; pagefault
     jmp push_registers_and_call_handler
 
 %define H33
-interrupt_handler_33:        ; keyboard
+isr33:        ; keyboard
     sub rsp, 8      ; room for keyboard code (replaces error code)
     push qword 33   ; interrupt number
     push rax
@@ -83,7 +336,7 @@ interrupt_handler_33:        ; keyboard
 
 %macro HANDLER 1
     %ifndef H%1
-    interrupt_handler_%1:
+    isr%1:
         push qword 0 ;dummy error code
         push qword %1
         push rax

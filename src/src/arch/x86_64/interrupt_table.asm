@@ -2,19 +2,17 @@ BITS 64
 
 global setup_interrupt_table
 
-
 section .text
 setup_interrupt_table:
     lidt [idt_pointer]
     ret
 
-
 section .data
 
 %macro IDT_ENTRY 1
-    extern interrupt_handler_%1
+    extern isr%1
     ;TODO: remove the word data exceeds bounds warning
-    DW (interrupt_handler_%1 - 0x100000)  ;offset_low
+    DW (isr%1 - 0x100000)  ;offset_low
     DW 0x8              ;text segment
 
     %ifdef H%1_IST
