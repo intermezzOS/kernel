@@ -264,34 +264,97 @@ global isr253
 global isr254
 global isr255
 
-extern
-
 section .interrupt_handlers
 
-; special handlers
-
-%macro HANDLER_WITH_ERRCODE 2
-    isr%1:
-        push qword %1
-        push rax
-        mov rax, %2
-        jmp push_registers_and_call_handler
-%endmacro
-
-%define H8
-HANDLER_WITH_ERRCODE 8, interrupt_handler
 %define H8_IST 1 ;double fault stack
 
-%define H10
-HANDLER_WITH_ERRCODE 10, interrupt_handler
+isr0:
+    push qword 0 ;dummy error code
+    push qword 0
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
 
-%define H11
-HANDLER_WITH_ERRCODE 11, interrupt_handler
+isr1:
+    push qword 0 ;dummy error code
+    push qword 1
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
 
-%define H12
-HANDLER_WITH_ERRCODE 12, interrupt_handler
+isr2:
+    push qword 0 ;dummy error code
+    push qword 2
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
 
-%define H13
+isr3:
+    push qword 0 ;dummy error code
+    push qword 3
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr4:
+    push qword 0 ;dummy error code
+    push qword 4
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr5:
+    push qword 0 ;dummy error code
+    push qword 5
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr6:
+    push qword 0 ;dummy error code
+    push qword 6
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr7:
+    push qword 0 ;dummy error code
+    push qword 7
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr8:
+    push qword 8
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr9:
+    push qword 0 ;dummy error code
+    push qword 9
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr10:
+    push qword 10
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr11:
+    push qword 11
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr12:
+    push qword 12
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
 isr13:        ; general protection fault
     sub rsp, 8      ; make room for rip (replaces interrupt number)
     push rax
@@ -305,7 +368,6 @@ isr13:        ; general protection fault
     mov rax, general_protection_fault_handler
     jmp push_registers_and_call_handler
 
-%define H14
 isr14:        ; pagefault
     sub rsp, 8      ; make room for cr2 (replaces interrupt number)
     push rax
@@ -318,7 +380,132 @@ isr14:        ; pagefault
     mov rax, pagefault_handler
     jmp push_registers_and_call_handler
 
-%define H33
+isr15:
+    push qword 0 ;dummy error code
+    push qword 15
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr16:
+    push qword 0 ;dummy error code
+    push qword 16
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr17:
+    push qword 0 ;dummy error code
+    push qword 17
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr18:
+    push qword 0 ;dummy error code
+    push qword 18
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr19:
+    push qword 0 ;dummy error code
+    push qword 19
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr20:
+    push qword 0 ;dummy error code
+    push qword 20
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr21:
+    push qword 0 ;dummy error code
+    push qword 21
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr22:
+    push qword 0 ;dummy error code
+    push qword 22
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr23:
+    push qword 0 ;dummy error code
+    push qword 23
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr24:
+    push qword 0 ;dummy error code
+    push qword 24
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr25:
+    push qword 0 ;dummy error code
+    push qword 25
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr26:
+    push qword 0 ;dummy error code
+    push qword 26
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr27:
+    push qword 0 ;dummy error code
+    push qword 27
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr28:
+    push qword 0 ;dummy error code
+    push qword 28
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr29:
+    push qword 0 ;dummy error code
+    push qword 29
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr30:
+    push qword 0 ;dummy error code
+    push qword 30
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr31:
+    push qword 0 ;dummy error code
+    push qword 31
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr32:
+    push qword 0 ;dummy error code
+    push qword 32
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
 isr33:        ; keyboard
     sub rsp, 8      ; room for keyboard code (replaces error code)
     push qword 33   ; interrupt number
@@ -331,26 +518,1559 @@ isr33:        ; keyboard
     mov rax, keyboard_handler
     jmp push_registers_and_call_handler
 
+isr34:
+    push qword 0 ;dummy error code
+    push qword 32
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
 
-; other handlers (standard)
+isr35:
+    push qword 0 ;dummy error code
+    push qword 33
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
 
-%macro HANDLER 1
-    %ifndef H%1
-    isr%1:
-        push qword 0 ;dummy error code
-        push qword %1
-        push rax
-        mov rax, interrupt_handler
-        jmp push_registers_and_call_handler
-    %endif
-%endmacro
+isr36:
+    push qword 0 ;dummy error code
+    push qword 34
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
 
-%assign i 0
-%rep 256
-    HANDLER i
-%assign i i+1
-%endrep
+isr37:
+    push qword 0 ;dummy error code
+    push qword 35
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
 
+isr38:
+    push qword 0 ;dummy error code
+    push qword 36
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr39:
+    push qword 0 ;dummy error code
+    push qword 37
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr40:
+    push qword 0 ;dummy error code
+    push qword 38
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr41:
+    push qword 0 ;dummy error code
+    push qword 39
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr42:
+    push qword 0 ;dummy error code
+    push qword 40
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr43:
+    push qword 0 ;dummy error code
+    push qword 41
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr44:
+    push qword 0 ;dummy error code
+    push qword 42
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr45:
+    push qword 0 ;dummy error code
+    push qword 43
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr46:
+    push qword 0 ;dummy error code
+    push qword 44
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr47:
+    push qword 0 ;dummy error code
+    push qword 45
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr48:
+    push qword 0 ;dummy error code
+    push qword 46
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr49:
+    push qword 0 ;dummy error code
+    push qword 47
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr50:
+    push qword 0 ;dummy error code
+    push qword 48
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr51:
+    push qword 0 ;dummy error code
+    push qword 49
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr52:
+    push qword 0 ;dummy error code
+    push qword 50
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr53:
+    push qword 0 ;dummy error code
+    push qword 51
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr54:
+    push qword 0 ;dummy error code
+    push qword 52
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr55:
+    push qword 0 ;dummy error code
+    push qword 53
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr56:
+    push qword 0 ;dummy error code
+    push qword 54
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr57:
+    push qword 0 ;dummy error code
+    push qword 55
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr58:
+    push qword 0 ;dummy error code
+    push qword 56
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr59:
+    push qword 0 ;dummy error code
+    push qword 57
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr60:
+    push qword 0 ;dummy error code
+    push qword 58
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr61:
+    push qword 0 ;dummy error code
+    push qword 59
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr62:
+    push qword 0 ;dummy error code
+    push qword 60
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr63:
+    push qword 0 ;dummy error code
+    push qword 61
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr64:
+    push qword 0 ;dummy error code
+    push qword 62
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr65:
+    push qword 0 ;dummy error code
+    push qword 63
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr66:
+    push qword 0 ;dummy error code
+    push qword 64
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr67:
+    push qword 0 ;dummy error code
+    push qword 65
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr68:
+    push qword 0 ;dummy error code
+    push qword 66
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr69:
+    push qword 0 ;dummy error code
+    push qword 67
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr70:
+    push qword 0 ;dummy error code
+    push qword 68
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr71:
+    push qword 0 ;dummy error code
+    push qword 69
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr72:
+    push qword 0 ;dummy error code
+    push qword 70
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr73:
+    push qword 0 ;dummy error code
+    push qword 71
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr74:
+    push qword 0 ;dummy error code
+    push qword 72
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr75:
+    push qword 0 ;dummy error code
+    push qword 73
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr76:
+    push qword 0 ;dummy error code
+    push qword 74
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr77:
+    push qword 0 ;dummy error code
+    push qword 75
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr78:
+    push qword 0 ;dummy error code
+    push qword 76
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr79:
+    push qword 0 ;dummy error code
+    push qword 77
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr80:
+    push qword 0 ;dummy error code
+    push qword 78
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr81:
+    push qword 0 ;dummy error code
+    push qword 79
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr82:
+    push qword 0 ;dummy error code
+    push qword 80
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr83:
+    push qword 0 ;dummy error code
+    push qword 81
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr84:
+    push qword 0 ;dummy error code
+    push qword 82
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr85:
+    push qword 0 ;dummy error code
+    push qword 83
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr86:
+    push qword 0 ;dummy error code
+    push qword 84
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr87:
+    push qword 0 ;dummy error code
+    push qword 85
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr88:
+    push qword 0 ;dummy error code
+    push qword 86
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr89:
+    push qword 0 ;dummy error code
+    push qword 87
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr90:
+    push qword 0 ;dummy error code
+    push qword 88
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr91:
+    push qword 0 ;dummy error code
+    push qword 89
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr92:
+    push qword 0 ;dummy error code
+    push qword 90
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr93:
+    push qword 0 ;dummy error code
+    push qword 91
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr94:
+    push qword 0 ;dummy error code
+    push qword 92
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr95:
+    push qword 0 ;dummy error code
+    push qword 93
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr96:
+    push qword 0 ;dummy error code
+    push qword 94
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr97:
+    push qword 0 ;dummy error code
+    push qword 95
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr98:
+    push qword 0 ;dummy error code
+    push qword 96
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr99:
+    push qword 0 ;dummy error code
+    push qword 97
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr100:
+    push qword 0 ;dummy error code
+    push qword 98
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr101:
+    push qword 0 ;dummy error code
+    push qword 99
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr102:
+    push qword 0 ;dummy error code
+    push qword 100
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr103:
+    push qword 0 ;dummy error code
+    push qword 101
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr104:
+    push qword 0 ;dummy error code
+    push qword 102
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr105:
+    push qword 0 ;dummy error code
+    push qword 103
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr106:
+    push qword 0 ;dummy error code
+    push qword 104
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr107:
+    push qword 0 ;dummy error code
+    push qword 105
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr108:
+    push qword 0 ;dummy error code
+    push qword 106
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr109:
+    push qword 0 ;dummy error code
+    push qword 107
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr110:
+    push qword 0 ;dummy error code
+    push qword 108
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr111:
+    push qword 0 ;dummy error code
+    push qword 109
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr112:
+    push qword 0 ;dummy error code
+    push qword 110
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr113:
+    push qword 0 ;dummy error code
+    push qword 111
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr114:
+    push qword 0 ;dummy error code
+    push qword 112
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr115:
+    push qword 0 ;dummy error code
+    push qword 113
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr116:
+    push qword 0 ;dummy error code
+    push qword 114
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr117:
+    push qword 0 ;dummy error code
+    push qword 115
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr118:
+    push qword 0 ;dummy error code
+    push qword 116
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr119:
+    push qword 0 ;dummy error code
+    push qword 117
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr120:
+    push qword 0 ;dummy error code
+    push qword 118
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr121:
+    push qword 0 ;dummy error code
+    push qword 119
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr122:
+    push qword 0 ;dummy error code
+    push qword 120
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr123:
+    push qword 0 ;dummy error code
+    push qword 121
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr124:
+    push qword 0 ;dummy error code
+    push qword 122
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr125:
+    push qword 0 ;dummy error code
+    push qword 123
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr126:
+    push qword 0 ;dummy error code
+    push qword 124
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr127:
+    push qword 0 ;dummy error code
+    push qword 125
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr128:
+    push qword 0 ;dummy error code
+    push qword 126
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr129:
+    push qword 0 ;dummy error code
+    push qword 127
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr130:
+    push qword 0 ;dummy error code
+    push qword 128
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr131:
+    push qword 0 ;dummy error code
+    push qword 129
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr132:
+    push qword 0 ;dummy error code
+    push qword 130
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr133:
+    push qword 0 ;dummy error code
+    push qword 131
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr134:
+    push qword 0 ;dummy error code
+    push qword 132
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr135:
+    push qword 0 ;dummy error code
+    push qword 133
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr136:
+    push qword 0 ;dummy error code
+    push qword 134
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr137:
+    push qword 0 ;dummy error code
+    push qword 135
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr138:
+    push qword 0 ;dummy error code
+    push qword 136
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr139:
+    push qword 0 ;dummy error code
+    push qword 137
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr140:
+    push qword 0 ;dummy error code
+    push qword 138
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr141:
+    push qword 0 ;dummy error code
+    push qword 139
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr142:
+    push qword 0 ;dummy error code
+    push qword 140
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr143:
+    push qword 0 ;dummy error code
+    push qword 141
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr144:
+    push qword 0 ;dummy error code
+    push qword 142
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr145:
+    push qword 0 ;dummy error code
+    push qword 143
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr146:
+    push qword 0 ;dummy error code
+    push qword 144
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr147:
+    push qword 0 ;dummy error code
+    push qword 145
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr148:
+    push qword 0 ;dummy error code
+    push qword 146
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr149:
+    push qword 0 ;dummy error code
+    push qword 147
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr150:
+    push qword 0 ;dummy error code
+    push qword 148
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr151:
+    push qword 0 ;dummy error code
+    push qword 149
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr152:
+    push qword 0 ;dummy error code
+    push qword 150
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr153:
+    push qword 0 ;dummy error code
+    push qword 151
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr154:
+    push qword 0 ;dummy error code
+    push qword 152
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr155:
+    push qword 0 ;dummy error code
+    push qword 153
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr156:
+    push qword 0 ;dummy error code
+    push qword 154
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr157:
+    push qword 0 ;dummy error code
+    push qword 155
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr158:
+    push qword 0 ;dummy error code
+    push qword 156
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr159:
+    push qword 0 ;dummy error code
+    push qword 157
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr160:
+    push qword 0 ;dummy error code
+    push qword 158
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr161:
+    push qword 0 ;dummy error code
+    push qword 159
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr162:
+    push qword 0 ;dummy error code
+    push qword 160
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr163:
+    push qword 0 ;dummy error code
+    push qword 161
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr164:
+    push qword 0 ;dummy error code
+    push qword 162
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr165:
+    push qword 0 ;dummy error code
+    push qword 163
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr166:
+    push qword 0 ;dummy error code
+    push qword 164
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr167:
+    push qword 0 ;dummy error code
+    push qword 165
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr168:
+    push qword 0 ;dummy error code
+    push qword 166
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr169:
+    push qword 0 ;dummy error code
+    push qword 167
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr170:
+    push qword 0 ;dummy error code
+    push qword 168
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr171:
+    push qword 0 ;dummy error code
+    push qword 169
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr172:
+    push qword 0 ;dummy error code
+    push qword 170
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr173:
+    push qword 0 ;dummy error code
+    push qword 171
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr174:
+    push qword 0 ;dummy error code
+    push qword 172
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr175:
+    push qword 0 ;dummy error code
+    push qword 173
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr176:
+    push qword 0 ;dummy error code
+    push qword 174
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr177:
+    push qword 0 ;dummy error code
+    push qword 175
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr178:
+    push qword 0 ;dummy error code
+    push qword 176
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr179:
+    push qword 0 ;dummy error code
+    push qword 177
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr180:
+    push qword 0 ;dummy error code
+    push qword 178
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr181:
+    push qword 0 ;dummy error code
+    push qword 179
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr182:
+    push qword 0 ;dummy error code
+    push qword 180
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr183:
+    push qword 0 ;dummy error code
+    push qword 181
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr184:
+    push qword 0 ;dummy error code
+    push qword 182
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr185:
+    push qword 0 ;dummy error code
+    push qword 183
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr186:
+    push qword 0 ;dummy error code
+    push qword 184
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr187:
+    push qword 0 ;dummy error code
+    push qword 185
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr188:
+    push qword 0 ;dummy error code
+    push qword 186
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr189:
+    push qword 0 ;dummy error code
+    push qword 187
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr190:
+    push qword 0 ;dummy error code
+    push qword 188
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr191:
+    push qword 0 ;dummy error code
+    push qword 189
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr192:
+    push qword 0 ;dummy error code
+    push qword 190
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr193:
+    push qword 0 ;dummy error code
+    push qword 191
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr194:
+    push qword 0 ;dummy error code
+    push qword 192
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr195:
+    push qword 0 ;dummy error code
+    push qword 193
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr196:
+    push qword 0 ;dummy error code
+    push qword 194
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr197:
+    push qword 0 ;dummy error code
+    push qword 195
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr198:
+    push qword 0 ;dummy error code
+    push qword 196
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr199:
+    push qword 0 ;dummy error code
+    push qword 197
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr200:
+    push qword 0 ;dummy error code
+    push qword 198
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr201:
+    push qword 0 ;dummy error code
+    push qword 199
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr202:
+    push qword 0 ;dummy error code
+    push qword 200
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr203:
+    push qword 0 ;dummy error code
+    push qword 201
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr204:
+    push qword 0 ;dummy error code
+    push qword 202
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr205:
+    push qword 0 ;dummy error code
+    push qword 203
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr206:
+    push qword 0 ;dummy error code
+    push qword 204
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr207:
+    push qword 0 ;dummy error code
+    push qword 205
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr208:
+    push qword 0 ;dummy error code
+    push qword 206
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr209:
+    push qword 0 ;dummy error code
+    push qword 207
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr210:
+    push qword 0 ;dummy error code
+    push qword 208
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr211:
+    push qword 0 ;dummy error code
+    push qword 209
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr212:
+    push qword 0 ;dummy error code
+    push qword 210
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr213:
+    push qword 0 ;dummy error code
+    push qword 211
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr214:
+    push qword 0 ;dummy error code
+    push qword 212
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr215:
+    push qword 0 ;dummy error code
+    push qword 213
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr216:
+    push qword 0 ;dummy error code
+    push qword 214
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr217:
+    push qword 0 ;dummy error code
+    push qword 215
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr218:
+    push qword 0 ;dummy error code
+    push qword 216
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr219:
+    push qword 0 ;dummy error code
+    push qword 217
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr220:
+    push qword 0 ;dummy error code
+    push qword 218
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr221:
+    push qword 0 ;dummy error code
+    push qword 219
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr222:
+    push qword 0 ;dummy error code
+    push qword 220
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr223:
+    push qword 0 ;dummy error code
+    push qword 221
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr224:
+    push qword 0 ;dummy error code
+    push qword 222
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr225:
+    push qword 0 ;dummy error code
+    push qword 223
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr226:
+    push qword 0 ;dummy error code
+    push qword 224
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr227:
+    push qword 0 ;dummy error code
+    push qword 225
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr228:
+    push qword 0 ;dummy error code
+    push qword 226
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr229:
+    push qword 0 ;dummy error code
+    push qword 227
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr230:
+    push qword 0 ;dummy error code
+    push qword 228
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr231:
+    push qword 0 ;dummy error code
+    push qword 229
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr232:
+    push qword 0 ;dummy error code
+    push qword 230
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr233:
+    push qword 0 ;dummy error code
+    push qword 231
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr234:
+    push qword 0 ;dummy error code
+    push qword 232
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr235:
+    push qword 0 ;dummy error code
+    push qword 233
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr236:
+    push qword 0 ;dummy error code
+    push qword 234
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr237:
+    push qword 0 ;dummy error code
+    push qword 235
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr238:
+    push qword 0 ;dummy error code
+    push qword 236
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr239:
+    push qword 0 ;dummy error code
+    push qword 237
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr240:
+    push qword 0 ;dummy error code
+    push qword 238
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr241:
+    push qword 0 ;dummy error code
+    push qword 239
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr242:
+    push qword 0 ;dummy error code
+    push qword 240
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr243:
+    push qword 0 ;dummy error code
+    push qword 241
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr244:
+    push qword 0 ;dummy error code
+    push qword 242
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr245:
+    push qword 0 ;dummy error code
+    push qword 243
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr246:
+    push qword 0 ;dummy error code
+    push qword 244
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr247:
+    push qword 0 ;dummy error code
+    push qword 245
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr248:
+    push qword 0 ;dummy error code
+    push qword 246
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr249:
+    push qword 0 ;dummy error code
+    push qword 247
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr250:
+    push qword 0 ;dummy error code
+    push qword 248
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr251:
+    push qword 0 ;dummy error code
+    push qword 249
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr252:
+    push qword 0 ;dummy error code
+    push qword 250
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr253:
+    push qword 0 ;dummy error code
+    push qword 251
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr254:
+    push qword 0 ;dummy error code
+    push qword 252
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
+
+isr255:
+    push qword 0 ;dummy error code
+    push qword 253
+    push rax
+    mov rax, interrupt_handler
+    jmp push_registers_and_call_handler
 
 section .text
 
