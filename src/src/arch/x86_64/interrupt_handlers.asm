@@ -1,7 +1,5 @@
 BITS 64
 
-global pop_registers_and_iret
-
 extern interrupt_handler;
 extern general_protection_fault_handler;
 extern pagefault_handler;
@@ -2134,8 +2132,6 @@ push_registers_and_call_handler:
 
     mov rdi, rsp
 
-; The stack address must be passed in rdi.
-pop_registers_and_iret:
     mov rsp, rdi
 
     movdqu  xmm15, [rsp]
