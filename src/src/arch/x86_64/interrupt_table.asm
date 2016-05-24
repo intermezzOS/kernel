@@ -31,7 +31,11 @@ section .data
 idt:
     %assign i 0
     %rep 256
+    %if i != 33
         IDT_ENTRY i
+    %else
+        IDT_ENTRY 1
+    %endif
     %assign i i+1
     %endrep
 

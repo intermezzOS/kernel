@@ -76,12 +76,32 @@ pub fn print_idt_info() {
     kprintln!("idt: {:?}", idt);
     kprintln!("idt_pointer: {:#?}", idt_pointer);
     kprintln!("equal: {}", idt_pointer.base == &idt as *const _ as u64);
-    let my_idt = &idt as *const _ as *const Idt;
+    let my_idt = &idt as *const _ as *mut Idt;
  
     kprintln!("ISR 33");
     let keyboard_isr = unsafe { (*my_idt).entries[33] };
     kprintln!("{:#?}", keyboard_isr);
     kprintln!("addr of isr33: {}", isr33 as u64);
+    let base = isr33 as u64;
+    let base_low = (base - 0x100000) as u16;
+    kprintln!("base_low: {}", base_low);
+    kprintln!("equal: {}", base_low == keyboard_isr.base_low);
+    kprintln!("OVERWRITING KEYBOARD ISR");
+    let new_isr = IdtEntry {
+        base_low: base_low,
+        selector: 0x8,
+        zero: 0,
+        flags: 0x8e,
+        base_mid: 0x10,
+        base_high: 0,
+        reserved: 0,
+    };
+
+    unsafe {
+        let p = &mut (*my_idt).entries[33];
+        *p = new_isr;
+    }
+    kprintln!("OVERWRITTEN!!!!!");
 }
 
 pub fn install() {
