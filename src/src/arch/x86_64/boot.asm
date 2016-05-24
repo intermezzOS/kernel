@@ -86,8 +86,6 @@ gdt64:
     dw $ - gdt64 - 1
     dq gdt64
 
-global long_mode_start
-
 section .text
 bits 64
 long_mode_start:
