@@ -18,6 +18,7 @@ pub extern "C" fn kmain() -> ! {
     unsafe {
         interrupts::reload_idt();
         interrupts::enable();
+        interrupts::print_idt_info();
     };
 
     kprintln!("Hello from Rust world!");

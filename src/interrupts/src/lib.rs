@@ -8,7 +8,9 @@ extern crate vga;
 extern {
     fn load_idt(idt: *const IdtPointer);
     fn isr0();
+    fn isr33();
     static idt: u64;
+    static idt_pointer: IdtPointer;
 }
 
 #[derive(Copy,Clone,Debug)]
@@ -23,12 +25,14 @@ struct IdtEntry {
     reserved: u32,
 }
 
+#[derive(Debug)]
 #[repr(packed,C)]
 pub struct IdtPointer {
     limit: u16,
     base: u64,
 }
 
+#[repr(packed,C)]
 struct Idt {
     entries: [IdtEntry; 256],
 }
@@ -65,6 +69,20 @@ static mut IDT: Idt = Idt::new();
 
 #[no_mangle]
 pub static mut IDT_POINTER: IdtPointer = IdtPointer { limit: 0, base: 0 };
+
+pub fn print_idt_info() {
+    kprintln!("IDT INFO");
+    kprintln!("--------");
+    kprintln!("idt: {:?}", idt);
+    kprintln!("idt_pointer: {:#?}", idt_pointer);
+    kprintln!("equal: {}", idt_pointer.base == &idt as *const _ as u64);
+    let my_idt = &idt as *const _ as *const Idt;
+ 
+    kprintln!("ISR 33");
+    let keyboard_isr = unsafe { (*my_idt).entries[33] };
+    kprintln!("{:#?}", keyboard_isr);
+    kprintln!("addr of isr33: {}", isr33 as u64);
+}
 
 pub fn install() {
     // Modifying static muts are very unsafe. But we have no concurrency here, so we're not worried

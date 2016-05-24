@@ -1,6 +1,8 @@
 BITS 64
 
 global load_idt
+global idt
+global idt_pointer
 
 section .text
 load_idt:
