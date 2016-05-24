@@ -1,9 +1,9 @@
 BITS 64
 
-global setup_interrupt_table
+global load_idt
 
 section .text
-setup_interrupt_table:
+load_idt:
     lidt [idt_pointer]
     ret
 

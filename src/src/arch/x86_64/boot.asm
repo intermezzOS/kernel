@@ -49,7 +49,6 @@ start:
     or eax, 1 << 16
     mov cr0, eax
 
-
     lgdt [gdt64.pointer]
 
     ; update selectors
@@ -87,8 +86,6 @@ gdt64:
     dw $ - gdt64 - 1
     dq gdt64
 
-extern setup_interrupt_table
-
 global long_mode_start
 
 section .text
@@ -97,7 +94,6 @@ long_mode_start:
 
     call setup_SSE
     call remap_PIC
-    call setup_interrupt_table
 
     extern kmain
     call kmain

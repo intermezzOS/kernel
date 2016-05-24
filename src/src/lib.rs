@@ -15,7 +15,10 @@ pub mod support; // For Rust lang items
 pub extern "C" fn kmain() -> ! {
     vga::clear_console();
 
-    unsafe { interrupts::enable() };
+    unsafe {
+        interrupts::reload_idt();
+        interrupts::enable();
+    };
 
     kprintln!("Hello from Rust world!");
     kprint!("Hello");
