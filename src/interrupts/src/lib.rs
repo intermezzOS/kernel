@@ -52,16 +52,20 @@ impl Idt {
         }
     }
 
-    fn set_gate(&mut self, num: u8, base: u64, selector: u16, flags: u8) {
-        //let index = num as usize;
+    fn set_isr(&mut self, num: u8, base: u64) {
+        let base_low = (base - 0x100000) as u16;
 
-        //self.entries[index].base_low = (base & 0xFFFF) as u16;
-        //self.entries[index].selector = selector;
-        //self.entries[index].zero = 0; // redundant but why not
-        //self.entries[index].flags = flags;
-        //self.entries[index].base_mid = (base >> 16) as u16;
-        //self.entries[index].base_high = (base >> 32) as u32;
-        //self.entries[index].reserved = 0; // redundant but why not
+        let new_isr = IdtEntry {
+            base_low: base_low,
+            selector: 0x8,
+            zero: 0,
+            flags: 0x8e,
+            base_mid: 0x10,
+            base_high: 0,
+            reserved: 0,
+        };
+
+        self.entries[33] = new_isr;
     }
 }
 
@@ -78,29 +82,10 @@ pub fn print_idt_info() {
     kprintln!("equal: {}", idt_pointer.base == &idt as *const _ as u64);
     let my_idt = &idt as *const _ as *mut Idt;
  
-    kprintln!("ISR 33");
-    let keyboard_isr = unsafe { (*my_idt).entries[33] };
-    kprintln!("{:#?}", keyboard_isr);
-    kprintln!("addr of isr33: {}", isr33 as u64);
-    let base = isr33 as u64;
-    let base_low = (base - 0x100000) as u16;
-    kprintln!("base_low: {}", base_low);
-    kprintln!("equal: {}", base_low == keyboard_isr.base_low);
     kprintln!("OVERWRITING KEYBOARD ISR");
-    let new_isr = IdtEntry {
-        base_low: base_low,
-        selector: 0x8,
-        zero: 0,
-        flags: 0x8e,
-        base_mid: 0x10,
-        base_high: 0,
-        reserved: 0,
-    };
-
     unsafe {
-        let p = &mut (*my_idt).entries[33];
-        *p = new_isr;
-    }
+        (*my_idt).set_isr(33, isr33 as u64);
+    };
     kprintln!("OVERWRITTEN!!!!!");
 }
 
