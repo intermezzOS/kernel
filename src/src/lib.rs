@@ -21,14 +21,6 @@ pub extern "C" fn kmain() -> ! {
         interrupts::print_idt_info();
     };
 
-    kprintln!("Hello from Rust world!");
-    kprint!("Hello");
-    kprintln!(" again!");
-
-    let x = 5;
-    let p = &x;
-
-    kprintln!("Hello a final time: {:p}", p);
-
+    kprintln!("Setup complete.");
     loop { }
 }
