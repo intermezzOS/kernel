@@ -6,8 +6,6 @@
 extern crate vga;
 
 extern {
-    fn load_idt();
-
     fn isr0();
     fn isr1();
     fn isr2();
@@ -586,7 +584,7 @@ pub fn install() {
         IDT.set_isr(254, isr254 as u64);
         IDT.set_isr(255, isr255 as u64);
 
-        IDT_POINTER.limit = 4096;
+        IDT_POINTER.limit = core::mem::size_of::<Idt>() as u16;
         IDT_POINTER.base = &IDT as *const _ as u64;
 
         load_idt();
@@ -595,6 +593,10 @@ pub fn install() {
 
 pub unsafe fn enable() {
     asm!("sti" :::: "volatile");
+}
+
+unsafe fn load_idt() {
+    asm!("lidt $0"::"*m"(&IDT_POINTER)::"volatile");
 }
 
 #[no_mangle]
