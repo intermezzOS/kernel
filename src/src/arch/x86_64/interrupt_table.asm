@@ -2,11 +2,11 @@ BITS 64
 
 global load_idt
 global idt
-global idt_pointer
+extern IDT_POINTER
 
 section .text
 load_idt:
-    lidt [idt_pointer]
+    lidt [IDT_POINTER]
     ret
 
 section .data
@@ -38,7 +38,3 @@ idt:
     %endif
     %assign i i+1
     %endrep
-
-idt_pointer:
-    dw 4095   ; limit
-    dq idt

@@ -93,6 +93,9 @@ pub fn install() {
             kprintln!("ERROR: keyboard isr not properly installed");
         }
 
+        IDT_POINTER.limit = 4096;
+        IDT_POINTER.base = my_idt as u64;
+
         load_idt();
     }
 }
