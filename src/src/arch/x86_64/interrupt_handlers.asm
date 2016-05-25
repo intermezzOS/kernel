@@ -1,5 +1,13 @@
 BITS 64
 
+global load_idt
+extern IDT_POINTER
+
+section .text
+load_idt:
+    lidt [IDT_POINTER]
+    ret
+
 extern interrupt_handler;
 extern general_protection_fault_handler;
 extern pagefault_handler;
