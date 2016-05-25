@@ -16,11 +16,11 @@ pub extern "C" fn kmain() -> ! {
     vga::clear_console();
 
     unsafe {
-        interrupts::reload_idt();
+        interrupts::install();
         interrupts::enable();
-        interrupts::print_idt_info();
     };
 
-    kprintln!("Setup complete.");
+    kprintln!("Kernel initialized.");
+
     loop { }
 }

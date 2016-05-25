@@ -6,8 +6,7 @@
 extern crate vga;
 
 extern {
-    fn load_idt(idt: *const IdtPointer);
-    fn isr0();
+    fn load_idt();
     fn isr33();
     static idt: u64;
     static idt_pointer: IdtPointer;
@@ -65,7 +64,7 @@ impl Idt {
             reserved: 0,
         };
 
-        self.entries[33] = new_isr;
+        self.entries[num as usize] = new_isr;
     }
 }
 
@@ -74,92 +73,29 @@ static mut IDT: Idt = Idt::new();
 #[no_mangle]
 pub static mut IDT_POINTER: IdtPointer = IdtPointer { limit: 0, base: 0 };
 
-pub fn print_idt_info() {
-    kprintln!("IDT INFO");
-    kprintln!("--------");
-    kprintln!("idt: {:?}", idt);
-    kprintln!("idt_pointer: {:#?}", idt_pointer);
-    kprintln!("equal: {}", idt_pointer.base == &idt as *const _ as u64);
-    let my_idt = &idt as *const _ as *mut Idt;
- 
-
-    let keyboard_isr = unsafe { (*my_idt).entries[33] };
-    let base = isr33 as u64;
-    let base_low = (base - 0x100000) as u16;
-    kprintln!("base_low: {}", base_low);
-    kprintln!("equal: {}", base_low == keyboard_isr.base_low);
-
-    kprintln!("OVERWRITING KEYBOARD ISR");
-    unsafe {
-        (*my_idt).set_isr(33, isr33 as u64);
-    };
-    kprintln!("OVERWRITTEN!!!!!");
-    let keyboard_isr = unsafe { (*my_idt).entries[33] };
-    let base = isr33 as u64;
-    let base_low = (base - 0x100000) as u16;
-    kprintln!("equal: {}", base_low == keyboard_isr.base_low);
-}
-
 pub fn install() {
-    // Modifying static muts are very unsafe. But we have no concurrency here, so we're not worried
-    // about data races.
     unsafe {
+        let my_idt = &idt as *const _ as *mut Idt;
 
-        IDT_POINTER.limit = 4096; // (core::mem::size_of::<IdtEntry>() as u16 * 256) - 1;
-        IDT_POINTER.base = idt; // &IDT as *const Idt as u64;
+        let isr33_base_low = (isr33 as u64 - 0x100000) as u16;
+     
+        let keyboard_isr = (*my_idt).entries[33];
 
-        // 0x8E for flags means: present, ring0, and lower 5 bits are 14, which is required
-        //IDT.set_gate(0, isr0 as u64, 0x08, 0x8E);
+        if isr33_base_low == keyboard_isr.base_low {
+            kprintln!("ERROR: keyboard isr already installed");
+        }
 
-        //load_idt(&IDT_POINTER as *const IdtPointer);
-    } }
+        (*my_idt).set_isr(33, isr33 as u64);
 
-// TODO: mark this unsafe?
-pub fn reload_idt() {
-	unsafe {
-        load_idt(&IDT_POINTER as *const IdtPointer);
+        let keyboard_isr = (*my_idt).entries[33];
+
+        if isr33_base_low != keyboard_isr.base_low {
+            kprintln!("ERROR: keyboard isr not properly installed");
+        }
+
+        load_idt();
     }
 }
-
-// #[repr(C)]
-// #[repr(packed)]
-// pub struct Regs {
-//     gs: u16,
-//     fs: u16,
-//     es: u16,
-//     ds: u16,
-//     
-//     edi: u16,
-//     esi: u16,
-//     ebp: u16,
-//     esp: u16,
-//     ebx: u16,
-//     edx: u16,
-//     ecx: u16,
-//     eax: u16,
-// 
-//     int_no: u16,
-//     err_code: u16,
-// 
-//     eip: u16,
-//     cs: u16,
-//     eflags: u16,
-//     useresp: u16,
-//     ss: u16,
-// }
-// 
-// #[no_mangle]
-// pub extern fn fault_handler(_regs: *const Regs) -> ! {
-//     kprintln!("fault handler called");
-//     loop {};
-//    // unsafe {
-//    //     if (*regs).int_no < 32 {
-//    //         kprintln!("fault handler called with number: {}", (*regs).int_no);
-//    //         loop {};
-//    //     }
-//    // }
-// }
-
 
 pub unsafe fn enable() {
     asm!("sti" :::: "volatile");
