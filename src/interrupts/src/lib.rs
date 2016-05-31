@@ -304,15 +304,13 @@ impl Idt {
     }
 
     fn set_isr(&mut self, num: u8, base: u64) {
-        let base_low = (base - 0x100000) as u16;
-
         let new_isr = IdtEntry {
-            base_low: base_low,
+            base_low: base as u16,
             selector: 0x8,
             zero: 0,
             flags: 0x8e,
-            base_mid: 0x10,
-            base_high: 0,
+            base_mid: (base >> 16) as u16,
+            base_high: (base >> 32) as u32,
             reserved: 0,
         };
 
