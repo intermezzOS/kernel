@@ -162,10 +162,10 @@ pub extern "C" fn interrupt_handler(interrupt_number: isize, error_code: isize) 
     unsafe{
         match interrupt_number {
             i if i >= 40 => {
-                asm!("outb %al, %dx" :: "{dx}"(0xA0), "{al}"(0x20) :: "volatile");
-                asm!("outb %al, %dx" :: "{dx}"(0x20), "{al}"(0x20) :: "volatile");
+                outb(0xA0, 0x20);
+                outb(0x20, 0x20);
             },
-            32...40 => asm!("outb %al, %dx" :: "{dx}"(0x20), "{al}"(0x20) :: "volatile"),
+            32...40 => outb(0x20, 0x20),
             _ => {},
         }
         enable();
@@ -182,4 +182,9 @@ pub unsafe fn inb(port: u16) -> u8 {
     let ret : u8;
     asm!("inb $1, $0" : "={ax}"(ret) : "{dx}N"(port) : : "volatile");
     return ret;
+}
+
+#[inline]
+pub unsafe fn outb(port: u16, val: u8) {
+    asm!("outb $1, $0" : : "{dx}N"(port), "{al}"(val) : : "volatile");
 }
