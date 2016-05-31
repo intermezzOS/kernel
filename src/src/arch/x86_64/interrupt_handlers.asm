@@ -264,8 +264,6 @@ global isr255
 
 section .interrupt_handlers
 
-%define H8_IST 1 ;double fault stack
-
 isr0:
     push qword 0 ;dummy error code
     push qword 0
