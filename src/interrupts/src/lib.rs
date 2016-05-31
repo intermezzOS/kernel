@@ -157,7 +157,7 @@ pub extern "C" fn interrupt_handler(interrupt_number: isize, error_code: isize) 
     match interrupt_number {
         32 => {}, // timer
         33 => keyboard_handler(),
-        _ => panic!("interrupt {} with error code 0x{:x}", interrupt_number, error_code),
+        _ => panic!("interrupt {} with error code {:x}", interrupt_number, error_code),
     }
     unsafe{
         match interrupt_number {
