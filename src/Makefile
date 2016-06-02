@@ -29,7 +29,7 @@ clean:
 	rm -f $(iso)
 
 run: $(iso)
-	qemu-system-x86_64 -cdrom $(iso)
+	qemu-system-x86_64 -cdrom $(iso) -s
 
 iso: $(iso)
 
@@ -61,7 +61,7 @@ cargo: libcore
 # compile assembly files
 build/arch/$(arch)/%.o: src/arch/$(arch)/%.asm
 	mkdir -p $(shell dirname $@)
-	nasm -g -felf64 $< -o $@
+	nasm -felf64 -F dwarf -g $< -o $@
 
 docs: book
 
