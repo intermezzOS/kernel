@@ -52,6 +52,7 @@ $(kernel): cargo $(rust_os) $(assembly_object_files) $(linker_script)
 build/libcore:
 	mkdir -p build
 	git clone https://github.com/intermezzOS/libcore build/libcore
+	cd build/libcore && git reset --hard 02e41cd5b925a1c878961042ecfb00470c68296b
 
 libcore: $(libcore)
 
