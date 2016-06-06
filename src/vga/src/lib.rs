@@ -112,7 +112,7 @@ impl VgaBuffer {
         unsafe {
             let vga = 0xb8000 as *mut u8;
             let length = self.buffer.len() * 2;
-            let buffer: *const u8 = core::mem::transmute(&self.buffer);
+            let buffer = self.buffer.as_ptr() as *const u8;
             core::ptr::copy_nonoverlapping(buffer, vga, length);
         }
     }
