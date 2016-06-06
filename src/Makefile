@@ -20,6 +20,8 @@ all: $(iso)
 distclean:
 	rm -rf build
 	rm -rf target
+	cd interrupts && cargo clean
+	cd vga && cargo clean
 
 clean:
 	rm -rf build/isofiles
@@ -27,6 +29,8 @@ clean:
 	rm -rf target
 	rm -f $(kernel)
 	rm -f $(iso)
+	cd interrupts && cargo clean
+	cd vga && cargo clean
 
 run: $(iso)
 	qemu-system-x86_64 -cdrom $(iso) -s
