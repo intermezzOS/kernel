@@ -22,16 +22,16 @@ Make sure you have this Rust:
 
 ```bash
 $ rustc --version
-rustc 1.9.0-nightly (b622c3e08 2016-04-11)
+rustc 1.10.0-nightly (267cde259 2016-05-25)
 ```
 
-It has to be this one. Exactly this one. This is the nightly for `2016-04-12`,
-even though the date says `11`. They’re off sometimes.
+It has to be this one. Exactly this one. This is the nightly for `2016-05-26`,
+even though the date says `25`. They’re off sometimes.
 
 If you don’t have Rust installed, you can do this:
 
 ```bash
-$ curl -sf https://static.rust-lang.org/rustup.sh | sudo sh -- --channel=nightly --date=2016-04-12
+$ curl -sf https://static.rust-lang.org/rustup.sh | sudo sh -- --channel=nightly --date=2016-05-26
 ```
 
 If you use a tool like multirust or rustup, use that.
