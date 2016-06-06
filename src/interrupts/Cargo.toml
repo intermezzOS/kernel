@@ -5,3 +5,4 @@ authors = ["Steve Klabnik <steve@steveklabnik.com>"]
 
 [dependencies]
 vga = { path = "../vga" }
+lazy_static = { version = "0.2.1", features = ["spin_no_std"] }

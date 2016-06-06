@@ -11,7 +11,16 @@ dependencies = [
 name = "interrupts"
 version = "0.1.0"
 dependencies = [
+ "lazy_static 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "vga 0.1.0",
+]
+
+[[package]]
+name = "lazy_static"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "spin 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -22,6 +31,11 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "spin"
 version = "0.3.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "spin"
+version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
