@@ -1,4 +1,4 @@
-default: run
+default: build
 	
 build: build/kernel.bin
 
