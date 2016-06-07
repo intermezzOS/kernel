@@ -72,7 +72,7 @@ impl VgaBuffer {
                 self.scroll_up();
             } else {
                 self.position = ((current_line + 1) * CONSOLE_COLS) as usize;
-            };
+            }
         } else {
             if self.position >= self.buffer.len() {
                 self.scroll_up();
@@ -86,7 +86,7 @@ impl VgaBuffer {
 
             self.position += 1;
         }
-        self.set_cursor(self.position as u16);
+        self.update_cursor();
     }
 
     fn scroll_up(&mut self) {
@@ -95,7 +95,6 @@ impl VgaBuffer {
         for i in CONSOLE_COLS..(end) {
             let prev = i - CONSOLE_COLS;
             self.buffer[prev as usize] = self.buffer[i as usize];
-
         }
 
         // blank out the last row
@@ -112,7 +111,7 @@ impl VgaBuffer {
 
     fn reset_position(&mut self) {
         self.position = 0;
-        self.set_cursor(self.position as u16);
+        self.update_cursor();
     }
 
     pub fn flush(&self) {
@@ -138,14 +137,14 @@ impl VgaBuffer {
         self.flush();
     }
 
-    fn set_cursor(&self, position: u16) {
+    fn update_cursor(&self) {
         unsafe {
             // Set cursor low
             outb(0x3D4, 0x0F);
-            outb(0x3D5, position as u8);
+            outb(0x3D5, self.position as u8);
             // Set cursor high
             outb(0x3D4, 0x0E);
-            outb(0x3D5, (position >> 8) as u8);
+            outb(0x3D5, (self.position >> 8) as u8);
         }
     }
 }
