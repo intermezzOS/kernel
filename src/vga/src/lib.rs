@@ -86,7 +86,7 @@ impl VgaBuffer {
 
             self.position += 1;
         }
-        self.update_cursor();
+        set_cursor(self.position as u16);
     }
 
     fn scroll_up(&mut self) {
@@ -111,7 +111,7 @@ impl VgaBuffer {
 
     fn reset_position(&mut self) {
         self.position = 0;
-        self.update_cursor();
+        set_cursor(0);
     }
 
     pub fn flush(&self) {
@@ -135,17 +135,6 @@ impl VgaBuffer {
         self.reset_position();
 
         self.flush();
-    }
-
-    fn update_cursor(&self) {
-        unsafe {
-            // Set cursor low
-            outb(0x3D4, 0x0F);
-            outb(0x3D5, self.position as u8);
-            // Set cursor high
-            outb(0x3D4, 0x0E);
-            outb(0x3D5, (self.position >> 8) as u8);
-        }
     }
 }
 
@@ -179,6 +168,33 @@ macro_rules! kprint {
 pub fn clear_console() {
     let mut b = BUFFER.lock();
     b.clear();
+}
+
+/// Initializes the cursor
+pub fn initialize_cursor() {
+    unsafe {
+        // Setup cursor start register (0x0Ah)
+        // Bits 0-4: Scanline start (where the cursor beings on the y axis)
+        // Bit    5: Visibility status (0 = visible, 1 = invisible)
+        outb(0x3D4, 0x0A);
+        outb(0x3D5, 0x00);
+
+        // Setup cursor end register (0x0Bh)
+        // Bits 0-4: Scanline end (where the cursor ends on the y axis)
+        outb(0x3D4, 0x0B);
+        outb(0x3D5, 0x0F); // Scanline 0x0-0xF creates 'block' cursor, 0xE-0xF creates underscore
+    }
+}
+
+fn set_cursor(position: u16) {
+    unsafe {
+        // Set cursor low
+        outb(0x3D4, 0x0F);
+        outb(0x3D5, position as u8);
+        // Set cursor high
+        outb(0x3D4, 0x0E);
+        outb(0x3D5, (position >> 8) as u8);
+    }
 }
 
 #[allow(non_snake_case)]
