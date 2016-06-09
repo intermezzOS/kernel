@@ -197,13 +197,8 @@ fn set_cursor(position: u16) {
     }
 }
 
-#[allow(non_snake_case)]
-#[no_mangle]
-pub extern "C" fn _Unwind_Resume() -> ! {
-    panic!("lol");
-}
-
 #[inline]
 pub unsafe fn outb(port: u16, val: u8) {
     asm!("outb $1, $0" : : "{dx}N"(port), "{al}"(val) : : "volatile");
 }
+
