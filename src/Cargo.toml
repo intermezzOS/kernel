@@ -11,6 +11,7 @@ rlibc = "1.0.0"
 vga = { path = "vga" }
 interrupts = { path = "interrupts" }
 keyboard = { path = "keyboard" }
+pic = { path = "pic" }
 
 [profile.dev]
 panic = "abort"

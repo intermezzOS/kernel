@@ -4,6 +4,7 @@ version = "0.1.0"
 dependencies = [
  "interrupts 0.1.0",
  "keyboard 0.1.0",
+ "pic 0.1.0",
  "rlibc 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "vga 0.1.0",
 ]
@@ -31,6 +32,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "spin 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
+
+[[package]]
+name = "pic"
+version = "0.1.0"
 
 [[package]]
 name = "rlibc"
