@@ -23,6 +23,7 @@ pub extern "C" fn kmain() -> ! {
     interrupts::install();
     interrupts::enable();
 
+    vga::clear_console();
     kprintln!("Kernel initialized.");
 
     loop { }
