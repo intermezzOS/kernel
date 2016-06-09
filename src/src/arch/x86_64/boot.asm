@@ -1,3 +1,4 @@
+extern kmain
 global start
 
 section .boot
@@ -57,8 +58,8 @@ start:
     mov ds, ax
     mov es, ax
 
-    ; long jump to long_mode_start setting `cs` register to `gdt64.code`
-    jmp gdt64.code:long_mode_start
+    ; long jump to kmain setting `cs` register to `gdt64.code`
+    jmp gdt64.code:kmain
 
     ; shouldn't ever happen
     hlt
@@ -85,12 +86,3 @@ gdt64:
 .pointer:
     dw $ - gdt64 - 1
     dq gdt64
-
-section .text
-bits 64
-long_mode_start:
-
-    extern kmain
-    call kmain
-
-    hlt
