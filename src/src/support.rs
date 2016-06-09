@@ -1,9 +1,10 @@
 #[lang = "eh_personality"]
-extern "C" fn eh_personality() {
+#[no_mangle]
+pub extern fn eh_personality() {
 }
 
 #[lang = "panic_fmt"]
-#[unwind]
+#[no_mangle]
 pub extern fn rust_begin_panic() -> ! {
     loop {}
 }
