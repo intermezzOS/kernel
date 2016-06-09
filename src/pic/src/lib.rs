@@ -42,3 +42,16 @@ pub fn remap() {
         outb(0xA1, pic2_mask);
     }
 }
+
+pub fn eoi_for(interrupt_number: isize) {
+    unsafe {
+        match interrupt_number {
+            i if i >= 40 => {
+                outb(0xA0, 0x20);
+                outb(0x20, 0x20);
+            },
+            32...40 => outb(0x20, 0x20),
+            _ => {},
+        }
+    }
+}

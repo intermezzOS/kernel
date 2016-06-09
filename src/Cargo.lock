@@ -15,6 +15,7 @@ version = "0.1.0"
 dependencies = [
  "keyboard 0.1.0",
  "lazy_static 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "pic 0.1.0",
  "vga 0.1.0",
 ]
 
