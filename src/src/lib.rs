@@ -20,10 +20,8 @@ pub extern "C" fn kmain() -> ! {
     vga::clear_console();
     vga::initialize_cursor();
 
-    unsafe {
-        interrupts::install();
-        interrupts::enable();
-    };
+    interrupts::install();
+    interrupts::enable();
 
     kprintln!("Kernel initialized.");
 

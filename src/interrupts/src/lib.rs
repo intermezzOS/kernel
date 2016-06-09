@@ -158,8 +158,10 @@ pub fn install() {
     IDT.install();
 }
 
-pub unsafe fn enable() {
-    asm!("sti" :::: "volatile");
+pub fn enable() {
+    unsafe {
+        asm!("sti" :::: "volatile");
+    }
 }
 
 unsafe fn load_idt(ptr: &IdtPointer) {
@@ -173,11 +175,10 @@ pub extern "C" fn interrupt_handler(interrupt_number: isize, error_code: isize) 
         33 => keyboard_handler(),
         _ => panic!("interrupt {} with error code {:x}", interrupt_number, error_code),
     }
-    unsafe {
-        pic::eoi_for(interrupt_number);
 
-        enable();
-    };
+    pic::eoi_for(interrupt_number);
+
+    enable();
 }
 
 fn keyboard_handler() {
