@@ -1,3 +1,4 @@
+#![feature(asm)]
 #![feature(const_fn)]
 #![feature(lang_items)]
 #![no_std]
@@ -67,32 +68,15 @@ impl VgaBuffer {
             // to get the current line, we divide by the length of a line
             let current_line = (self.position as isize) / CONSOLE_COLS;
 
-            let next_line = if current_line + 1 >= CONSOLE_ROWS {
-
-                let end = CONSOLE_ROWS * CONSOLE_COLS;
-
-                for i in CONSOLE_COLS..(end) {
-                    let prev = i - CONSOLE_COLS;
-                    self.buffer[prev as usize] = self.buffer[i as usize];
-
-                }
-
-                // blank out the last row
-                for i in (end - CONSOLE_COLS)..(end) {
-                    let cell = &mut self.buffer[i as usize];
-                    *cell = VgaCell {
-                        character: ' ' as u8,
-                        color: DEFAULT_COLOR,
-                    };
-                }
-
-                CONSOLE_ROWS - 1
+            if current_line + 1 >= CONSOLE_ROWS {
+                self.scroll_up();
             } else {
-                current_line + 1
-            };
-
-            self.position = (next_line * CONSOLE_COLS) as usize;
+                self.position = ((current_line + 1) * CONSOLE_COLS) as usize;
+            }
         } else {
+            if self.position >= self.buffer.len() {
+                self.scroll_up();
+            }
             let cell = &mut self.buffer[self.position];
 
             *cell = VgaCell {
@@ -102,10 +86,32 @@ impl VgaBuffer {
 
             self.position += 1;
         }
+        set_cursor(self.position as u16);
+    }
+
+    fn scroll_up(&mut self) {
+        let end = CONSOLE_ROWS * CONSOLE_COLS;
+
+        for i in CONSOLE_COLS..(end) {
+            let prev = i - CONSOLE_COLS;
+            self.buffer[prev as usize] = self.buffer[i as usize];
+        }
+
+        // blank out the last row
+        for i in (end - CONSOLE_COLS)..(end) {
+            let cell = &mut self.buffer[i as usize];
+            *cell = VgaCell {
+                character: ' ' as u8,
+                color: DEFAULT_COLOR,
+            };
+        }
+
+        self.position = (end - CONSOLE_COLS) as usize;
     }
 
     fn reset_position(&mut self) {
         self.position = 0;
+        set_cursor(0);
     }
 
     pub fn flush(&self) {
@@ -164,8 +170,40 @@ pub fn clear_console() {
     b.clear();
 }
 
+/// Initializes the cursor
+pub fn initialize_cursor() {
+    unsafe {
+        // Setup cursor start register (0x0Ah)
+        // Bits 0-4: Scanline start (where the cursor beings on the y axis)
+        // Bit    5: Visibility status (0 = visible, 1 = invisible)
+        outb(0x3D4, 0x0A);
+        outb(0x3D5, 0x00);
+
+        // Setup cursor end register (0x0Bh)
+        // Bits 0-4: Scanline end (where the cursor ends on the y axis)
+        outb(0x3D4, 0x0B);
+        outb(0x3D5, 0x0F); // Scanline 0x0-0xF creates 'block' cursor, 0xE-0xF creates underscore
+    }
+}
+
+fn set_cursor(position: u16) {
+    unsafe {
+        // Set cursor low
+        outb(0x3D4, 0x0F);
+        outb(0x3D5, position as u8);
+        // Set cursor high
+        outb(0x3D4, 0x0E);
+        outb(0x3D5, (position >> 8) as u8);
+    }
+}
+
 #[allow(non_snake_case)]
 #[no_mangle]
 pub extern "C" fn _Unwind_Resume() -> ! {
     panic!("lol");
+}
+
+#[inline]
+pub unsafe fn outb(port: u16, val: u8) {
+    asm!("outb $1, $0" : : "{dx}N"(port), "{al}"(val) : : "volatile");
 }
