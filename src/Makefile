@@ -1,74 +1,43 @@
-arch ?= x86_64
-kernel := build/kernel-$(arch).bin
-iso := build/os-$(arch).iso
+default: build
+	
+build: target/kernel.bin
 
-linker_script := src/arch/$(arch)/linker.ld
-grub_cfg := src/arch/$(arch)/grub.cfg
-assembly_source_files := $(wildcard src/arch/$(arch)/*.asm)
-assembly_object_files := $(patsubst src/arch/$(arch)/%.asm, \
-    build/arch/$(arch)/%.o, $(assembly_source_files))
+.PHONY: clean
 
-target ?= $(arch)-unknown-intermezzos-gnu
-rust_os := target/$(target)/debug/libintermezzos.a
-libcore_dir := build/libcore/target/x86_64-unknown-intermezzos-gnu/release
-libcore := $(libcore_dir)/libcore.rlib
+target/libcore:
+	git clone http://github.com/intermezzos/libcore target/libcore
+	cd target/libcore && git reset --hard 02e41cd5b925a1c878961042ecfb00470c68296b
 
-.PHONY: all clean run iso kernel
+target/libcore/target/x86_64-unknown-intermezzos-gnu/libcore.rlib: target/libcore
+	cp x86_64-unknown-intermezzos-gnu.json target/libcore
+	cd target/libcore && cargo build --release --features disable_float --target=x86_64-unknown-intermezzos-gnu.json
 
-all: $(iso)
+target/x86_64-unknown-intermezzos-gnu/release/libintermezzos.a: target/libcore/target/x86_64-unknown-intermezzos-gnu/libcore.rlib
+	RUSTFLAGS="-L target/libcore/target/x86_64-unknown-intermezzos-gnu/release" cargo build --release --target x86_64-unknown-intermezzos-gnu.json
 
-distclean:
-	rm -rf build
-	rm -rf target
-	cd interrupts && cargo clean
-	cd vga && cargo clean
+target/interrupt_handlers.o: src/asm/interrupt_handlers.asm
+	mkdir -p target
+	nasm -f elf64 src/asm/interrupt_handlers.asm -o target/interrupt_handlers.o
 
-clean:
-	rm -rf build/isofiles
-	rm -rf build/arch
-	rm -rf target
-	rm -f $(kernel)
-	rm -f $(iso)
-	cd interrupts && cargo clean
-	cd vga && cargo clean
+target/multiboot_header.o: src/asm/multiboot_header.asm
+	mkdir -p target
+	nasm -f elf64 src/asm/multiboot_header.asm -o target/multiboot_header.o
 
-run: $(iso)
-	qemu-system-x86_64 -cdrom $(iso) -s
+target/boot.o: src/asm/boot.asm
+	mkdir -p target
+	nasm -f elf64 src/asm/boot.asm -o target/boot.o
 
-iso: $(iso)
+target/kernel.bin: target/multiboot_header.o target/boot.o target/interrupt_handlers.o src/asm/linker.ld target/x86_64-unknown-intermezzos-gnu/release/libintermezzos.a
+	ld -n -o target/kernel.bin -T src/asm/linker.ld target/multiboot_header.o target/boot.o target/interrupt_handlers.o target/x86_64-unknown-intermezzos-gnu/release/libintermezzos.a
 
-$(iso): $(kernel)
-	mkdir -p build/isofiles/boot/grub
-	cp $(kernel) build/isofiles/boot/
-	cp $(grub_cfg) build/isofiles/boot/grub
-	grub-mkrescue -o $(iso) build/isofiles 2> /dev/null
-	rm -r build/isofiles
+target/os.iso: target/kernel.bin src/asm/grub.cfg
+	mkdir -p target/isofiles/boot/grub
+	cp src/asm/grub.cfg target/isofiles/boot/grub
+	cp target/kernel.bin target/isofiles/boot/
+	grub-mkrescue -o target/os.iso target/isofiles
 
-kernel: $(kernel)
+run: target/os.iso
+	qemu-system-x86_64 -cdrom target/os.iso
 
-$(kernel): cargo $(rust_os) $(assembly_object_files) $(linker_script)
-	ld -n --gc-sections -T $(linker_script) -o $(kernel) $(assembly_object_files) $(rust_os)
-
-build/libcore:
-	mkdir -p build
-	git clone https://github.com/intermezzOS/libcore build/libcore
-	cd build/libcore && git reset --hard 02e41cd5b925a1c878961042ecfb00470c68296b
-
-libcore: $(libcore)
-
-$(libcore): build/libcore
-	cp $(target).json build/libcore
-	cd build/libcore && cargo build --release --features disable_float --target=$(target)
-
-cargo: libcore
-	RUSTFLAGS="-L $(libcore_dir)" cargo build --target $(target)
-
-# compile assembly files
-build/arch/$(arch)/%.o: src/arch/$(arch)/%.asm
-	mkdir -p $(shell dirname $@)
-	nasm -felf64 -F dwarf -g $< -o $@
-
-docs: book
-
-book: docs/book/
-	cd docs && mdbook build
+clean: 
+	cargo clean
