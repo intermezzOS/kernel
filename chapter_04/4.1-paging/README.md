@@ -1,3 +1,3 @@
-# Chapter 3.5: Automation with Make
+# Chapter 4.1: Paging
 
-At the end of this chapter, we have make set up to build our project.
+We set up paging, the first pre-requisite for long mode.

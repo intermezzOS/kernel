@@ -1,3 +1,4 @@
-# Chapter 3.5: Automation with Make
+# Chapter 4.2: Setting up a GDT
 
-At the end of this chapter, we have make set up to build our project.
+We set up a global descriptor table. It's the last prerequisite before
+we can make it into long mode.
