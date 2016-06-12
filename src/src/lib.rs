@@ -19,8 +19,7 @@ pub mod support;
 pub extern "C" fn kmain() -> ! {
     pic::remap();
 
-    vga::clear_console();
-    vga::initialize_cursor();
+    vga::initialize();
 
     interrupts::install();
     interrupts::enable();

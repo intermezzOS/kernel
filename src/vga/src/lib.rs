@@ -4,10 +4,17 @@
 #![no_std]
 
 extern crate spin;
-extern crate x86;
+extern crate cpuio;
 
-use spin::Mutex;
 use core::fmt;
+use spin::Mutex;
+
+mod cursor;
+
+pub fn initialize() {
+    clear_console();
+    cursor::initialize();
+}
 
 pub const DEFAULT_COLOR: ColorCode = ColorCode::new(Color::LightGreen, Color::Black);
 const CONSOLE_COLS: isize = 80;
@@ -84,7 +91,7 @@ impl VgaBuffer {
             self.scroll_up();
         }
 
-        set_cursor(self.position as u16);
+        cursor::set(self.position as u16);
     }
 
     fn scroll_up(&mut self) {
@@ -109,7 +116,7 @@ impl VgaBuffer {
 
     fn reset_position(&mut self) {
         self.position = 0;
-        set_cursor(0);
+        cursor::set(0);
     }
 
     pub fn flush(&self) {
@@ -168,31 +175,3 @@ pub fn clear_console() {
     b.clear();
 }
 
-/// Initializes the cursor
-pub fn initialize_cursor() {
-    unsafe {
-        // Setup cursor start register (0x0Ah)
-        // Bits 0-4: Scanline start (where the cursor beings on the y axis)
-        // Bit    5: Visibility status (0 = visible, 1 = invisible)
-        x86::io::outb(0x3D4, 0x0A);
-        x86::io::outb(0x3D5, 0x00);
-
-        // Setup cursor end register (0x0Bh)
-        // Bits 0-4: Scanline end (where the cursor ends on the y axis)
-        x86::io::outb(0x3D4, 0x0B);
-
-        // Scanline 0x0-0xF creates 'block' cursor, 0xE-0xF creates underscore
-        x86::io::outb(0x3D5, 0x0F);
-    }
-}
-
-fn set_cursor(position: u16) {
-    unsafe {
-        // Set cursor low
-        x86::io::outb(0x3D4, 0x0F);
-        x86::io::outb(0x3D5, position as u8);
-        // Set cursor high
-        x86::io::outb(0x3D4, 0x0E);
-        x86::io::outb(0x3D5, (position >> 8) as u8);
-    }
-}
