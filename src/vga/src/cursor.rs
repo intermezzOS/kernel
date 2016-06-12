@@ -27,17 +27,10 @@ pub fn initialize() {
     let mut crt_index: Port<u8> = unsafe { Port::new(CRT_PORT) };
     let mut crt_io: Port<u8> = unsafe { Port::new(CRT_PORT + 1) };
 
-    // Set up cursor start register (0x0Ah)
-    // Bits 0-4: Scanline start (where the cursor beings on the y axis)
-    // Bit    5: Visibility status (0 = visible, 1 = invisible)
     crt_index.write(0b1010);
     crt_io.write(0b0000);
 
-    // Set up cursor end register (0x0Bh)
-    // Bits 0-4: Scanline end (where the cursor ends on the y axis)
     crt_index.write(0b1011);
-
-    // Scanline 0x0-0xF creates 'block' cursor, 0xE-0xF creates underscore
     crt_io.write(0b1111);
 }
 
@@ -48,11 +41,9 @@ pub fn set(position: u16) {
     let mut crt_index: Port<u8> = unsafe { Port::new(CRT_PORT) };
     let mut crt_io: Port<u8> = unsafe { Port::new(CRT_PORT + 1) };
 
-    // Set cursor low
     crt_index.write(0b1111);
     crt_io.write(position as u8);
 
-    // Set cursor high
     crt_index.write(0b1110);
     crt_io.write((position >> 8) as u8);
 }

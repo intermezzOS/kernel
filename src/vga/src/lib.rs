@@ -16,10 +16,35 @@ pub fn initialize() {
     cursor::initialize();
 }
 
-pub const DEFAULT_COLOR: ColorCode = ColorCode::new(Color::LightGreen, Color::Black);
-const CONSOLE_COLS: isize = 80;
-const CONSOLE_ROWS: isize = 25;
+/// Clears the console.
+///
+/// This will reset the entire console to the background color, and move the cursor back to the
+/// upper-left part of the screen.
+///
+/// # Exampes
+///
+/// Basic usage:
+///
+/// ```
+/// vga::clear_console();
+/// ```
+pub fn clear_console() {
+    let mut b = BUFFER.lock();
+    b.clear();
+    b.flush();
+}
 
+/// A VGA color.
+///
+/// There are sixteen possible colors in VGA's text mode, and this enum represents them all.
+///
+/// # Examples
+///
+/// Basic usage:
+///
+/// ```
+/// let black = Color::Black;
+/// ```
 #[repr(u8)]
 pub enum Color {
     Black = 0,
@@ -40,9 +65,25 @@ pub enum Color {
     White = 15,
 }
 
+/// A combination foreground/background color.
+///
+/// Each location on the screen has a foreground color and a background color, and representing
+/// that is `ColorCode`'s job.
+///
+/// The default color is a `Color::LightGreen` foreground on a `Color::Black` background.
+///
+/// # Examples
+///
+/// ```
+/// let green_on_black = ColorCode::new(Color::LightGreen, Color::Black);
+///
+/// let yellow_on_red = ColorCode::new(Color::Yellow, Color::Red);
+/// ```
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct ColorCode(u8);
+
+const DEFAULT_COLOR: ColorCode = ColorCode::new(Color::LightGreen, Color::Black);
 
 impl ColorCode {
     const fn new(foreground: Color, background: Color) -> ColorCode {
@@ -57,6 +98,15 @@ struct VgaCell {
     color: ColorCode,
 }
 
+const CONSOLE_COLS: isize = 80;
+const CONSOLE_ROWS: isize = 25;
+
+/// The public `VgaBuffer`.
+///
+/// This holds the canonical `VgaBuffer` for all to use.
+///
+/// You generally shouldn't interact with `BUFFER` on your own; use the `kprintln!` and `kprint!`
+/// macros instead.
 pub static BUFFER: Mutex<VgaBuffer> = Mutex::new(VgaBuffer {
     buffer: [VgaCell {
         character: b' ',
@@ -65,12 +115,63 @@ pub static BUFFER: Mutex<VgaBuffer> = Mutex::new(VgaBuffer {
     position: 0,
 });
 
+/// The global VGA buffer.
+///
+/// This buffer contains a representation of the screen's memory. Since VGA is a memory-mapped
+/// device, it's already memory. The reason we're doing this is so that we can make multiple
+/// changes and then blit them all to the screen at once with `flush()`. This should produce
+/// smoother scrolling, at the cost of a very small amount of memory.
+///
+/// You generally shouldn't make more `VgaBuffer`s.
 pub struct VgaBuffer {
     buffer: [VgaCell; (CONSOLE_ROWS * CONSOLE_COLS) as usize],
     position: usize,
 }
 
 impl VgaBuffer {
+    /// Writes the current values of the buffer out to the screen.
+    ///
+    /// Call this method when you're done updating the screen, and are ready for it to update.
+    ///
+    /// # Examples
+    ///
+    /// Basic usage:
+    ///
+    /// ```
+    /// // unlock the buffer
+    /// let mut b = BUFFER.lock();
+    ///
+    /// // clear the screen
+    /// b.clear();
+    ///
+    /// // update the screen with our changes
+    /// b.flush();
+    /// ```
+    pub fn flush(&self) {
+        unsafe {
+            let vga = 0xb8000 as *mut u8;
+
+            let length = self.buffer.len() * 2;
+            let buffer = self.buffer.as_ptr() as *const u8;
+
+            core::ptr::copy_nonoverlapping(buffer, vga, length);
+        }
+    }
+
+    fn clear(&mut self) {
+        for i in 0..(CONSOLE_ROWS * CONSOLE_COLS) {
+            let cell = &mut self.buffer[i as usize];
+
+            *cell = VgaCell {
+                character: b' ',
+                color: DEFAULT_COLOR,
+            };
+        }
+
+        self.reset_position();
+        self.flush();
+    }
+
     fn write_byte(&mut self, byte: u8, color: ColorCode) {
         if byte == (b'\n') {
             // to get the current line, we divide by the length of a line
@@ -118,29 +219,6 @@ impl VgaBuffer {
         self.position = 0;
         cursor::set(0);
     }
-
-    pub fn flush(&self) {
-        unsafe {
-            let vga = 0xb8000 as *mut u8;
-            let length = self.buffer.len() * 2;
-            let buffer = self.buffer.as_ptr() as *const u8;
-            core::ptr::copy_nonoverlapping(buffer, vga, length);
-        }
-    }
-
-    fn clear(&mut self) {
-        for i in 0..(CONSOLE_ROWS * CONSOLE_COLS) {
-            let cell = &mut self.buffer[i as usize];
-            *cell = VgaCell {
-                character: b' ',
-                color: DEFAULT_COLOR,
-            };
-        }
-
-        self.reset_position();
-
-        self.flush();
-    }
 }
 
 impl fmt::Write for VgaBuffer {
@@ -153,12 +231,26 @@ impl fmt::Write for VgaBuffer {
     }
 }
 
+/// Prints something to the screen, with a trailing newline.
+///
+/// # Examples
+///
+/// ```
+/// kprintln!("Hello, world!");
+/// ```
 #[macro_export]
 macro_rules! kprintln {
     ($fmt:expr) => (kprint!(concat!($fmt, "\n")));
     ($fmt:expr, $($arg:tt)*) => (kprint!(concat!($fmt, "\n"), $($arg)*));
 }
 
+/// Prints something to the screen.
+///
+/// # Examples
+///
+/// ```
+/// kprint!("Hello, world!");
+/// ```
 #[macro_export]
 macro_rules! kprint {
     ($($arg:tt)*) => ({
@@ -168,10 +260,3 @@ macro_rules! kprint {
         b.flush();
     });
 }
-
-/// Clears the console
-pub fn clear_console() {
-    let mut b = BUFFER.lock();
-    b.clear();
-}
-
