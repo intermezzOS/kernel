@@ -19,7 +19,7 @@ $(libcore_rlib): target/libcore
 	cp $(target).json target/libcore
 	cd target/libcore && cargo build --release --features disable_float --target=$(target).json
 
-$(libintermezzos_a): $(libcore_rlib)
+cargo: $(libcore_rlib)
 	RUSTFLAGS="-L $(libcore_rlib_path)" cargo build --release --target $(target).json
 
 target/interrupt_handlers.o: src/asm/interrupt_handlers.asm
@@ -34,7 +34,7 @@ target/boot.o: src/asm/boot.asm
 	mkdir -p target
 	nasm -f elf64 src/asm/boot.asm -o target/boot.o
 
-target/kernel.bin: $(o_files) src/asm/linker.ld $(libintermezzos_a)
+target/kernel.bin: $(o_files) src/asm/linker.ld cargo
 	ld -n -o target/kernel.bin -T src/asm/linker.ld $(o_files) $(libintermezzos_a)
 
 target/os.iso: target/kernel.bin src/asm/grub.cfg
