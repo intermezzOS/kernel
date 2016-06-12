@@ -15,22 +15,22 @@ const CONSOLE_ROWS: isize = 25;
 
 #[repr(u8)]
 pub enum Color {
-   Black = 0,
-   Blue = 1,
-   Green = 2,
-   Cyan = 3,
-   Red = 4,
-   Magenta = 5,
-   Brown = 6,
-   LightGray = 7,
-   DarkGray = 8,
-   LightBlue = 9,
-   LightGreen = 10,
-   LightCyan = 11,
-   LightRed = 12,
-   LightMagenta = 13,
-   Yellow = 14,
-   White = 15,
+    Black = 0,
+    Blue = 1,
+    Green = 2,
+    Cyan = 3,
+    Red = 4,
+    Magenta = 5,
+    Brown = 6,
+    LightGray = 7,
+    DarkGray = 8,
+    LightBlue = 9,
+    LightGreen = 10,
+    LightCyan = 11,
+    LightRed = 12,
+    LightMagenta = 13,
+    Yellow = 14,
+    White = 15,
 }
 
 #[derive(Copy, Clone)]
@@ -180,7 +180,9 @@ pub fn initialize_cursor() {
         // Setup cursor end register (0x0Bh)
         // Bits 0-4: Scanline end (where the cursor ends on the y axis)
         x86::io::outb(0x3D4, 0x0B);
-        x86::io::outb(0x3D5, 0x0F); // Scanline 0x0-0xF creates 'block' cursor, 0xE-0xF creates underscore
+
+        // Scanline 0x0-0xF creates 'block' cursor, 0xE-0xF creates underscore
+        x86::io::outb(0x3D5, 0x0F);
     }
 }
 
