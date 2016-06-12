@@ -1,6 +1,6 @@
 language: rust
 rust:
-  - nightly
+  - nightly-2016-05-26
 script:
   - cd chapter_03/3.5-make && make build && cd -
   - cd chapter_04/4.1-paging && make build && cd -
