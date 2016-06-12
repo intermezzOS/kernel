@@ -52,7 +52,7 @@ struct VgaCell {
 
 pub static BUFFER: Mutex<VgaBuffer> = Mutex::new(VgaBuffer {
     buffer: [VgaCell {
-        character: ' ' as u8,
+        character: b' ',
         color: DEFAULT_COLOR,
     }; (CONSOLE_ROWS * CONSOLE_COLS) as usize],
     position: 0,
@@ -65,7 +65,7 @@ pub struct VgaBuffer {
 
 impl VgaBuffer {
     fn write_byte(&mut self, byte: u8, color: ColorCode) {
-        if byte == ('\n' as u8) {
+        if byte == (b'\n') {
             // to get the current line, we divide by the length of a line
             let current_line = (self.position as isize) / CONSOLE_COLS;
             self.position = ((current_line + 1) * CONSOLE_COLS) as usize;
@@ -99,7 +99,7 @@ impl VgaBuffer {
         for i in (end - CONSOLE_COLS)..(end) {
             let cell = &mut self.buffer[i as usize];
             *cell = VgaCell {
-                character: ' ' as u8,
+                character: b' ',
                 color: DEFAULT_COLOR,
             };
         }
@@ -125,7 +125,7 @@ impl VgaBuffer {
         for i in 0..(CONSOLE_ROWS * CONSOLE_COLS) {
             let cell = &mut self.buffer[i as usize];
             *cell = VgaCell {
-                character: ' ' as u8,
+                character: b' ',
                 color: DEFAULT_COLOR,
             };
         }
