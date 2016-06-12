@@ -5,3 +5,4 @@ authors = ["nxnfufunezn <nxnfufunezn@gmail.com>"]
 
 [dependencies]
 vga = { path = "../vga" }
+spin = "0.4.2"

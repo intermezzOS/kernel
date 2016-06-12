@@ -10,7 +10,7 @@ extern crate lazy_static;
 extern crate keyboard;
 extern crate pic;
 
-use keyboard::Keyboard;
+use keyboard::{Keyboard, STATE};
 use core::intrinsics;
 
 macro_rules! make_idt_entry {
@@ -187,6 +187,7 @@ lazy_static! {
 
         idt.set_isr(33, make_idt_entry!(isr33, {
             let scancode = unsafe { inb(0x60) };
+            STATE.lock().update_state(scancode);
             Keyboard.handle_keys(scancode as usize);
 
             pic::eoi_for(33);
