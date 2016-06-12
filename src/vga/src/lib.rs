@@ -4,6 +4,7 @@
 #![no_std]
 
 extern crate spin;
+extern crate x86;
 
 use spin::Mutex;
 use core::fmt;
@@ -176,29 +177,23 @@ pub fn initialize_cursor() {
         // Setup cursor start register (0x0Ah)
         // Bits 0-4: Scanline start (where the cursor beings on the y axis)
         // Bit    5: Visibility status (0 = visible, 1 = invisible)
-        outb(0x3D4, 0x0A);
-        outb(0x3D5, 0x00);
+        x86::io::outb(0x3D4, 0x0A);
+        x86::io::outb(0x3D5, 0x00);
 
         // Setup cursor end register (0x0Bh)
         // Bits 0-4: Scanline end (where the cursor ends on the y axis)
-        outb(0x3D4, 0x0B);
-        outb(0x3D5, 0x0F); // Scanline 0x0-0xF creates 'block' cursor, 0xE-0xF creates underscore
+        x86::io::outb(0x3D4, 0x0B);
+        x86::io::outb(0x3D5, 0x0F); // Scanline 0x0-0xF creates 'block' cursor, 0xE-0xF creates underscore
     }
 }
 
 fn set_cursor(position: u16) {
     unsafe {
         // Set cursor low
-        outb(0x3D4, 0x0F);
-        outb(0x3D5, position as u8);
+        x86::io::outb(0x3D4, 0x0F);
+        x86::io::outb(0x3D5, position as u8);
         // Set cursor high
-        outb(0x3D4, 0x0E);
-        outb(0x3D5, (position >> 8) as u8);
+        x86::io::outb(0x3D4, 0x0E);
+        x86::io::outb(0x3D5, (position >> 8) as u8);
     }
 }
-
-#[inline]
-pub unsafe fn outb(port: u16, val: u8) {
-    asm!("outb $1, $0" : : "{dx}N"(port), "{al}"(val) : : "volatile");
-}
-
