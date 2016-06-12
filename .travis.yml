@@ -7,6 +7,7 @@ script:
   - cd chapter_04/4.2-setting-up-a-gdt && make build && cd -
   - cd chapter_04/4.3-jumping-headlong-into-long-mode && make build && cd -
   - cd chapter_05 && make build && cd -
+  - cd src && make
 
 addons:
   apt:
