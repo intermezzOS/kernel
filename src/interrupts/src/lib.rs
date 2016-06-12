@@ -7,6 +7,10 @@ extern crate vga;
 #[macro_use]
 extern crate lazy_static;
 
+extern crate keyboard;
+
+use keyboard::Keyboard;
+
 extern {
     fn isr0();
     fn isr1();
@@ -183,7 +187,7 @@ pub extern "C" fn interrupt_handler(interrupt_number: isize, error_code: isize) 
 
 fn keyboard_handler() {
     let scancode = unsafe { inb(0x60) };
-    kprintln!("code: {}", scancode);
+    Keyboard.handle_keys(scancode as usize);
 }
 
 #[inline]

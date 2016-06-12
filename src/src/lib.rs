@@ -9,6 +9,7 @@ extern crate rlibc;
 extern crate vga;
 
 extern crate interrupts;
+extern crate keyboard;
 
 pub mod support; // For Rust lang items
 

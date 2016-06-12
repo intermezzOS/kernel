@@ -1,0 +1,7 @@
+[package]
+name = "keyboard"
+version = "0.1.0"
+authors = ["nxnfufunezn <nxnfufunezn@gmail.com>"]
+
+[dependencies]
+vga = { path = "../vga" }
