@@ -7,3 +7,4 @@ authors = ["Steve Klabnik <steve@steveklabnik.com>"]
 vga = { path = "../vga" }
 keyboard = { path = "../keyboard"}
 lazy_static = { version = "0.2.1", features = ["spin_no_std"] }
+pic = { path = "../pic" }
