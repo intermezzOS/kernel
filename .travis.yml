@@ -5,6 +5,7 @@ script:
   - cd chapter_03/3.5-make && make build && cd -
   - cd chapter_04/4.1-paging && make build && cd -
   - cd chapter_04/4.2-setting-up-a-gdt && make build && cd -
+  - cd chapter_04/4.3-jumping-headlong-into-long-mode && make build && cd -
 
 addons:
   apt:
