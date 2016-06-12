@@ -9,7 +9,7 @@ pub struct Keyboard;
 
 impl Keyboard {
 	pub fn handle_keys(&self, scancode: usize) {
-		if scancode >= 0 && scancode <= 59 {
+		if scancode <= 59 {
 			kprint!("{}", KBDUS[scancode] as char);
 		}
 	}
