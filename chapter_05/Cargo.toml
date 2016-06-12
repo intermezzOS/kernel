@@ -1,0 +1,12 @@
+[package]
+name = "intermezzos"
+version = "0.1.0"
+authors = ["Steve Klabnik <steve@steveklabnik.com>"]
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
+
+[profile.release]
+panic = "abort"
