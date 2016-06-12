@@ -11,7 +11,9 @@ extern crate interrupts;
 extern crate keyboard;
 extern crate pic;
 
-pub mod support; // For Rust lang items
+// For Rust lang items
+#[cfg(not(test))]
+pub mod support;
 
 #[no_mangle]
 pub extern "C" fn kmain() -> ! {

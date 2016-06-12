@@ -46,5 +46,8 @@ target/os.iso: target/kernel.bin src/asm/grub.cfg
 run: target/os.iso
 	qemu-system-x86_64 -cdrom target/os.iso
 
+test: build
+	cargo test
+
 clean: 
 	cargo clean
