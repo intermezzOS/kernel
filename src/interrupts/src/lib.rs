@@ -14,6 +14,13 @@ use keyboard::Keyboard;
 use core::intrinsics;
 
 macro_rules! make_idt_entry {
+    ($number:expr) => {{
+        unsafe extern fn handler() {
+            kprintln!("unhandled interrupt #{}", $number);
+        }
+
+        IdtEntry::new(handler)
+    }};
     ($name:ident, $body:expr) => {{
         fn body() {
             $body
@@ -65,7 +72,7 @@ macro_rules! make_idt_entry {
         }
 
         IdtEntry::new($name)
-    }}
+    }};
 }
 
 #[derive(Copy,Clone,Debug)]
@@ -139,197 +146,38 @@ lazy_static! {
             }; 256]
         };
 
-        idt.set_isr(0, make_idt_entry!(isr0, {
-            // do nothing for now
-            send_eoi_for(0);
-            enable();
-        }));
-
-        idt.set_isr(1, make_idt_entry!(isr1, {
-            // do nothing for now
-            send_eoi_for(1);
-            enable();
-        }));
-
-        idt.set_isr(2, make_idt_entry!(isr2, {
-            // do nothing for now
-            send_eoi_for(2);
-            enable();
-        }));
-
-        idt.set_isr(3, make_idt_entry!(isr3, {
-            // do nothing for now
-            send_eoi_for(3);
-            enable();
-        }));
-
-        idt.set_isr(4, make_idt_entry!(isr4, {
-            // do nothing for now
-            send_eoi_for(4);
-            enable();
-        }));
-
-        idt.set_isr(5, make_idt_entry!(isr5, {
-            // do nothing for now
-            send_eoi_for(5);
-            enable();
-        }));
-
-        idt.set_isr(6, make_idt_entry!(isr6, {
-            // do nothing for now
-            send_eoi_for(6);
-            enable();
-        }));
-
-        idt.set_isr(7, make_idt_entry!(isr7, {
-            // do nothing for now
-            send_eoi_for(7);
-            enable();
-        }));
-
-        idt.set_isr(8, make_idt_entry!(isr8, {
-            // do nothing for now
-            send_eoi_for(8);
-            enable();
-        }));
-
-        idt.set_isr(9, make_idt_entry!(isr9, {
-            // do nothing for now
-            send_eoi_for(9);
-            enable();
-        }));
-
-        idt.set_isr(10, make_idt_entry!(isr10, {
-            // do nothing for now
-            send_eoi_for(10);
-            enable();
-        }));
-
-        idt.set_isr(11, make_idt_entry!(isr11, {
-            // do nothing for now
-            send_eoi_for(11);
-            enable();
-        }));
-
-        idt.set_isr(12, make_idt_entry!(isr12, {
-            // do nothing for now
-            send_eoi_for(12);
-            enable();
-        }));
-
-        idt.set_isr(13, make_idt_entry!(isr13, {
-            // do nothing for now
-            send_eoi_for(13);
-            enable();
-        }));
-
-        idt.set_isr(14, make_idt_entry!(isr14, {
-            // do nothing for now
-            send_eoi_for(14);
-            enable();
-        }));
-
-        idt.set_isr(15, make_idt_entry!(isr15, {
-            // do nothing for now
-            send_eoi_for(15);
-            enable();
-        }));
-
-        idt.set_isr(16, make_idt_entry!(isr16, {
-            // do nothing for now
-            send_eoi_for(16);
-            enable();
-        }));
-
-        idt.set_isr(17, make_idt_entry!(isr17, {
-            // do nothing for now
-            send_eoi_for(17);
-            enable();
-        }));
-
-        idt.set_isr(18, make_idt_entry!(isr18, {
-            // do nothing for now
-            send_eoi_for(18);
-            enable();
-        }));
-
-        idt.set_isr(19, make_idt_entry!(isr19, {
-            // do nothing for now
-            send_eoi_for(19);
-            enable();
-        }));
-
-        idt.set_isr(20, make_idt_entry!(isr20, {
-            // do nothing for now
-            send_eoi_for(20);
-            enable();
-        }));
-
-        idt.set_isr(21, make_idt_entry!(isr21, {
-            // do nothing for now
-            send_eoi_for(21);
-            enable();
-        }));
-
-        idt.set_isr(22, make_idt_entry!(isr22, {
-            // do nothing for now
-            send_eoi_for(22);
-            enable();
-        }));
-
-        idt.set_isr(23, make_idt_entry!(isr23, {
-            // do nothing for now
-            send_eoi_for(23);
-            enable();
-        }));
-
-        idt.set_isr(24, make_idt_entry!(isr24, {
-            // do nothing for now
-            send_eoi_for(24);
-            enable();
-        }));
-
-        idt.set_isr(25, make_idt_entry!(isr25, {
-            // do nothing for now
-            send_eoi_for(25);
-            enable();
-        }));
-
-        idt.set_isr(26, make_idt_entry!(isr26, {
-            // do nothing for now
-            send_eoi_for(26);
-            enable();
-        }));
-
-        idt.set_isr(27, make_idt_entry!(isr27, {
-            // do nothing for now
-            send_eoi_for(27);
-            enable();
-        }));
-
-        idt.set_isr(28, make_idt_entry!(isr28, {
-            // do nothing for now
-            send_eoi_for(28);
-            enable();
-        }));
-
-        idt.set_isr(29, make_idt_entry!(isr29, {
-            // do nothing for now
-            send_eoi_for(29);
-            enable();
-        }));
-
-        idt.set_isr(30, make_idt_entry!(isr30, {
-            // do nothing for now
-            send_eoi_for(30);
-            enable();
-        }));
-
-        idt.set_isr(31, make_idt_entry!(isr31, {
-            // do nothing for now
-            send_eoi_for(31);
-            enable();
-        }));
+        idt.set_isr(0, make_idt_entry!(0));
+        idt.set_isr(1, make_idt_entry!(1));
+        idt.set_isr(2, make_idt_entry!(2));
+        idt.set_isr(3, make_idt_entry!(3));
+        idt.set_isr(4, make_idt_entry!(4));
+        idt.set_isr(5, make_idt_entry!(5));
+        idt.set_isr(6, make_idt_entry!(6));
+        idt.set_isr(7, make_idt_entry!(7));
+        idt.set_isr(8, make_idt_entry!(8));
+        idt.set_isr(9, make_idt_entry!(9));
+        idt.set_isr(10, make_idt_entry!(10));
+        idt.set_isr(11, make_idt_entry!(11));
+        idt.set_isr(12, make_idt_entry!(12));
+        idt.set_isr(13, make_idt_entry!(13));
+        idt.set_isr(14, make_idt_entry!(14));
+        idt.set_isr(15, make_idt_entry!(15));
+        idt.set_isr(16, make_idt_entry!(16));
+        idt.set_isr(17, make_idt_entry!(17));
+        idt.set_isr(18, make_idt_entry!(18));
+        idt.set_isr(19, make_idt_entry!(19));
+        idt.set_isr(20, make_idt_entry!(20));
+        idt.set_isr(21, make_idt_entry!(21));
+        idt.set_isr(22, make_idt_entry!(22));
+        idt.set_isr(23, make_idt_entry!(23));
+        idt.set_isr(24, make_idt_entry!(24));
+        idt.set_isr(25, make_idt_entry!(25));
+        idt.set_isr(26, make_idt_entry!(26));
+        idt.set_isr(27, make_idt_entry!(27));
+        idt.set_isr(28, make_idt_entry!(28));
+        idt.set_isr(29, make_idt_entry!(29));
+        idt.set_isr(30, make_idt_entry!(30));
+        idt.set_isr(31, make_idt_entry!(31));
 
         idt.set_isr(32, make_idt_entry!(isr32, {
             // timer, do nothing for now
