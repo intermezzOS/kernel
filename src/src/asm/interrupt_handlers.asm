@@ -1,25 +1,22 @@
 BITS 64
 
 extern interrupt_handler;
-extern gdt64.data;
 
+section .text
 
 %assign i 0
-%rep 34
+%rep 33
 global isr%+i
 %assign i i+1
 %endrep
 
-section .interrupt_handlers
 %assign i 0
-%rep 34
+%rep 33
 isr%+i:
     mov [number], byte i
     jmp qword push_registers_and_call_handler
 %assign i i+1
 %endrep
-
-section .text
 
 ; Stack must contain rax on top the interrupt frame below. The interrupt
 ; handler address must then be passed in rax.
