@@ -349,6 +349,8 @@ lazy_static! {
     };
 }
 
+/// This function is needed because the macros can't handle it, but can handle this. For some
+/// reason.
 fn send_eoi_for(interrupt: isize) {
     pic::eoi_for(interrupt);
 }
@@ -365,18 +367,6 @@ pub fn enable() {
 
 unsafe fn load_idt(ptr: &IdtPointer) {
     asm!("lidt $0"::"*m"(ptr)::"volatile");
-}
-
-#[no_mangle]
-pub extern "C" fn interrupt_handler(interrupt_number: isize, error_code: isize) {
-    match interrupt_number {
-        32 => {}, // timer
-        _ => panic!("interrupt {} with error code {:x}", interrupt_number, error_code),
-    }
-
-    pic::eoi_for(interrupt_number);
-
-    enable();
 }
 
 #[inline]
