@@ -68,25 +68,22 @@ impl VgaBuffer {
         if byte == ('\n' as u8) {
             // to get the current line, we divide by the length of a line
             let current_line = (self.position as isize) / CONSOLE_COLS;
-
-            if current_line + 1 >= CONSOLE_ROWS {
-                self.scroll_up();
-            } else {
-                self.position = ((current_line + 1) * CONSOLE_COLS) as usize;
-            }
+            self.position = ((current_line + 1) * CONSOLE_COLS) as usize;
         } else {
-            if self.position >= self.buffer.len() {
-                self.scroll_up();
-            }
             let cell = &mut self.buffer[self.position];
 
             *cell = VgaCell {
                 character: byte,
                 color: color,
             };
-
+            
             self.position += 1;
         }
+
+        if self.position >= self.buffer.len() {
+            self.scroll_up();
+        }
+
         set_cursor(self.position as u16);
     }
 
