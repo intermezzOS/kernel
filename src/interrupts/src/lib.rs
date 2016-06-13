@@ -1,19 +1,19 @@
 #![feature(asm)]
+#![feature(naked_functions)]
+#![feature(core_intrinsics)]
 #![no_std]
 
 #[macro_use]
 extern crate vga;
-
 #[macro_use]
 extern crate lazy_static;
-
 extern crate keyboard;
-
-use keyboard::Keyboard;
 extern crate pic;
 
+use keyboard::Keyboard;
+use core::intrinsics;
+
 extern {
-    fn isr0();
     fn isr1();
     fn isr2();
     fn isr3();
@@ -48,6 +48,59 @@ extern {
     fn isr32();
     fn isr33();
 }
+
+macro_rules! define_isr {
+    ($name:ident, $number:expr) => {
+        #[naked]
+        unsafe fn $name() {
+            asm!("pushq %rbp
+                  pushq %r15
+                  pushq %r14
+                  pushq %r13
+                  pushq %r12
+                  pushq %r11
+                  pushq %r10
+                  pushq %r9
+                  pushq %r8
+                  pushq %rsi
+                  pushq %rdi
+                  pushq %rdx
+                  pushq %rcx
+                  pushq %rbx
+                  pushq %rax
+
+                  movq %rsp, %rsi
+                  pushq %rsi
+                  movq 0, %rdi
+                  pushq %rdi
+
+                  callq interrupt_handler
+
+                  addq 16, %rsp
+
+                  popq %rax
+                  popq %rbx
+                  popq %rcx
+                  popq %rdx
+                  popq %rdi
+                  popq %rsi
+                  popq %r8
+                  popq %r9
+                  popq %r10
+                  popq %r11
+                  popq %r12
+                  popq %r13
+                  popq %r14
+                  popq %r15
+                  popq %rbp
+
+                  iretq" :::: "volatile");
+            intrinsics::unreachable();
+        }
+    }
+}
+
+define_isr!(isr0, 0);
 
 #[derive(Copy,Clone,Debug)]
 #[repr(packed,C)]
