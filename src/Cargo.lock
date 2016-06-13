@@ -15,6 +15,11 @@ version = "0.3.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "cpuio"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
 name = "csv"
 version = "0.14.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -203,6 +208,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 name = "vga"
 version = "0.1.0"
 dependencies = [
+ "cpuio 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "spin 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "x86 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
