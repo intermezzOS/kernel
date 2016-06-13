@@ -236,18 +236,12 @@ unsafe fn load_idt(ptr: &IdtPointer) {
 pub extern "C" fn interrupt_handler(interrupt_number: isize, error_code: isize) {
     match interrupt_number {
         32 => {}, // timer
-        33 => keyboard_handler(),
         _ => panic!("interrupt {} with error code {:x}", interrupt_number, error_code),
     }
 
     pic::eoi_for(interrupt_number);
 
     enable();
-}
-
-fn keyboard_handler() {
-    let scancode = unsafe { inb(0x60) };
-    Keyboard.handle_keys(scancode as usize);
 }
 
 #[inline]
