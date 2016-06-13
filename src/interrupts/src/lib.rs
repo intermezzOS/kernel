@@ -14,6 +14,7 @@ use keyboard::Keyboard;
 use core::intrinsics;
 
 extern {
+    fn isr0();
     fn isr1();
     fn isr2();
     fn isr3();
@@ -46,61 +47,60 @@ extern {
     fn isr30();
     fn isr31();
     fn isr32();
-    fn isr33();
 }
 
 macro_rules! define_isr {
     ($name:ident, $number:expr) => {
         #[naked]
         unsafe fn $name() {
-            asm!("pushq %rbp
-                  pushq %r15
-                  pushq %r14
-                  pushq %r13
-                  pushq %r12
-                  pushq %r11
-                  pushq %r10
-                  pushq %r9
-                  pushq %r8
-                  pushq %rsi
-                  pushq %rdi
-                  pushq %rdx
-                  pushq %rcx
-                  pushq %rbx
-                  pushq %rax
+            asm!("push rbp
+                  push r15
+                  push r14
+                  push r13
+                  push r12
+                  push r11
+                  push r10
+                  push r9
+                  push r8
+                  push rsi
+                  push rdi
+                  push rdx
+                  push rcx
+                  push rbx
+                  push rax
 
-                  movq %rsp, %rsi
-                  pushq %rsi
-                  movq 0, %rdi
-                  pushq %rdi
+                  mov rsi, rsp
+                  push rsi
+                  movq rdi, 33
+                  push rdi
+                  
+                  call interrupt_handler
 
-                  callq interrupt_handler
+                  add rsp, 16
 
-                  addq 16, %rsp
+                  pop rax
+                  pop rbx
+                  pop rcx
+                  pop rdx
+                  pop rdi
+                  pop rsi
+                  pop r8
+                  pop r9
+                  pop r10
+                  pop r11
+                  pop r12
+                  pop r13
+                  pop r14
+                  pop r15
+                  pop rbp
 
-                  popq %rax
-                  popq %rbx
-                  popq %rcx
-                  popq %rdx
-                  popq %rdi
-                  popq %rsi
-                  popq %r8
-                  popq %r9
-                  popq %r10
-                  popq %r11
-                  popq %r12
-                  popq %r13
-                  popq %r14
-                  popq %r15
-                  popq %rbp
-
-                  iretq" :::: "volatile");
+                  iretq" :::: "volatile", "intel");
             intrinsics::unreachable();
         }
     }
 }
 
-define_isr!(isr0, 0);
+define_isr!(isr33, 33);
 
 #[derive(Copy,Clone,Debug)]
 #[repr(packed,C)]
