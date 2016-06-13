@@ -50,7 +50,12 @@ extern {
 }
 
 macro_rules! define_isr {
-    ($name:ident, $number:expr) => {
+    ($name:ident, $body:expr) => {
+        #[no_mangle]
+        pub extern "C" fn isr33handler(_interrupt_number: isize, _error_code: isize) {
+            $body
+        }
+
         #[naked]
         unsafe fn $name() {
             asm!("push rbp
@@ -74,7 +79,7 @@ macro_rules! define_isr {
                   movq rdi, 33
                   push rdi
                   
-                  call interrupt_handler
+                  call isr33handler
 
                   add rsp, 16
 
@@ -100,7 +105,13 @@ macro_rules! define_isr {
     }
 }
 
-define_isr!(isr33, 33);
+define_isr!(isr33, {
+    let scancode = unsafe { inb(0x60) };
+    Keyboard.handle_keys(scancode as usize);
+
+    pic::eoi_for(33);
+    enable();
+});
 
 #[derive(Copy,Clone,Debug)]
 #[repr(packed,C)]
