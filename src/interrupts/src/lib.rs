@@ -52,7 +52,7 @@ extern {
 macro_rules! define_isr {
     ($name:ident, $body:expr) => {
         #[no_mangle]
-        pub extern "C" fn isr33handler(_interrupt_number: isize, _error_code: isize) {
+        pub extern "C" fn isr33handler(_error_code: isize) {
             $body
         }
 
@@ -76,12 +76,10 @@ macro_rules! define_isr {
 
                   mov rsi, rsp
                   push rsi
-                  movq rdi, 33
-                  push rdi
                   
                   call isr33handler
 
-                  add rsp, 16
+                  add rsp, 8
 
                   pop rax
                   pop rbx
