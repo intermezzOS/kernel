@@ -189,18 +189,12 @@ lazy_static! {
             let scancode = unsafe { inb(0x60) };
             Keyboard.handle_keys(scancode as usize);
 
-            send_eoi_for(33);
+            pic::eoi_for(33);
             enable();
         }));
 
         idt
     };
-}
-
-/// This function is needed because the macros can't handle it, but can handle this. For some
-/// reason.
-fn send_eoi_for(interrupt: isize) {
-    pic::eoi_for(interrupt);
 }
 
 pub fn install() {
