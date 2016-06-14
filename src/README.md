@@ -38,8 +38,7 @@ If you use a tool like multirust or rustup, use that.
 
 Then get this stuff:
 
-* `nasm`, specifically, version 2.11. 2.12 throws an error with our macro
-  syntax, and I have not figured out what the issue is. See issue #29.
+* `nasm`
 * `ld`
 * `grub-mkrescue`: you may also need to install `xorriso`
 * `qemu-system-x86_64`
