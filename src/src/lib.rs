@@ -15,6 +15,8 @@ extern crate pic;
 #[cfg(not(test))]
 pub mod support;
 
+use keyboard::Keyboard;
+
 #[no_mangle]
 pub extern "C" fn kmain() -> ! {
     pic::remap();
@@ -27,5 +29,7 @@ pub extern "C" fn kmain() -> ! {
     vga::clear_console();
     kprintln!("Kernel initialized.");
 
-    loop { }
+    loop {
+        Keyboard.handle_input();
+    }
 }

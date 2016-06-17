@@ -42,6 +42,7 @@ dependencies = [
 name = "keyboard"
 version = "0.1.0"
 dependencies = [
+ "ringbuffer 0.1.0",
  "spin 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "vga 0.1.0",
 ]
@@ -172,6 +173,10 @@ dependencies = [
 name = "raw-cpuid"
 version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "ringbuffer"
+version = "0.1.0"
 
 [[package]]
 name = "rlibc"

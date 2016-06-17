@@ -1,4 +1,5 @@
 #![no_std]
+#![feature(const_fn)]
 
 use core::ptr;
 
@@ -15,7 +16,7 @@ pub enum PushError {
 }
 
 impl<T> RingBuffer<T> {
-    pub fn new() -> RingBuffer<T> {
+    pub const fn new() -> RingBuffer<T> {
         RingBuffer {
             buffer: [None, None, None, None, None],
             start: 0,
