@@ -50,7 +50,7 @@ pub struct Keyboard;
 
 impl Keyboard {
     pub fn handle_keypress(&self, scancode: u8) {
-        unsafe { BUFFER.push(scancode); }
+        unsafe { BUFFER.push(scancode).expect("Could not push a key to the buffer"); }
     }
 
 	pub fn handle_input(&self) {
