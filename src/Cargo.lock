@@ -7,6 +7,7 @@ dependencies = [
  "pic 0.1.0",
  "rlibc 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "vga 0.1.0",
+ "x86 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
