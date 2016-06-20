@@ -26,6 +26,6 @@ pub extern "C" fn kmain() -> ! {
 
     vga::clear_console();
     kprintln!("Kernel initialized.");
-
+    
     loop { }
 }
