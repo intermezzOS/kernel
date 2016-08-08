@@ -36,6 +36,12 @@ $ curl -sf https://static.rust-lang.org/rustup.sh | sudo sh -- --channel=nightly
 
 If you use a tool like multirust or rustup, use that.
 
+In case of rustup, you can do this:
+
+```bash
+$ rustup override set nightly-2016-05-26
+```
+
 Then get this stuff:
 
 * `nasm`
