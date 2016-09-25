@@ -5,7 +5,7 @@ libcore_rlib_path = target/libcore/target/x86_64-unknown-intermezzos-gnu/release
 libcore_rlib = $(libcore_rlib_path)/libcore.rlib
 libcore_sha = 02e41cd5b925a1c878961042ecfb00470c68296b
 libintermezzos_a = target/x86_64-unknown-intermezzos-gnu/release/libintermezzos.a
-o_files = target/multiboot_header.o target/boot.o
+o_files = target/boot.o
 	
 build: target/kernel.bin
 
@@ -13,10 +13,6 @@ build: target/kernel.bin
 
 cargo: 
 	xargo build --release --target $(target)
-
-target/multiboot_header.o: src/asm/multiboot_header.asm
-	mkdir -p target
-	nasm -f elf64 src/asm/multiboot_header.asm -o target/multiboot_header.o
 
 target/boot.o: src/asm/boot.asm
 	mkdir -p target
