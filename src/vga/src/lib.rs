@@ -1,262 +1,217 @@
-#![feature(asm)]
-#![feature(const_fn)]
-#![feature(lang_items)]
 #![no_std]
+#![feature(const_fn)]
 
 extern crate spin;
-extern crate cpuio;
 
 use core::fmt;
+use core::fmt::Write;
+
+mod color;
+use color::Color;
+
+mod print;
+
 use spin::Mutex;
 
-mod cursor;
+const ROWS: usize = 25;
+const COLS: usize = 80;
+const COL_BYTES: usize = COLS * 2;
 
-pub fn initialize() {
-    clear_console();
-    cursor::initialize();
-}
-
-/// Clears the console.
-///
-/// This will reset the entire console to the background color, and move the cursor back to the
-/// upper-left part of the screen.
-///
-/// # Exampes
-///
-/// Basic usage:
-///
-/// ```
-/// vga::clear_console();
-/// ```
-pub fn clear_console() {
-    let mut b = BUFFER.lock();
-    b.clear();
-    b.flush();
-}
-
-/// A VGA color.
-///
-/// There are sixteen possible colors in VGA's text mode, and this enum represents them all.
-///
-/// # Examples
-///
-/// Basic usage:
-///
-/// ```
-/// let black = Color::Black;
-/// ```
-#[repr(u8)]
-pub enum Color {
-    Black = 0,
-    Blue = 1,
-    Green = 2,
-    Cyan = 3,
-    Red = 4,
-    Magenta = 5,
-    Brown = 6,
-    LightGray = 7,
-    DarkGray = 8,
-    LightBlue = 9,
-    LightGreen = 10,
-    LightCyan = 11,
-    LightRed = 12,
-    LightMagenta = 13,
-    Yellow = 14,
-    White = 15,
-}
-
-/// A combination foreground/background color.
-///
-/// Each location on the screen has a foreground color and a background color, and representing
-/// that is `ColorCode`'s job.
-///
-/// The default color is a `Color::LightGreen` foreground on a `Color::Black` background.
-///
-/// # Examples
-///
-/// ```
-/// let green_on_black = ColorCode::new(Color::LightGreen, Color::Black);
-///
-/// let yellow_on_red = ColorCode::new(Color::Yellow, Color::Red);
-/// ```
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct ColorCode(u8);
-
-const DEFAULT_COLOR: ColorCode = ColorCode::new(Color::LightGreen, Color::Black);
-
-impl ColorCode {
-    const fn new(foreground: Color, background: Color) -> ColorCode {
-        ColorCode((background as u8) << 4 | (foreground as u8))
-    }
-}
-
-#[derive(Copy,Clone)]
-#[repr(C)]
-struct VgaCell {
-    character: u8,
-    color: ColorCode,
-}
-
-const CONSOLE_COLS: isize = 80;
-const CONSOLE_ROWS: isize = 25;
-
-/// The public `VgaBuffer`.
-///
-/// This holds the canonical `VgaBuffer` for all to use.
-///
-/// You generally shouldn't interact with `BUFFER` on your own; use the `kprintln!` and `kprint!`
-/// macros instead.
-pub static BUFFER: Mutex<VgaBuffer> = Mutex::new(VgaBuffer {
-    buffer: [VgaCell {
-        character: b' ',
-        color: DEFAULT_COLOR,
-    }; (CONSOLE_ROWS * CONSOLE_COLS) as usize],
-    position: 0,
-});
-
-/// The global VGA buffer.
-///
-/// This buffer contains a representation of the screen's memory. Since VGA is a memory-mapped
-/// device, it's already memory. The reason we're doing this is so that we can make multiple
-/// changes and then blit them all to the screen at once with `flush()`. This should produce
-/// smoother scrolling, at the cost of a very small amount of memory.
-///
-/// You generally shouldn't make more `VgaBuffer`s.
-pub struct VgaBuffer {
-    buffer: [VgaCell; (CONSOLE_ROWS * CONSOLE_COLS) as usize],
+pub struct Vga {
+    location: *mut u8,
+    buffer: [u8; ROWS * COL_BYTES],
     position: usize,
 }
 
-impl VgaBuffer {
-    /// Writes the current values of the buffer out to the screen.
-    ///
-    /// Call this method when you're done updating the screen, and are ready for it to update.
-    ///
-    /// # Examples
-    ///
-    /// Basic usage:
-    ///
-    /// ```
-    /// // unlock the buffer
-    /// let mut b = BUFFER.lock();
-    ///
-    /// // clear the screen
-    /// b.clear();
-    ///
-    /// // update the screen with our changes
-    /// b.flush();
-    /// ```
+unsafe impl Send for Vga {}
+
+impl Vga {
+    pub unsafe fn new(location: *mut u8) -> Vga {
+        Vga {
+            location: location,
+            buffer: [0; ROWS * COL_BYTES],
+            position: 0,
+        }
+    }
+
     pub fn flush(&self) {
         unsafe {
-            let vga = 0xb8000 as *mut u8;
+            let location = self.location;
+            let length = self.buffer.len();
+            let buffer = self.buffer.as_ptr();
 
-            let length = self.buffer.len() * 2;
-            let buffer = self.buffer.as_ptr() as *const u8;
-
-            core::ptr::copy_nonoverlapping(buffer, vga, length);
+            core::ptr::copy_nonoverlapping(buffer, location, length);
         }
     }
 
-    fn clear(&mut self) {
-        for i in 0..(CONSOLE_ROWS * CONSOLE_COLS) {
-            let cell = &mut self.buffer[i as usize];
+    fn write_byte(&mut self, byte: u8) {
+        let i = self.position;
 
-            *cell = VgaCell {
-                character: b' ',
-                color: DEFAULT_COLOR,
-            };
-        }
-
-        self.reset_position();
-        self.flush();
-    }
-
-    fn write_byte(&mut self, byte: u8, color: ColorCode) {
-        if byte == (b'\n') {
-            // to get the current line, we divide by the length of a line
-            let current_line = (self.position as isize) / CONSOLE_COLS;
-            self.position = ((current_line + 1) * CONSOLE_COLS) as usize;
+        if byte == '\n' as u8 {
+            let current_line = self.position / (COL_BYTES);
+            self.position = (current_line + 1) * COL_BYTES;
         } else {
-            let cell = &mut self.buffer[self.position];
+            self.buffer[i] = byte;
+            self.buffer[i + 1] = color::colorcode(Color::Green, Color::Black);
 
-            *cell = VgaCell {
-                character: byte,
-                color: color,
-            };
-            
-            self.position += 1;
+            self.position += 2;
         }
 
         if self.position >= self.buffer.len() {
-            self.scroll_up();
+            self.scroll();
         }
-
-        cursor::set(self.position as u16);
     }
 
-    fn scroll_up(&mut self) {
-        let end = CONSOLE_ROWS * CONSOLE_COLS;
-
-        for i in CONSOLE_COLS..(end) {
-            let prev = i - CONSOLE_COLS;
-            self.buffer[prev as usize] = self.buffer[i as usize];
+    fn scroll(&mut self) {
+        for row in 1..ROWS {
+            for cb in 0..COL_BYTES {
+                let prev_position = ((row - 1) * COL_BYTES) + cb;
+                let current_position = (row * COL_BYTES) + cb;
+                self.buffer[prev_position] = self.buffer[current_position];
+            }
+        }
+         
+        for cb in 0..COL_BYTES/2 {
+            self.buffer[((ROWS - 1) * COL_BYTES) + (cb * 2)] = ' ' as u8;
         }
 
-        // blank out the last row
-        for i in (end - CONSOLE_COLS)..(end) {
-            let cell = &mut self.buffer[i as usize];
-            *cell = VgaCell {
-                character: b' ',
-                color: DEFAULT_COLOR,
-            };
-        }
-
-        self.position = (end - CONSOLE_COLS) as usize;
-    }
-
-    fn reset_position(&mut self) {
-        self.position = 0;
-        cursor::set(0);
+        self.position = (ROWS - 1) * COL_BYTES;
     }
 }
 
-impl fmt::Write for VgaBuffer {
-    fn write_str(&mut self, s: &str) -> ::core::fmt::Result {
-        let color = DEFAULT_COLOR;
-        for byte in s.bytes() {
-            self.write_byte(byte, color)
+impl Write for Vga {
+    fn write_str(&mut self, s: &str) -> Result<(), fmt::Error> {
+        for b in s.bytes() {
+            self.write_byte(b);
         }
+
         Ok(())
     }
 }
 
-/// Prints something to the screen, with a trailing newline.
-///
-/// # Examples
-///
-/// ```
-/// kprintln!("Hello, world!");
-/// ```
-#[macro_export]
-macro_rules! kprintln {
-    ($fmt:expr) => (kprint!(concat!($fmt, "\n")));
-    ($fmt:expr, $($arg:tt)*) => (kprint!(concat!($fmt, "\n"), $($arg)*));
-}
+pub static BUFFER: Mutex<Vga> = Mutex::new(
+    Vga {
+        location: 0xb8000 as *mut u8,
+        buffer: [0; ROWS * COL_BYTES],
+        position: 0,
+    }
+);
 
-/// Prints something to the screen.
-///
-/// # Examples
-///
-/// ```
-/// kprint!("Hello, world!");
-/// ```
-#[macro_export]
-macro_rules! kprint {
-    ($($arg:tt)*) => ({
-        use core::fmt::Write;
-        let mut b = $crate::BUFFER.lock();
-        b.write_fmt(format_args!($($arg)*)).unwrap();
-        b.flush();
-    });
+#[cfg(test)]
+mod tests {
+    use Vga;
+    use core::fmt::Write;
+
+    use ROWS;
+    use COL_BYTES;
+
+    #[test]
+    fn write_a_letter() {
+        let mut mock_memory = [0u8; ROWS * COL_BYTES];
+
+        let mut vga = unsafe { Vga::new(mock_memory.as_mut_ptr()) };
+
+        vga.write_str("a").unwrap();
+
+        assert_eq!(vga.buffer[0], 'a' as u8);
+        assert_eq!(vga.buffer[1], 0x02);
+    }
+
+    #[test]
+    fn write_a_word() {
+        let mut mock_memory = [0u8; ROWS * COL_BYTES];
+        let mut vga = unsafe { Vga::new(mock_memory.as_mut_ptr()) };
+
+        let word = "word";
+        vga.write_str(word).unwrap();
+
+        assert_eq!(vga.buffer[0], 'w' as u8);
+        assert_eq!(vga.buffer[1], 0x02);
+        assert_eq!(vga.buffer[2], 'o' as u8);
+        assert_eq!(vga.buffer[3], 0x02);
+        assert_eq!(vga.buffer[4], 'r' as u8);
+        assert_eq!(vga.buffer[5], 0x02);
+        assert_eq!(vga.buffer[6], 'd' as u8);
+        assert_eq!(vga.buffer[7], 0x02);
+    }
+
+    #[test]
+    fn write_multiple_words() {
+        let mut mock_memory = [0u8; ROWS * COL_BYTES];
+        let mut vga = unsafe { Vga::new(mock_memory.as_mut_ptr()) };
+
+        vga.write_str("hello ").unwrap();
+        vga.write_str("world").unwrap();
+
+        assert_eq!(vga.buffer[0], 'h' as u8);
+        assert_eq!(vga.buffer[1], 0x02);
+        assert_eq!(vga.buffer[2], 'e' as u8);
+        assert_eq!(vga.buffer[3], 0x02);
+        assert_eq!(vga.buffer[4], 'l' as u8);
+        assert_eq!(vga.buffer[5], 0x02);
+        assert_eq!(vga.buffer[6], 'l' as u8);
+        assert_eq!(vga.buffer[7], 0x02);
+        assert_eq!(vga.buffer[8], 'o' as u8);
+        assert_eq!(vga.buffer[9], 0x02);
+        assert_eq!(vga.buffer[10], ' ' as u8);
+        assert_eq!(vga.buffer[11], 0x02);
+        assert_eq!(vga.buffer[12], 'w' as u8);
+        assert_eq!(vga.buffer[13], 0x02);
+        assert_eq!(vga.buffer[14], 'o' as u8);
+        assert_eq!(vga.buffer[15], 0x02);
+        assert_eq!(vga.buffer[16], 'r' as u8);
+        assert_eq!(vga.buffer[17], 0x02);
+        assert_eq!(vga.buffer[18], 'l' as u8);
+        assert_eq!(vga.buffer[19], 0x02);
+        assert_eq!(vga.buffer[20], 'd' as u8);
+        assert_eq!(vga.buffer[21], 0x02);
+    }
+
+    #[test]
+    fn write_newline() {
+        let mut mock_memory = [0u8; ROWS * COL_BYTES];
+        let mut vga = unsafe { Vga::new(mock_memory.as_mut_ptr()) };
+
+        vga.write_str("hello\nworld\n!").unwrap();
+
+        assert_eq!(vga.buffer[0], 'h' as u8);
+        assert_eq!(vga.buffer[1], 0x02);
+        assert_eq!(vga.buffer[2], 'e' as u8);
+        assert_eq!(vga.buffer[3], 0x02);
+        assert_eq!(vga.buffer[4], 'l' as u8);
+        assert_eq!(vga.buffer[5], 0x02);
+        assert_eq!(vga.buffer[6], 'l' as u8);
+        assert_eq!(vga.buffer[7], 0x02);
+        assert_eq!(vga.buffer[8], 'o' as u8);
+        assert_eq!(vga.buffer[9], 0x02);
+        assert_eq!(vga.buffer[160], 'w' as u8);
+        assert_eq!(vga.buffer[161], 0x02);
+        assert_eq!(vga.buffer[162], 'o' as u8);
+        assert_eq!(vga.buffer[163], 0x02);
+        assert_eq!(vga.buffer[164], 'r' as u8);
+        assert_eq!(vga.buffer[165], 0x02);
+        assert_eq!(vga.buffer[166], 'l' as u8);
+        assert_eq!(vga.buffer[167], 0x02);
+        assert_eq!(vga.buffer[168], 'd' as u8);
+        assert_eq!(vga.buffer[169], 0x02);
+        assert_eq!(vga.buffer[320], '!' as u8);
+        assert_eq!(vga.buffer[321], 0x02);
+    }
+
+    #[test]
+    fn write_scroll() {
+        let mut mock_memory = [0u8; ROWS * COL_BYTES];
+        let mut vga = unsafe { Vga::new(mock_memory.as_mut_ptr()) };
+
+        for b in "abcdefghijklmnopqrstuvwxyz".bytes() {
+            vga.write_byte(b);
+            vga.write_byte('\n' as u8);
+        }
+
+        assert_eq!(vga.buffer[0], 'c' as u8);
+        for cb in 0..COL_BYTES/2 {
+            assert_eq!(vga.buffer[(ROWS - 1) * COL_BYTES + (cb * 2)], ' ' as u8);
+        }
+    }
+
 }

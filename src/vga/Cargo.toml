@@ -5,5 +5,3 @@ authors = ["Steve Klabnik <steve@steveklabnik.com>"]
 
 [dependencies]
 spin = "0.4.2"
-x86 = "0.7.0"
-cpuio = "0.2.0"
