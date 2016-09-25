@@ -1,10 +1,14 @@
 #![no_std]
 #![feature(const_fn)]
+
 #[macro_use]
 extern crate vga;
 extern crate spin;
 
+extern crate ringbuffer;
+
 use spin::Mutex;
+use ringbuffer::RingBuffer;
 
 static KBDUS: [u8; 59] = *b"??1234567890-=??qwertyuiop[]\n?asdfghjkl;'`?\\zxcvbnm,./?*? ?";
 static KBDUS_SHIFT: [u8; 59] = *b"??!@#$%^&*()_+??QWERTYUIOP{}\n?ASDFGHJKL:\"~?|ZXCVBNM<>??*? ?";
@@ -16,6 +20,8 @@ pub static STATE: Mutex<Modifiers> = Mutex::new(Modifiers {
 	alt: false,
 	caps: false,
 });
+
+static mut BUFFER: RingBuffer<u8> = RingBuffer::new();
 
 pub struct Modifiers {
     shift: bool,
@@ -43,14 +49,22 @@ impl Modifiers {
 pub struct Keyboard;
 
 impl Keyboard {
-	pub fn handle_keys(&self, scancode: usize) {
-		if scancode <= 59 {
-			let state = STATE.lock();
-			if state.shift ^ state.caps {
-				kprint!("{}", KBDUS_SHIFT[scancode] as char);
-			} else {
-				kprint!("{}", KBDUS[scancode] as char);
-			}
-		}
+    pub fn handle_keypress(&self, scancode: u8) {
+        unsafe { BUFFER.push(scancode).expect("Could not push a key to the buffer"); }
+    }
+
+	pub fn handle_input(&self) {
+        unsafe {
+            if let Some(scancode) = BUFFER.pop() {
+                if scancode <= 59 {
+                    let state = STATE.lock();
+                    if state.shift ^ state.caps {
+                        kprint!("{}", KBDUS_SHIFT[scancode as usize] as char);
+                    } else {
+                        kprint!("{}", KBDUS[scancode as usize] as char);
+                    }
+                }
+            }
+        }
 	}
 }

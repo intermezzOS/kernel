@@ -4,5 +4,6 @@ version = "0.1.0"
 authors = ["nxnfufunezn <nxnfufunezn@gmail.com>"]
 
 [dependencies]
-vga = { path = "../vga" }
 spin = "0.4.2"
+vga = { path = "../vga" }
+ringbuffer = { path = "../ringbuffer" }

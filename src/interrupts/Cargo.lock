@@ -14,6 +14,11 @@ version = "0.3.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "cpuio"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
 name = "csv"
 version = "0.14.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -26,6 +31,8 @@ dependencies = [
 name = "keyboard"
 version = "0.1.0"
 dependencies = [
+ "ringbuffer 0.1.0",
+ "spin 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "vga 0.1.0",
 ]
 
@@ -157,6 +164,10 @@ version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "ringbuffer"
+version = "0.1.0"
+
+[[package]]
 name = "rustc-serialize"
 version = "0.3.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -180,11 +191,6 @@ dependencies = [
 
 [[package]]
 name = "spin"
-version = "0.3.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-
-[[package]]
-name = "spin"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
@@ -192,7 +198,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 name = "vga"
 version = "0.1.0"
 dependencies = [
- "spin 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "cpuio 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "spin 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "x86 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 

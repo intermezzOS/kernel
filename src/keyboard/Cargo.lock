@@ -1,18 +1,20 @@
 [root]
-name = "intermezzos"
+name = "keyboard"
 version = "0.1.0"
 dependencies = [
- "interrupts 0.1.0",
- "keyboard 0.1.0",
- "pic 0.1.0",
- "rlibc 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "ringbuffer 0.1.0",
+ "spin 0.4.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "vga 0.1.0",
- "x86 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "byteorder"
 version = "0.3.13"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "cpuio"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -22,33 +24,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "byteorder 0.3.13 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustc-serialize 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "interrupts"
-version = "0.1.0"
-dependencies = [
- "keyboard 0.1.0",
- "lazy_static 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "pic 0.1.0",
- "vga 0.1.0",
-]
-
-[[package]]
-name = "keyboard"
-version = "0.1.0"
-dependencies = [
- "ringbuffer 0.1.0",
- "spin 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "vga 0.1.0",
-]
-
-[[package]]
-name = "lazy_static"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "spin 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -154,10 +129,6 @@ version = "0.7.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
-name = "pic"
-version = "0.1.0"
-
-[[package]]
 name = "rand"
 version = "0.3.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -173,11 +144,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "ringbuffer"
 version = "0.1.0"
-
-[[package]]
-name = "rlibc"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "rustc-serialize"
@@ -203,14 +169,16 @@ dependencies = [
 
 [[package]]
 name = "spin"
-version = "0.4.2"
+version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "vga"
 version = "0.1.0"
 dependencies = [
- "spin 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "cpuio 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "spin 0.4.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "x86 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]

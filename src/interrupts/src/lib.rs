@@ -188,7 +188,7 @@ lazy_static! {
         idt.set_isr(33, make_idt_entry!(isr33, {
             let scancode = unsafe { inb(0x60) };
             STATE.lock().update_state(scancode);
-            Keyboard.handle_keys(scancode as usize);
+            Keyboard.handle_keypress(scancode);
 
             pic::eoi_for(33);
             enable();
