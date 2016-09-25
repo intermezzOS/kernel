@@ -1,8 +1,13 @@
-sudo: required
-dist: trusty
 language: rust
+
 rust:
-  - nightly-2016-05-26
+  - nightly
+
+install:
+  - sudo apt-get install grub-common
+  - export PATH="$PATH:$(rustc --print sysroot)/cargo/bin"
+  - curl -sf "https://raw.githubusercontent.com/japaric/rust-everywhere/master/install.sh" | bash -s -- --from japaric/xargo
+
 script:
   - cd chapter_03/3.1-headers && make build && cd -
   - cd chapter_03/3.2-hello-world && make build && cd -
@@ -19,3 +24,5 @@ addons:
   apt:
     packages:
       - nasm
+      - libssh2-1
+      - xorriso

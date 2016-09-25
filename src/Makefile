@@ -11,16 +11,8 @@ build: target/kernel.bin
 
 .PHONY: clean
 
-target/libcore:
-	git clone http://github.com/intermezzos/libcore target/libcore
-	cd target/libcore && git reset --hard $(libcore_sha)
-
-$(libcore_rlib): target/libcore
-	cp $(target).json target/libcore
-	cd target/libcore && cargo build --release --features disable_float --target=$(target).json
-
-cargo: $(libcore_rlib)
-	RUSTFLAGS="-L $(libcore_rlib_path)" cargo build --release --target $(target).json
+cargo: 
+	xargo build --release --target $(target)
 
 target/multiboot_header.o: src/asm/multiboot_header.asm
 	mkdir -p target
@@ -31,7 +23,7 @@ target/boot.o: src/asm/boot.asm
 	nasm -f elf64 src/asm/boot.asm -o target/boot.o
 
 target/kernel.bin: $(o_files) src/asm/linker.ld cargo
-	ld -n -o target/kernel.bin -T src/asm/linker.ld $(o_files) $(libintermezzos_a)
+	ld -n -o target/kernel.bin -T src/asm/linker.ld --gc-sections $(o_files) $(libintermezzos_a)
 
 target/os.iso: target/kernel.bin src/asm/grub.cfg
 	mkdir -p target/isofiles/boot/grub
