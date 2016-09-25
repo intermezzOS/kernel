@@ -18,8 +18,8 @@ target/boot.o: src/asm/boot.asm
 	mkdir -p target
 	nasm -f elf64 src/asm/boot.asm -o target/boot.o
 
-target/kernel.bin: $(o_files) src/asm/linker.ld cargo
-	ld -n -o target/kernel.bin -T src/asm/linker.ld --gc-sections $(o_files) $(libintermezzos_a)
+target/kernel.bin: $(o_files) src/asm/layout.ld cargo
+	ld -n -o target/kernel.bin -T src/asm/layout.ld --gc-sections $(o_files) $(libintermezzos_a)
 
 target/os.iso: target/kernel.bin src/asm/grub.cfg
 	mkdir -p target/isofiles/boot/grub
