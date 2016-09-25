@@ -19,12 +19,9 @@ pub mod support;
 pub extern "C" fn kmain() -> ! {
     pic::remap();
 
-    vga::initialize();
-
     interrupts::install();
     interrupts::enable();
 
-    vga::clear_console();
     kprintln!("Kernel initialized.");
 
     loop { }

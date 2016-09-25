@@ -9,7 +9,7 @@ crate-type = ["staticlib"]
 [dependencies]
 rlibc = "1.0.0"
 x86 = "0.7.0"
-vga = { path = "vga" }
+vga = { git = "https://github.com/intermezzOS/vga" }
 interrupts = { path = "interrupts" }
 keyboard = { path = "keyboard" }
 pic = { path = "pic" }
