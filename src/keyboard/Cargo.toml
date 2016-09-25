@@ -4,5 +4,5 @@ version = "0.1.0"
 authors = ["nxnfufunezn <nxnfufunezn@gmail.com>"]
 
 [dependencies]
-vga = { git = "https://github.com/intermezzOS/vga" }
+vga = { path = "../vga" }
 spin = "0.4.2"
