@@ -1,17 +1,13 @@
 #![no_std]
 #![feature(const_fn)]
 
-extern crate spin;
+extern crate rlibc;
 
 use core::fmt;
 use core::fmt::Write;
 
 mod color;
 use color::Color;
-
-mod print;
-
-use spin::Mutex;
 
 const ROWS: usize = 25;
 const COLS: usize = 80;
@@ -26,7 +22,7 @@ pub struct Vga {
 unsafe impl Send for Vga {}
 
 impl Vga {
-    pub unsafe fn new(location: *mut u8) -> Vga {
+    pub const unsafe fn new(location: *mut u8) -> Vga {
         Vga {
             location: location,
             buffer: [0; ROWS * COL_BYTES],
@@ -88,14 +84,6 @@ impl Write for Vga {
         Ok(())
     }
 }
-
-pub static BUFFER: Mutex<Vga> = Mutex::new(
-    Vga {
-        location: 0xb8000 as *mut u8,
-        buffer: [0; ROWS * COL_BYTES],
-        position: 0,
-    }
-);
 
 #[cfg(test)]
 mod tests {
