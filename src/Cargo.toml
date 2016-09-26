@@ -7,10 +7,9 @@ build = "build.rs"
 [dependencies]
 rlibc = "1.0.0"
 x86 = "0.8.0"
+spin = "0.4.4"
 vga = { path = "vga" }
-interrupts = { path = "interrupts" }
-keyboard = { path = "keyboard" }
-pic = { path = "pic" }
+kernel-context = { path = "kernel-context" }
 
 [profile.dev]
 panic = "abort"

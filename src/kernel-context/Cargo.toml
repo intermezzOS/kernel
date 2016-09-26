@@ -1,6 +1,8 @@
 [package]
-name = "pic"
+name = "kernel-context"
 version = "0.1.0"
 authors = ["Steve Klabnik <steve@steveklabnik.com>"]
 
 [dependencies]
+vga = { path = "../vga" }
+spin = "0.4.4"

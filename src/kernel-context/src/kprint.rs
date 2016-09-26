@@ -7,8 +7,8 @@
 /// ```
 #[macro_export]
 macro_rules! kprintln {
-    ($fmt:expr) => (kprint!(concat!($fmt, "\n")));
-    ($fmt:expr, $($arg:tt)*) => (kprint!(concat!($fmt, "\n"), $($arg)*));
+    ($ctx:ident, $fmt:expr) => (kprint!($ctx, concat!($fmt, "\n")));
+    ($ctx:ident, $fmt:expr, $($arg:tt)*) => (kprint!($ctx, concat!($fmt, "\n"), $($arg)*));
 }
 
 /// Prints something to the screen.
@@ -20,10 +20,10 @@ macro_rules! kprintln {
 /// ```
 #[macro_export]
 macro_rules! kprint {
-    ($($arg:tt)*) => ({
+    ($ctx:ident, $($arg:tt)*) => ({
         use core::fmt::Write;
-        let mut b = $crate::BUFFER.lock();
-        b.write_fmt(format_args!($($arg)*)).unwrap();
-        b.flush();
+        let mut vga = $ctx.vga.lock();
+        vga.write_fmt(format_args!($($arg)*)).unwrap();
+        vga.flush();
     });
 }

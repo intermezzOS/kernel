@@ -3,10 +3,8 @@ cargo:
 
 # cargo test fails for some reason, not sure why yet
 test:
-	cd keyboard && cargo test
-	cd interrupts && cargo test
-	cd pic && cargo test
 	cd vga && cargo test
+	cd kernel-context && cargo test
 
 iso: cargo grub.cfg
 	mkdir -p target/isofiles/boot/grub
