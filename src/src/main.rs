@@ -1,6 +1,7 @@
 #![feature(lang_items)]
 #![feature(asm)]
 #![no_std]
+#![no_main]
 
 extern crate rlibc;
 
