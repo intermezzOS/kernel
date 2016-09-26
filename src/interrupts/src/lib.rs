@@ -9,6 +9,7 @@ extern crate vga;
 extern crate lazy_static;
 extern crate keyboard;
 extern crate pic;
+extern crate rlibc;
 
 use keyboard::{Keyboard, STATE};
 use core::intrinsics;

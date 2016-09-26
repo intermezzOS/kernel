@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Steve Klabnik <steve@steveklabnik.com>"]
 
 [dependencies]
+rlibc = "1.0.0"
 vga = { path = "../vga" }
 keyboard = { path = "../keyboard"}
 lazy_static = { version = "0.2.1", features = ["spin_no_std"] }
