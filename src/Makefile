@@ -1,6 +1,13 @@
 cargo: 
 	xargo build --release --target x86_64-unknown-intermezzos-gnu
 
+# cargo test fails for some reason, not sure why yet
+test:
+	cd keyboard && cargo test
+	cd interrupts && cargo test
+	cd pic && cargo test
+	cd vga && cargo test
+
 iso: cargo grub.cfg
 	mkdir -p target/isofiles/boot/grub
 	cp grub.cfg target/isofiles/boot/grub
