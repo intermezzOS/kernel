@@ -4,9 +4,10 @@ version = "0.1.0"
 authors = ["Steve Klabnik <steve@steveklabnik.com>", "Amit Aryeh Levy <amit@amitlevy.com>"]
 build = "build.rs"
 
+[workspace]
+
 [dependencies]
 rlibc = "1.0.0"
-x86 = "0.8.0"
 spin = "0.4.4"
 vga = { path = "vga" }
 kernel-context = { path = "kernel-context" }
