@@ -1,7 +1,7 @@
 #![feature(const_fn)]
 #![no_std]
 
-extern crate vga;
+extern crate console;
 extern crate spin;
 
 pub mod kernel;

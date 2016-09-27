@@ -4,8 +4,6 @@
 #![no_main]
 
 extern crate rlibc;
-extern crate spin;
-extern crate vga;
 
 #[macro_use]
 extern crate intermezzos;

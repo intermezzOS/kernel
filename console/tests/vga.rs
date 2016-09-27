@@ -1,8 +1,8 @@
-extern crate vga;
+extern crate console;
 extern crate core;
 
 use core::fmt::Write;
-use vga::Vga;
+use console::Vga;
 
 #[test]
 fn create() {

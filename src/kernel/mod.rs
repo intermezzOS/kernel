@@ -1,5 +1,5 @@
 use core;
-use vga::Vga;
+use console::Vga;
 use spin::Mutex;
 
 #[macro_use]

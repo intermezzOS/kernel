@@ -9,7 +9,7 @@ build = "build.rs"
 [dependencies]
 rlibc = "1.0.0"
 spin = "0.4.4"
-vga = { path = "vga" }
+console = { path = "console" }
 
 [profile.dev]
 panic = "abort"
