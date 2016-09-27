@@ -1,7 +1,4 @@
 #![no_std]
-#![feature(const_fn)]
-
-extern crate rlibc;
 
 use core::fmt;
 use core::fmt::Write;
@@ -13,31 +10,26 @@ const ROWS: usize = 25;
 const COLS: usize = 80;
 const COL_BYTES: usize = COLS * 2;
 
-pub struct Vga {
-    location: *mut u8,
+pub struct Vga<'a> {
+    slice: &'a mut [u8],
     buffer: [u8; ROWS * COL_BYTES],
     position: usize,
 }
 
-unsafe impl Send for Vga {}
+impl<'a> Vga<'a> {
+    pub fn new(slice: &mut [u8]) -> Vga {
+        // we must have enough bytes of backing storage to make this work.
+        assert!(slice.len() == ROWS * COL_BYTES);
 
-impl Vga {
-    pub const unsafe fn new(location: *mut u8) -> Vga {
         Vga {
-            location: location,
+            slice: slice,
             buffer: [0; ROWS * COL_BYTES],
             position: 0,
         }
     }
 
-    pub fn flush(&self) {
-        unsafe {
-            let location = self.location;
-            let length = self.buffer.len();
-            let buffer = self.buffer.as_ptr();
-
-            core::ptr::copy_nonoverlapping(buffer, location, length);
-        }
+    pub fn flush(&mut self) {
+        self.slice.clone_from_slice(&self.buffer);
     }
 
     fn write_byte(&mut self, byte: u8) {
@@ -75,7 +67,7 @@ impl Vga {
     }
 }
 
-impl Write for Vga {
+impl<'a> Write for Vga<'a> {
     fn write_str(&mut self, s: &str) -> Result<(), fmt::Error> {
         for b in s.bytes() {
             self.write_byte(b);
@@ -97,7 +89,7 @@ mod tests {
     fn write_a_letter() {
         let mut mock_memory = [0u8; ROWS * COL_BYTES];
 
-        let mut vga = unsafe { Vga::new(mock_memory.as_mut_ptr()) };
+        let mut vga = Vga::new(&mut mock_memory);
 
         vga.write_str("a").unwrap();
 
@@ -108,7 +100,7 @@ mod tests {
     #[test]
     fn write_a_word() {
         let mut mock_memory = [0u8; ROWS * COL_BYTES];
-        let mut vga = unsafe { Vga::new(mock_memory.as_mut_ptr()) };
+        let mut vga = Vga::new(&mut mock_memory);
 
         let word = "word";
         vga.write_str(word).unwrap();
@@ -126,7 +118,7 @@ mod tests {
     #[test]
     fn write_multiple_words() {
         let mut mock_memory = [0u8; ROWS * COL_BYTES];
-        let mut vga = unsafe { Vga::new(mock_memory.as_mut_ptr()) };
+        let mut vga = Vga::new(&mut mock_memory);
 
         vga.write_str("hello ").unwrap();
         vga.write_str("world").unwrap();
@@ -158,7 +150,7 @@ mod tests {
     #[test]
     fn write_newline() {
         let mut mock_memory = [0u8; ROWS * COL_BYTES];
-        let mut vga = unsafe { Vga::new(mock_memory.as_mut_ptr()) };
+        let mut vga = Vga::new(&mut mock_memory);
 
         vga.write_str("hello\nworld\n!").unwrap();
 
@@ -189,7 +181,7 @@ mod tests {
     #[test]
     fn write_scroll() {
         let mut mock_memory = [0u8; ROWS * COL_BYTES];
-        let mut vga = unsafe { Vga::new(mock_memory.as_mut_ptr()) };
+        let mut vga = Vga::new(&mut mock_memory);
 
         for b in "abcdefghijklmnopqrstuvwxyz".bytes() {
             vga.write_byte(b);
