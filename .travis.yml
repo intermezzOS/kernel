@@ -9,16 +9,7 @@ install:
   - curl -sf "https://raw.githubusercontent.com/japaric/rust-everywhere/master/install.sh" | bash -s -- --from japaric/xargo
 
 script:
-  - cd chapter_03/3.1-headers && make build && cd -
-  - cd chapter_03/3.2-hello-world && make build && cd -
-  - cd chapter_03/3.3-iso && make build && cd -
-  - cd chapter_03/3.4-qemu && make build && cd -
-  - cd chapter_03/3.5-make && make build && cd -
-  - cd chapter_04/4.1-paging && make build && cd -
-  - cd chapter_04/4.2-setting-up-a-gdt && make build && cd -
-  - cd chapter_04/4.3-jumping-headlong-into-long-mode && make build && cd -
-  - cd chapter_05 && make build && cd -
-  - cd src && make && make test
+  - make test
 
 addons:
   apt:
