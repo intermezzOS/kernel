@@ -10,16 +10,16 @@ const ROWS: usize = 25;
 const COLS: usize = 80;
 const COL_BYTES: usize = COLS * 2;
 
-pub struct Vga<'a> {
-    slice: &'a mut [u8],
+pub struct Vga<T: AsMut<[u8]>> {
+    slice: T,
     buffer: [u8; ROWS * COL_BYTES],
     position: usize,
 }
 
-impl<'a> Vga<'a> {
-    pub fn new(slice: &mut [u8]) -> Vga {
+impl<T: AsMut<[u8]>> Vga<T> {
+    pub fn new(mut slice: T) -> Vga<T> {
         // we must have enough bytes of backing storage to make this work.
-        assert!(slice.len() == ROWS * COL_BYTES);
+        assert!(slice.as_mut().len() == ROWS * COL_BYTES);
 
         Vga {
             slice: slice,
@@ -29,7 +29,7 @@ impl<'a> Vga<'a> {
     }
 
     pub fn flush(&mut self) {
-        self.slice.clone_from_slice(&self.buffer);
+        self.slice.as_mut().clone_from_slice(&self.buffer);
     }
 
     fn write_byte(&mut self, byte: u8) {
@@ -67,7 +67,7 @@ impl<'a> Vga<'a> {
     }
 }
 
-impl<'a> Write for Vga<'a> {
+impl<T: AsMut<[u8]>> Write for Vga<T> {
     fn write_str(&mut self, s: &str) -> Result<(), fmt::Error> {
         for b in s.bytes() {
             self.write_byte(b);
@@ -89,7 +89,7 @@ mod tests {
     fn write_a_letter() {
         let mut mock_memory = [0u8; ROWS * COL_BYTES];
 
-        let mut vga = Vga::new(&mut mock_memory);
+        let mut vga = Vga::new(&mut mock_memory[..]);
 
         vga.write_str("a").unwrap();
 
@@ -100,7 +100,7 @@ mod tests {
     #[test]
     fn write_a_word() {
         let mut mock_memory = [0u8; ROWS * COL_BYTES];
-        let mut vga = Vga::new(&mut mock_memory);
+        let mut vga = Vga::new(&mut mock_memory[..]);
 
         let word = "word";
         vga.write_str(word).unwrap();
@@ -118,7 +118,7 @@ mod tests {
     #[test]
     fn write_multiple_words() {
         let mut mock_memory = [0u8; ROWS * COL_BYTES];
-        let mut vga = Vga::new(&mut mock_memory);
+        let mut vga = Vga::new(&mut mock_memory[..]);
 
         vga.write_str("hello ").unwrap();
         vga.write_str("world").unwrap();
@@ -150,7 +150,7 @@ mod tests {
     #[test]
     fn write_newline() {
         let mut mock_memory = [0u8; ROWS * COL_BYTES];
-        let mut vga = Vga::new(&mut mock_memory);
+        let mut vga = Vga::new(&mut mock_memory[..]);
 
         vga.write_str("hello\nworld\n!").unwrap();
 
@@ -181,7 +181,7 @@ mod tests {
     #[test]
     fn write_scroll() {
         let mut mock_memory = [0u8; ROWS * COL_BYTES];
-        let mut vga = Vga::new(&mut mock_memory);
+        let mut vga = Vga::new(&mut mock_memory[..]);
 
         for b in "abcdefghijklmnopqrstuvwxyz".bytes() {
             vga.write_byte(b);

@@ -6,7 +6,7 @@ use spin::Mutex;
 mod kprint;
 
 pub struct Context {
-    pub vga: Mutex<Vga<'static>>,
+    pub vga: Mutex<Vga<&'static mut [u8]>>,
 }
 
 impl Context {
@@ -20,4 +20,3 @@ impl Context {
         }
     }
 }
-
