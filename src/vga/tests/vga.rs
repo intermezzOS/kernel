@@ -8,7 +8,7 @@ use vga::Vga;
 fn create() {
     let mut mock_memory = vec![0u8; 25 * 80 * 2];
 
-    unsafe { Vga::new(mock_memory.as_mut_ptr()) };
+    Vga::new(&mut mock_memory);
 }
 
 fn check_write<T: Write>(_: T) { }
@@ -16,7 +16,7 @@ fn check_write<T: Write>(_: T) { }
 #[test]
 fn write() {
     let mut mock_memory = vec![0u8; 25 * 80 * 2];
-    let vga = unsafe { Vga::new(mock_memory.as_mut_ptr()) };
+    let vga = Vga::new(&mut mock_memory);
     check_write(vga);
 }
 
@@ -24,11 +24,13 @@ fn write() {
 fn flush() {
     let mut mock_memory = vec![0u8; 25 * 80 * 2];
 
-    let mut vga = unsafe { Vga::new(mock_memory.as_mut_ptr()) };
+    {
+        let mut vga = Vga::new(&mut mock_memory);
 
-    vga.write_str("hello").unwrap();
+        vga.write_str("hello").unwrap();
 
-    vga.flush();
+        vga.flush();
+    }
 
     assert_eq!(mock_memory[0], 'h' as u8);
     assert_eq!(mock_memory[1], 0x02);

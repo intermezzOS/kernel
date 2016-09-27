@@ -1,19 +1,22 @@
-use spin::Mutex;
+use core;
 use vga::Vga;
+use spin::Mutex;
 
 #[macro_use]
 mod kprint;
 
 pub struct Context {
-    pub vga: Mutex<Vga>,
+    pub vga: Mutex<Vga<&'static mut [u8]>>,
 }
 
 impl Context {
-    pub const fn new() -> Context {
-        unsafe {
-            Context {
-                vga: Mutex::new(Vga::new(0xb8000 as *mut u8)),
-            }
+    pub fn new() -> Context {
+        let slice = unsafe {
+            core::slice::from_raw_parts_mut(0xb8000 as *mut u8, 4000)
+        };
+
+        Context {
+            vga: Mutex::new(Vga::new(slice)),
         }
     }
 }

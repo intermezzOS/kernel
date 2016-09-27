@@ -4,5 +4,3 @@ version = "0.1.0"
 authors = ["Steve Klabnik <steve@steveklabnik.com>"]
 
 [dependencies]
-spin = "0.4.2"
-rlibc = "1.0.0"
