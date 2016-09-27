@@ -10,7 +10,6 @@ build = "build.rs"
 rlibc = "1.0.0"
 spin = "0.4.4"
 vga = { path = "vga" }
-kernel-context = { path = "kernel-context" }
 
 [profile.dev]
 panic = "abort"

@@ -1,5 +1,3 @@
-#![feature(asm)]
-#![feature(const_fn)]
 #![feature(lang_items)]
 
 #![no_std]
@@ -10,8 +8,7 @@ extern crate spin;
 extern crate vga;
 
 #[macro_use]
-extern crate kernel_context;
-use kernel_context::KernelContext;
+extern crate intermezzos;
 
 // For Rust lang items
 #[cfg(not(test))]
@@ -19,7 +16,7 @@ pub mod support;
 
 #[no_mangle]
 pub extern "C" fn kmain() -> ! {
-    let ctx = KernelContext::new();
+    let ctx = intermezzos::kernel::Context::new();
 
     kprintln!(ctx, "Kernel initialized.");
 

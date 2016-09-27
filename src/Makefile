@@ -4,7 +4,6 @@ cargo:
 # cargo test fails for some reason, not sure why yet
 test:
 	cd vga && cargo test
-	cd kernel-context && cargo test
 
 iso: cargo grub.cfg
 	mkdir -p target/isofiles/boot/grub
