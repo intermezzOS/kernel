@@ -36,6 +36,17 @@ Then get this stuff:
 * `grub-mkrescue`: you may also need to install `xorriso`
 * `qemu-system-x86_64`
 
+If you're on OS X, you might want to use [this
+script](http://intermezzos.github.io/book/appendix/osx-install.html) to get
+them. You'll also need to set this in your `~/.cargo/config`:
+
+```toml
+[target.x86_64-unknown-intermezzos-gnu]
+linker = "/Users/yourusername/opt/bin/x86_64-pc-elf-gcc"
+```
+
+Where `yourusername` is your username.
+
 After all that setup, it’s as easy as:
 
 ```bash
