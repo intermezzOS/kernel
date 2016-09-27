@@ -19,7 +19,7 @@ pub struct Vga<T: AsMut<[u8]>> {
 impl<T: AsMut<[u8]>> Vga<T> {
     pub fn new(mut slice: T) -> Vga<T> {
         // we must have enough bytes of backing storage to make this work.
-        assert!(slice.as_mut().len() == ROWS * COL_BYTES);
+        assert_eq!(slice.as_mut().len(), ROWS * COL_BYTES);
 
         Vga {
             slice: slice,
