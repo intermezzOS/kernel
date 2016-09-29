@@ -5,7 +5,7 @@ use std::path::Path;
 fn main() {
     let out_dir = env::var("OUT_DIR").unwrap();
 
-    Command::new("nasm").args(&["src/asm/boot.asm", "-felf64", "-o"])
+    Command::new("gcc").args(&["src/asm/boot.S", "-c", "-o"])
         .arg(&format!("{}/boot.o", out_dir))
         .status().unwrap();
 
@@ -15,5 +15,5 @@ fn main() {
 
     println!("cargo:rustc-link-search=native={}", out_dir);
     println!("cargo:rustc-link-lib=static=boot");
-    println!("cargo:rerun-if-changed=/src/asm/boot.asm");
+    println!("cargo:rerun-if-changed=/src/asm/boot.S");
 }
