@@ -74,9 +74,9 @@ start:
 .section .rodata
 gdt64:
     .quad 0 # zero entry
-gdt64code: .= . - gdt64
+.set gdt64code, . - gdt64
     .quad (1<<44) | (1<<47) | (1<<41) | (1<<43) | (1<<53) 
-gdt64data: .= . - gdt64
+.set gdt64data, . - gdt64
     .quad (1<<44) | (1<<47) | (1<<41)
 gdt64pointer:
     .word . - gdt64 - 1
