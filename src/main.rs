@@ -8,9 +8,7 @@ extern crate rlibc;
 #[macro_use]
 extern crate intermezzos;
 
-// For Rust lang items
-#[cfg(not(test))]
-pub mod support;
+pub mod panic;
 
 #[no_mangle]
 pub extern "C" fn kmain() -> ! {
