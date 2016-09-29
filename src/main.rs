@@ -8,6 +8,7 @@ extern crate rlibc;
 #[macro_use]
 extern crate intermezzos;
 
+#[cfg(not(test))]
 pub mod panic;
 
 #[no_mangle]
