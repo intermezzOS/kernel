@@ -54,13 +54,12 @@ start:
     lgdt [gdt64pointer]
 
     # update selectors
-    mov ax, gdt64data
+    mov ax, 16
     mov ss, ax
     mov ds, ax
     mov es, ax
 
-    # long jump to kmain setting `cs` register to `gdt64.code`
-    jmp 0x0008:kmain
+    jmp 8:kmain
 
     # shouldn't ever happen
     hlt
@@ -74,9 +73,7 @@ start:
 .section .rodata
 gdt64:
     .quad 0 # zero entry
-.set gdt64code, . - gdt64
     .quad (1<<44) | (1<<47) | (1<<41) | (1<<43) | (1<<53) 
-.set gdt64data, . - gdt64
     .quad (1<<44) | (1<<47) | (1<<41)
 gdt64pointer:
     .word . - gdt64 - 1
