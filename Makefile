@@ -13,3 +13,13 @@ iso: cargo grub.cfg
 
 run: iso
 	qemu-system-x86_64 -cdrom target/os.iso
+
+debug: iso
+	qemu-system-x86_64 -s -S -cdrom target/os.iso
+
+gdb: iso
+	gdb target/x86_64-unknown-intermezzos-gnu/release/intermezzos -ex "target remote :1234"
+
+asm:
+	gcc -m64 -c src/asm/boot.S -o gccboot.o
+	nasm -felf64 boot.asm -o nasmboot.o

@@ -11,8 +11,6 @@ rlibc = "1.0.0"
 spin = "0.4.4"
 console = { path = "console" }
 
-[profile.dev]
-panic = "abort"
-
 [profile.release]
 panic = "abort"
+debug = true

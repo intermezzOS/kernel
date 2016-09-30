@@ -1,9 +1,10 @@
 .intel_syntax noprefix
+.code32  # Tell assembler to generate 32-bit code now.
+
 .extern kmain
-.globl start
+.global start
 
 .section .boot, "ax"
-.code32  # Tell assembler to generate 32-bit code now.
 start:
 
     # Point the first entry of the level 4 page table to the first entry in the
@@ -51,7 +52,7 @@ start:
     or eax, 1 << 16
     mov cr0, eax
 
-    lgdt [gdt_pointer]
+    lgdt [gdt64pointer]
 
     # update selectors
     mov ax, 16
@@ -59,7 +60,7 @@ start:
     mov ds, ax
     mov es, ax
 
-    ljmp 8, kmain
+    jmp 8:kmain
 
     # shouldn't ever happen
     hlt
@@ -71,11 +72,12 @@ start:
 .lcomm p2_table, 4096
 
 .section .rodata
-gdt:
-.quad 0
-.quad 0x0020980000000000
-.quad 0x0000920000000000
+gdt64:
+    .quad 0 # zero entry
+    .quad (1<<44) | (1<<47) | (1<<41) | (1<<43) | (1<<53)
+    .quad (1<<44) | (1<<47) | (1<<41)
+gdt64pointer:
+    .word $ - gdt64 - 1
+    .word gdt64
+    .word 0
 
-gdt_pointer:
-.word 23
-.quad gdt
