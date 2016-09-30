@@ -1,8 +1,8 @@
 .intel_syntax noprefix
 .extern kmain
-.global start
+.globl start
 
-.section .boot
+.section .boot, "ax"
 .code32  # Tell assembler to generate 32-bit code now.
 start:
 
@@ -51,7 +51,7 @@ start:
     or eax, 1 << 16
     mov cr0, eax
 
-    lgdt [gdt64pointer]
+    lgdt [gdt_pointer]
 
     # update selectors
     mov ax, 16
@@ -59,7 +59,7 @@ start:
     mov ds, ax
     mov es, ax
 
-    jmp 8:kmain
+    ljmp 8, kmain
 
     # shouldn't ever happen
     hlt
@@ -71,10 +71,11 @@ start:
 .lcomm p2_table, 4096
 
 .section .rodata
-gdt64:
-    .quad 0 # zero entry
-    .quad (1<<44) | (1<<47) | (1<<41) | (1<<43) | (1<<53) 
-    .quad (1<<44) | (1<<47) | (1<<41)
-gdt64pointer:
-    .word . - gdt64 - 1
-    .quad gdt64
+gdt:
+.quad 0
+.quad 0x0020980000000000
+.quad 0x0000920000000000
+
+gdt_pointer:
+.word 23
+.quad gdt

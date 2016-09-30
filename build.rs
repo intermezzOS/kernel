@@ -5,7 +5,7 @@ use std::path::Path;
 fn main() {
     let out_dir = env::var("OUT_DIR").unwrap();
 
-    Command::new("gcc").args(&["src/asm/boot.S", "-c", "-o"])
+    let code = Command::new("gcc").args(&["src/asm/boot.S", "-c", "-o"])
         .arg(&format!("{}/boot.o", out_dir))
         .status().unwrap();
 
