@@ -6,11 +6,13 @@
 #![no_std]
 #![no_main]
 
+#[macro_use]
+extern crate lazy_static;
+
 extern crate rlibc;
 extern crate spin;
 
 extern crate console;
-use console::Vga;
 
 #[macro_use]
 extern crate interrupts;
@@ -23,26 +25,18 @@ extern crate keyboard;
 
 extern crate pic;
 
-use spin::Mutex;
+#[cfg(not(test))]
+pub mod panic;
 
 #[macro_use]
 extern crate intermezzos;
 
-#[cfg(not(test))]
-pub mod panic;
-
-static mut PRINT_REF: Option<&'static Mutex<Vga<&'static mut [u8]>>> = None;
+lazy_static! {
+    static ref CONTEXT: intermezzos::kernel::Context = intermezzos::kernel::Context::new();
+}
 
 #[no_mangle]
 pub extern "C" fn kmain() -> ! {
-    let mut ctx = intermezzos::kernel::Context::new();
-
-    // ... yeah this doesn't quite cut it. SO UNSAFE.
-    unsafe {
-        // so here, we use transmuate to elongate the lifetime to static.
-        PRINT_REF = core::mem::transmute(Some(&ctx.vga));
-    }
-
     pic::remap();
 
 	let gpf = make_idt_entry!(isr13, {
@@ -51,31 +45,25 @@ pub extern "C" fn kmain() -> ! {
 
     let timer = make_idt_entry!(isr32, {
         pic::eoi_for(32);
-
     });
 
     let keyboard = make_idt_entry!(isr33, {
         let scancode = unsafe { pic::inb(0x60) };
 
         if let Some(c) = keyboard::from_scancode(scancode as usize) {
-            unsafe {
-                use core::fmt::Write;
-                let mut vga = ::PRINT_REF.unwrap().lock();
-                vga.write_fmt(format_args!("{}", c)).unwrap();
-                vga.flush();
-            }
+            kprint!(CONTEXT, "{}", c);
         }
 
         pic::eoi_for(33);
     });
 
-    ctx.idt.set_handler(13, gpf);
-    ctx.idt.set_handler(32, timer);
-    ctx.idt.set_handler(33, keyboard);
+    CONTEXT.idt.lock().set_handler(13, gpf);
+    CONTEXT.idt.lock().set_handler(32, timer);
+    CONTEXT.idt.lock().set_handler(33, keyboard);
 
-    ctx.idt.enable_interrupts();
+    CONTEXT.idt.lock().enable_interrupts();
 
-    kprintln!(ctx, "Kernel initialized.");
+    kprintln!(CONTEXT, "Kernel initialized.");
 
     loop { }
 }

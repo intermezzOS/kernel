@@ -79,6 +79,8 @@ pub struct IdtRef {
     idt: &'static mut [IdtEntry; 256],
 }
 
+unsafe impl Send for IdtRef {}
+
 impl IdtRef {
     pub fn set_handler(&mut self, index: usize, entry: IdtEntry) {
         self.idt[index] = entry;
@@ -87,7 +89,7 @@ impl IdtRef {
 
 pub fn idt_ref() -> IdtRef {
 	// accessing the static mut idt
-	let mut r = unsafe {
+	let r = unsafe {
 		IdtRef {
 			ptr: DescriptorTablePointer::new_idtp(&IDT[..]),
             idt: &mut IDT,

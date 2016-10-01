@@ -12,7 +12,7 @@ mod kprint;
 
 pub struct Context {
     pub vga: Mutex<Vga<&'static mut [u8]>>,
-    pub idt: IdtRef,
+    pub idt: Mutex<IdtRef>,
 }
 
 impl Context {
@@ -23,7 +23,7 @@ impl Context {
 
         Context {
             vga: Mutex::new(Vga::new(slice)),
-            idt: interrupts::idt_ref(),
+            idt: Mutex::new(interrupts::idt_ref()),
         }
     }
 }
