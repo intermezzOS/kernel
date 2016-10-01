@@ -31,6 +31,7 @@ version = "0.1.0"
 dependencies = [
  "console 0.1.0",
  "interrupts 0.1.0",
+ "keyboard 0.1.0",
  "pic 0.1.0",
  "rlibc 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "spin 0.4.4 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -44,6 +45,10 @@ dependencies = [
  "pic 0.1.0",
  "x86 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
+
+[[package]]
+name = "keyboard"
+version = "0.1.0"
 
 [[package]]
 name = "libc"

@@ -1,0 +1,6 @@
+[package]
+name = "keyboard"
+version = "0.1.0"
+authors = ["The intermezzOS team"]
+
+[dependencies]

@@ -13,6 +13,7 @@ x86 = "0.8.0"
 console = { path = "console" }
 interrupts = { path = "interrupts" }
 pic = { path = "pic" }
+keyboard = { path = "keyboard" }
 
 [profile.dev]
 panic = "abort"

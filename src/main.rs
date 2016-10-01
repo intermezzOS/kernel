@@ -19,6 +19,8 @@ use x86::bits64::irq::IdtEntry;
 
 use core::intrinsics;
 
+extern crate keyboard;
+
 extern crate pic;
 
 use spin::Mutex;
@@ -55,11 +57,13 @@ pub extern "C" fn kmain() -> ! {
     let keyboard = make_idt_entry!(isr33, {
         let scancode = unsafe { pic::inb(0x60) };
 
-        unsafe {
-            use core::fmt::Write;
-            let mut vga = ::PRINT_REF.unwrap().lock();
-            vga.write_fmt(format_args!("got keycode: {}", scancode)).unwrap();
-            vga.flush();
+        if let Some(c) = keyboard::from_scancode(scancode as usize) {
+            unsafe {
+                use core::fmt::Write;
+                let mut vga = ::PRINT_REF.unwrap().lock();
+                vga.write_fmt(format_args!("{}", c)).unwrap();
+                vga.flush();
+            }
         }
 
         pic::eoi_for(33);
