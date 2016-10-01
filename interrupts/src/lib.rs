@@ -38,8 +38,10 @@ macro_rules! make_idt_entry {
                   push rax
                   mov rsi, rsp
                   push rsi
+                  cli
                   
                   call $0
+                  sti
                   add rsp, 8
                   pop rax
                   pop rbx

@@ -50,13 +50,24 @@ pub extern "C" fn kmain() -> ! {
     let timer = make_idt_entry!(isr32, {
         pic::eoi_for(32);
 
+    });
+
+    let keyboard = make_idt_entry!(isr33, {
+        let scancode = unsafe { pic::inb(0x60) };
+
         unsafe {
-            x86::shared::irq::enable();
+            use core::fmt::Write;
+            let mut vga = ::PRINT_REF.unwrap().lock();
+            vga.write_fmt(format_args!("got keycode: {}", scancode)).unwrap();
+            vga.flush();
         }
+
+        pic::eoi_for(33);
     });
 
     ctx.idt.set_handler(13, gpf);
     ctx.idt.set_handler(32, timer);
+    ctx.idt.set_handler(33, keyboard);
 
     ctx.idt.enable_interrupts();
 
