@@ -12,6 +12,7 @@ use x86::bits64::irq::IdtEntry;
 
 use core::intrinsics;
 
+#[macro_export]
 macro_rules! make_idt_entry {
     ($name:ident, $body:expr) => {{
         fn body() {
@@ -73,33 +74,23 @@ static mut IDT: [IdtEntry; 256] = [IdtEntry::MISSING; 256];
 
 pub struct IdtRef {
     ptr: DescriptorTablePointer<IdtEntry>,
+    idt: &'static mut [IdtEntry; 256],
+}
+
+impl IdtRef {
+    pub fn set_handler(&mut self, index: usize, entry: IdtEntry) {
+        self.idt[index] = entry;
+    }
 }
 
 pub fn idt_ref() -> IdtRef {
 	// accessing the static mut idt
-	let r = unsafe {
+	let mut r = unsafe {
 		IdtRef {
 			ptr: DescriptorTablePointer::new_idtp(&IDT[..]),
+            idt: &mut IDT,
 		}
 	};
-
-	let gpf = make_idt_entry!(isr13, {
-		panic!("omg GPF");
-	});
-
-    let timer = make_idt_entry!(isr32, {
-        pic::eoi_for(32);
-
-        unsafe {
-            x86::shared::irq::enable();
-        }
-    });
-
-	// accessing the static mut idt
-	unsafe {
-		IDT[13] = gpf;
-        IDT[32] = timer;
-	}
 
     // this block is safe because we've constructed a proper IDT above.
     unsafe {

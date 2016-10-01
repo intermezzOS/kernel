@@ -1,4 +1,7 @@
 #![feature(lang_items)]
+#![feature(asm)]
+#![feature(naked_functions)]
+#![feature(core_intrinsics)]
 
 #![no_std]
 #![no_main]
@@ -8,6 +11,13 @@ extern crate spin;
 
 extern crate console;
 use console::Vga;
+
+#[macro_use]
+extern crate interrupts;
+extern crate x86;
+use x86::bits64::irq::IdtEntry;
+
+use core::intrinsics;
 
 extern crate pic;
 
@@ -23,7 +33,7 @@ static mut PRINT_REF: Option<&'static Mutex<Vga<&'static mut [u8]>>> = None;
 
 #[no_mangle]
 pub extern "C" fn kmain() -> ! {
-    let ctx = intermezzos::kernel::Context::new();
+    let mut ctx = intermezzos::kernel::Context::new();
 
     // ... yeah this doesn't quite cut it. SO UNSAFE.
     unsafe {
@@ -32,6 +42,22 @@ pub extern "C" fn kmain() -> ! {
     }
 
     pic::remap();
+
+	let gpf = make_idt_entry!(isr13, {
+		panic!("omg GPF");
+	});
+
+    let timer = make_idt_entry!(isr32, {
+        pic::eoi_for(32);
+
+        unsafe {
+            x86::shared::irq::enable();
+        }
+    });
+
+    ctx.idt.set_handler(13, gpf);
+    ctx.idt.set_handler(32, timer);
+
     ctx.idt.enable_interrupts();
 
     kprintln!(ctx, "Kernel initialized.");

@@ -34,6 +34,7 @@ dependencies = [
  "pic 0.1.0",
  "rlibc 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "spin 0.4.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "x86 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
