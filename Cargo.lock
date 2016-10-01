@@ -1,15 +1,20 @@
 [root]
-name = "intermezzos"
+name = "interrupts"
 version = "0.1.0"
-dependencies = [
- "console 0.1.0",
- "rlibc 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "spin 0.4.4 (registry+https://github.com/rust-lang/crates.io-index)",
-]
 
 [[package]]
 name = "console"
 version = "0.1.0"
+
+[[package]]
+name = "intermezzos"
+version = "0.1.0"
+dependencies = [
+ "console 0.1.0",
+ "interrupts 0.1.0",
+ "rlibc 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "spin 0.4.4 (registry+https://github.com/rust-lang/crates.io-index)",
+]
 
 [[package]]
 name = "rlibc"
