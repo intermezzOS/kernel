@@ -1,6 +1,5 @@
 #![feature(asm)]
 #![feature(naked_functions)]
-#![feature(core_intrinsics)]
 #![no_std]
 
 extern crate x86;
@@ -9,8 +8,6 @@ extern crate pic;
 use x86::shared::dtables;
 use x86::shared::dtables::DescriptorTablePointer;
 use x86::bits64::irq::IdtEntry;
-
-use core::intrinsics;
 
 #[macro_export]
 macro_rules! make_idt_entry {
@@ -38,10 +35,13 @@ macro_rules! make_idt_entry {
                   push rax
                   mov rsi, rsp
                   push rsi
+
                   cli
-                  
+
                   call $0
+
                   sti
+
                   add rsp, 8
                   pop rax
                   pop rbx
@@ -62,13 +62,13 @@ macro_rules! make_idt_entry {
             intrinsics::unreachable();
         }
 
-		use x86::shared::paging::VAddr;
-		use x86::shared::PrivilegeLevel;
+        use x86::shared::paging::VAddr;
+        use x86::shared::PrivilegeLevel;
 
-		let handler = VAddr::from_usize($name as usize);
+        let handler = VAddr::from_usize($name as usize);
 
-		// last is "block", idk
-		IdtEntry::new(handler, 0x8, PrivilegeLevel::Ring0, false)
+        // last is "block", idk
+        IdtEntry::new(handler, 0x8, PrivilegeLevel::Ring0, false)
     }};
 }
 
@@ -88,13 +88,13 @@ impl IdtRef {
 }
 
 pub fn idt_ref() -> IdtRef {
-	// accessing the static mut idt
-	let r = unsafe {
-		IdtRef {
-			ptr: DescriptorTablePointer::new_idtp(&IDT[..]),
+    // accessing the static mut idt
+    let r = unsafe {
+        IdtRef {
+            ptr: DescriptorTablePointer::new_idtp(&IDT[..]),
             idt: &mut IDT,
-		}
-	};
+        }
+    };
 
     // this block is safe because we've constructed a proper IDT above.
     unsafe {

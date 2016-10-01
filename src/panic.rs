@@ -6,6 +6,6 @@ use ::CONTEXT;
 pub extern fn rust_begin_panic(msg: fmt::Arguments,
                                file: &'static str,
                                line: u32) -> ! {
-    kprintln!(CONTEXT, "PANIC: {} {} {}", msg, file, line);
+    kprintln!(CONTEXT, "KERNEL PANIC in {}:{}! Message: {}", file, line, msg);
     loop {}
 }

@@ -39,9 +39,9 @@ lazy_static! {
 pub extern "C" fn kmain() -> ! {
     pic::remap();
 
-	let gpf = make_idt_entry!(isr13, {
-		panic!("omg GPF");
-	});
+    let gpf = make_idt_entry!(isr13, {
+        panic!("omg GPF");
+    });
 
     let timer = make_idt_entry!(isr32, {
         pic::eoi_for(32);
