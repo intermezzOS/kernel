@@ -14,7 +14,7 @@ Make sure you have a nightly Rust installed. Something like this:
 
 ```bash
 $ rustc --version
-rustc 1.13.0-nightly (267cde259 2016-05-25)
+rustc 1.10.0-nightly (267cde259 2016-05-25)
 ```
 
 If you don’t have Rust installed (and maybe even if you've installed Rust some
@@ -39,6 +39,19 @@ linker = "/Users/yourusername/opt/bin/x86_64-pc-elf-gcc"
 
 Where `yourusername` is your username.
 
+This project uses the xargo crate. To get it:
+
+ Before install necessary dependencies, for Ubuntu 16.04, we need to install libssl-dev:
+ ```bash
+ $ sudo apt-get install libssl-dev
+ ```
+
+Now install xargo:
+
+ ```bash
+ $ cargo install xargo
+ ```
+
 After all that setup, it’s as easy as:
 
 ```bash
@@ -47,6 +60,7 @@ $ make run
 
 This will:
 
+* Xargo builds libcore for our x86_64-unknown-intermezzos-gnu target
 * Build the Rust code with Cargo
 * Compile the bit of assembly needed to boot
 * Link it all together
