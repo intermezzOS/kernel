@@ -11,6 +11,7 @@ rlibc = "1.0.0"
 spin = "0.4.4"
 console = { path = "console" }
 interrupts = { path = "interrupts" }
+pic = { path = "pic" }
 
 [profile.dev]
 panic = "abort"
