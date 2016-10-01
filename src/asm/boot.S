@@ -65,6 +65,8 @@ start:
     # shouldn't ever happen
     hlt
 
+.code64
+
 .section .bss
 .align 4096
 .lcomm p4_table, 4096
@@ -78,6 +80,4 @@ gdt64:
     .quad (1<<44) | (1<<47) | (1<<41)
 gdt64pointer:
     .word $ - gdt64 - 1
-    .word gdt64
-    .word 0
-
+    .quad gdt64
