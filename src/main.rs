@@ -57,11 +57,11 @@ pub extern "C" fn kmain() -> ! {
         pic::eoi_for(33);
     });
 
-    CONTEXT.idt.lock().set_handler(13, gpf);
-    CONTEXT.idt.lock().set_handler(32, timer);
-    CONTEXT.idt.lock().set_handler(33, keyboard);
+    CONTEXT.idt.set_handler(13, gpf);
+    CONTEXT.idt.set_handler(32, timer);
+    CONTEXT.idt.set_handler(33, keyboard);
 
-    CONTEXT.idt.lock().enable_interrupts();
+    CONTEXT.idt.enable_interrupts();
 
     kprintln!(CONTEXT, "Kernel initialized.");
 

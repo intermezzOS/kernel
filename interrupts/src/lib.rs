@@ -1,10 +1,13 @@
 #![feature(asm)]
 #![feature(naked_functions)]
+#![feature(const_fn)]
 #![no_std]
 
 extern crate x86;
 extern crate pic;
+extern crate spin;
 
+use spin::Mutex;
 use x86::shared::dtables;
 use x86::shared::dtables::DescriptorTablePointer;
 use x86::bits64::irq::IdtEntry;
@@ -72,28 +75,25 @@ macro_rules! make_idt_entry {
     }};
 }
 
-static mut IDT: [IdtEntry; 256] = [IdtEntry::MISSING; 256];
+static IDT: Mutex<[IdtEntry; 256]> = Mutex::new([IdtEntry::MISSING; 256]);
 
 pub struct IdtRef {
     ptr: DescriptorTablePointer<IdtEntry>,
-    idt: &'static mut [IdtEntry; 256],
+    idt: &'static Mutex<[IdtEntry; 256]>,
 }
 
-unsafe impl Send for IdtRef {}
+unsafe impl Sync for IdtRef {}
 
 impl IdtRef {
-    pub fn set_handler(&mut self, index: usize, entry: IdtEntry) {
-        self.idt[index] = entry;
+    pub fn set_handler(&self, index: usize, entry: IdtEntry) {
+        self.idt.lock()[index] = entry;
     }
 }
 
 pub fn idt_ref() -> IdtRef {
-    // accessing the static mut idt
-    let r = unsafe {
-        IdtRef {
-            ptr: DescriptorTablePointer::new_idtp(&IDT[..]),
-            idt: &mut IDT,
-        }
+    let r = IdtRef {
+        ptr: DescriptorTablePointer::new_idtp(&IDT.lock()[..]),
+        idt: &IDT,
     };
 
     // this block is safe because we've constructed a proper IDT above.
