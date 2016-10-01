@@ -2,7 +2,6 @@ use core;
 
 use console::Vga;
 
-use interrupts;
 use interrupts::IdtRef;
 
 use spin::Mutex;
@@ -23,7 +22,7 @@ impl Context {
 
         Context {
             vga: Mutex::new(Vga::new(slice)),
-            idt: interrupts::idt_ref(),
+            idt: IdtRef::new(),
         }
     }
 }

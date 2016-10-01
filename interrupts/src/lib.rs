@@ -85,26 +85,25 @@ pub struct IdtRef {
 unsafe impl Sync for IdtRef {}
 
 impl IdtRef {
+    pub fn new() -> IdtRef {
+        let r = IdtRef {
+            ptr: DescriptorTablePointer::new_idtp(&IDT.lock()[..]),
+            idt: &IDT,
+        };
+
+        // This block is safe because by referencing IDT above, we know that we've constructed an
+        // IDT.
+        unsafe {
+            dtables::lidt(&r.ptr)
+        };
+
+        r
+    }
+
     pub fn set_handler(&self, index: usize, entry: IdtEntry) {
         self.idt.lock()[index] = entry;
     }
-}
 
-pub fn idt_ref() -> IdtRef {
-    let r = IdtRef {
-        ptr: DescriptorTablePointer::new_idtp(&IDT.lock()[..]),
-        idt: &IDT,
-    };
-
-    // this block is safe because we've constructed a proper IDT above.
-    unsafe {
-        dtables::lidt(&r.ptr)
-    };
-
-    r
-}
-
-impl IdtRef {
     pub fn enable_interrupts(&self) {
         // This unsafe fn is okay becuase, by virtue of having an IdtRef, we know that we have a
         // valid Idt.
@@ -113,4 +112,3 @@ impl IdtRef {
         }
     }
 }
-
