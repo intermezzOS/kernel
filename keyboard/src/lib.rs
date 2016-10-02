@@ -5,7 +5,7 @@ pub enum Action {
     Released,
 }
 
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Key {
     KA,
     KB,
@@ -264,8 +264,7 @@ impl Keyboard {
 
         // Guard against overflow
         if self.size == KEY_BUFFER {
-            // TODO: Panic!
-            return
+            panic!("Keyboard buffer full (key: {:?})", key)
         }
 
         // Push the key onto the stack
