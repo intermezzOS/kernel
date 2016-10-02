@@ -53,9 +53,8 @@ pub extern "C" fn kmain() -> ! {
 
         {
             let mut keyboard = CONTEXT.keyboard.lock();
-            keyboard.update(scancode);
 
-            if let Some(c) = keyboard.printable() {
+            if let Some(c) = keyboard.input(scancode) {
                 kprint!(CONTEXT, "{}", c);
             }
         }
