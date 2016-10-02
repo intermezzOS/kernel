@@ -213,8 +213,8 @@ const KEY_BUFFER: usize = 256;
 /// updating its internal state according to those signals, and providing
 /// relevant output (if any) based on its state.
 pub struct Keyboard {
-    stack: [Option<Key>; KEY_BUFFER],
-    size: usize,
+    pub stack: [Option<Key>; KEY_BUFFER],
+    pub size: usize,
 }
 
 impl Keyboard {
@@ -332,5 +332,52 @@ impl Keyboard {
         } else {
             None
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use Key;
+    use Keyboard;
+
+    #[test]
+    fn pushes_keys() {
+        let mut keyboard = Keyboard::new();
+        assert_eq!(keyboard.size, 0);
+        assert_eq!(keyboard.stack[0], None);
+
+        keyboard.push_key(Key::KA);
+        assert_eq!(keyboard.size, 1);
+        assert_eq!(keyboard.stack[0], Some(Key::KA));
+        assert_eq!(keyboard.stack[1], None);
+
+        // Doesn't double-push
+        keyboard.push_key(Key::KA);
+        assert_eq!(keyboard.size, 1);
+        assert_eq!(keyboard.stack[0], Some(Key::KA));
+        assert_eq!(keyboard.stack[1], None);
+
+        keyboard.push_key(Key::KB);
+        assert_eq!(keyboard.size, 2);
+        assert_eq!(keyboard.stack[0], Some(Key::KA));
+        assert_eq!(keyboard.stack[1], Some(Key::KB));
+        assert_eq!(keyboard.stack[2], None);
+    }
+
+    #[test]
+    fn clears_key() {
+        let mut keyboard = Keyboard::new();
+        keyboard.push_key(Key::KLeftShift);
+        keyboard.push_key(Key::KA);
+        assert_eq!(keyboard.size, 2);
+        assert_eq!(keyboard.stack[0], Some(Key::KLeftShift));
+        assert_eq!(keyboard.stack[1], Some(Key::KA));
+        assert_eq!(keyboard.stack[2], None);
+
+        // Check that it removes it and shifts everything down
+        keyboard.clear_key(Key::KLeftShift);
+        assert_eq!(keyboard.size, 1);
+        assert_eq!(keyboard.stack[0], Some(Key::KA));
+        assert_eq!(keyboard.stack[1], None);
     }
 }
