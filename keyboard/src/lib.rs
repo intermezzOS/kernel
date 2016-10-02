@@ -380,4 +380,54 @@ mod tests {
         assert_eq!(keyboard.stack[0], Some(Key::KA));
         assert_eq!(keyboard.stack[1], None);
     }
+
+    #[test]
+    fn inputs_character_scancode() {
+        let mut keyboard = Keyboard::new();
+
+        let result = keyboard.input(0x1e); // "A" pressed
+        assert_eq!(result, Some('a'));
+        assert_eq!(keyboard.size, 1);
+        assert_eq!(keyboard.stack[0], Some(Key::KA));
+
+        let result = keyboard.input(0x9e); // "A" released
+        assert_eq!(result, None);
+        assert_eq!(keyboard.size, 0);
+    }
+
+    #[test]
+    fn inputs_character_and_modifier_scancodes() {
+        let mut keyboard = Keyboard::new();
+
+        let result = keyboard.input(0x2a); // Left shift pressed
+        assert_eq!(result, None);
+        assert_eq!(keyboard.size, 1);
+        assert_eq!(keyboard.stack[0], Some(Key::KLeftShift));
+
+        // Check that the modifier is applied to the character
+        let result = keyboard.input(0x1e); // "A" pressed
+        assert_eq!(result, Some('A'));
+        assert_eq!(keyboard.size, 2);
+        assert_eq!(keyboard.stack[1], Some(Key::KA));
+
+        // And that it's still applied upon repeat ticks
+        let result = keyboard.input(0x1e); // "A" pressed
+        assert_eq!(result, Some('A'));
+        assert_eq!(keyboard.size, 2);
+        assert_eq!(keyboard.stack[1], Some(Key::KA));
+
+        let result = keyboard.input(0x9e); // "A" released
+        assert_eq!(result, None);
+        assert_eq!(keyboard.size, 1);
+
+        let result = keyboard.input(0xaa); // Left shift released
+        assert_eq!(result, None);
+        assert_eq!(keyboard.size, 0);
+
+        // Check that the modifier is no longer applied
+        let result = keyboard.input(0x30); // "B" pressed
+        assert_eq!(result, Some('b'));
+        assert_eq!(keyboard.size, 1);
+        assert_eq!(keyboard.stack[0], Some(Key::KB));
+    }
 }
