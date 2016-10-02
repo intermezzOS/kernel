@@ -1,17 +1,8 @@
 #![feature(asm)]
 #![no_std]
 
-#[inline]
-pub unsafe fn inb(port: u16) -> u8 {
-    let ret : u8;
-    asm!("inb $1, $0" : "={ax}"(ret) : "{dx}N"(port) : : "volatile");
-    return ret;
-}
-
-#[inline]
-unsafe fn outb(port: u16, val: u8) {
-    asm!("outb $1, $0" : : "{dx}N"(port), "{al}"(val) : : "volatile");
-}
+extern crate x86;
+use x86::shared::io::{inb, outb};
 
 pub fn remap() {
     unsafe {
