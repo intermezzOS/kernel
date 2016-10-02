@@ -46,6 +46,7 @@ pub enum Key {
     KBacktick,
     KDash,
     KEqual,
+    KTab,
     KBackslash,
     KSpace,
     KLeftSquareBracket,
@@ -65,13 +66,11 @@ pub enum Key {
 }
 
 impl Key {
-    pub fn is_printable(self) -> bool {
-        // Making the assumption that if we can print it without modifiers
-        // then it is printable
-        self.printable(false).is_some()
+    pub fn is_ascii(self) -> bool {
+        self.ascii(false).is_some()
     }
 
-    pub fn printable(self, shift: bool) -> Option<char> {
+    pub fn ascii(self, shift: bool) -> Option<char> {
         use Key::*;
 
         let character = match (self, shift) {
@@ -115,8 +114,10 @@ impl Key {
             (KBacktick, false) => '`',   (KBacktick, true) => '~',
                (KComma, false) => ',',      (KComma, true) => '<',
               (KPeriod, false) => '.',     (KPeriod, true) => '>',
+               (KBackspace, _) => '\x08',
                    (KEnter, _) => '\n',
                    (KSpace, _) => ' ',
+                     (KTab, _) => '\t',
                              _ => return None,
         };
 
@@ -182,6 +183,7 @@ pub fn from_scancode(code: u8) -> Option<(Key, Action)> {
         0x29 => KBacktick,
         0x0c => KDash,
         0x0d => KEqual,
+        0x0f => KTab,
         0x2b => KBackslash,
         0x39 => KSpace,
         0x1a => KLeftSquareBracket,
@@ -244,8 +246,8 @@ impl Keyboard {
             Action::Pressed => {
                 self.push_key(key);
 
-                if key.is_printable() {
-                    return self.printable()
+                if key.is_ascii() {
+                    return self.ascii()
                 }
             },
             Action::Released => {
@@ -315,10 +317,10 @@ impl Keyboard {
         false
     }
 
-    pub fn printable(&self) -> Option<char> {
+    pub fn ascii(&self) -> Option<char> {
         if let Some(key) = self.stack_top() {
             let shift = self.is_shift_pressed();
-            key.printable(shift)
+            key.ascii(shift)
         } else {
             None
         }
