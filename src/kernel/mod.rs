@@ -1,6 +1,7 @@
 use core;
 
 use console::Vga;
+use keyboard::Keyboard;
 
 use interrupts::IdtRef;
 
@@ -12,6 +13,7 @@ mod kprint;
 pub struct Context {
     pub vga: Mutex<Vga<&'static mut [u8]>>,
     pub idt: IdtRef,
+    pub keyboard: Mutex<Keyboard>,
 }
 
 impl Context {
@@ -23,6 +25,7 @@ impl Context {
         Context {
             vga: Mutex::new(Vga::new(slice)),
             idt: IdtRef::new(),
+            keyboard: Mutex::new(Keyboard::new()),
         }
     }
 }
