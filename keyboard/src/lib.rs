@@ -204,20 +204,21 @@ pub fn from_scancode(code: u8) -> Option<(Key, Action)> {
     Some((key, action))
 }
 
-const MAX_KEYS: usize = 256;
+/// Size of the buffer used for storing the state of the keyboard
+const KEY_BUFFER: usize = 256;
 
 /// PS/2 keyboard driver: manages receiving signals from keyboard port,
 /// updating its internal state according to those signals, and providing
 /// relevant output (if any) based on its state.
 pub struct Keyboard {
-    stack: [Option<Key>; MAX_KEYS],
+    stack: [Option<Key>; KEY_BUFFER],
     size: usize,
 }
 
 impl Keyboard {
     pub fn new() -> Keyboard {
         Keyboard {
-            stack: [None; MAX_KEYS],
+            stack: [None; KEY_BUFFER],
             size: 0,
         }
     }
@@ -262,7 +263,7 @@ impl Keyboard {
         }
 
         // Guard against overflow
-        if self.size == MAX_KEYS {
+        if self.size == KEY_BUFFER {
             // TODO: Panic!
             return
         }
