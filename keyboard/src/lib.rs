@@ -1,7 +1,5 @@
 #![no_std]
 
-static NULL: char = '\0';
-
 /// Decode a code in the PS/2 scan code set 1 (legacy set).
 ///
 /// Difference between set 1 and sets 2 & 3:
@@ -62,12 +60,8 @@ pub fn from_scancode(code: usize) -> Option<char> {
         0x37 => '*', // Keypad
         0x4a => '-', // Keypad
         0x4e => '+', // Keypad
-        _ => NULL,
+        _ => return None,
     };
 
-    if printable != NULL {
-        Some(printable)
-    } else {
-        None
-    }
+    Some(printable)
 }
