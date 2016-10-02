@@ -18,6 +18,7 @@ extern crate console;
 extern crate interrupts;
 extern crate x86;
 use x86::bits64::irq::IdtEntry;
+use x86::shared::io::{inb};
 
 use core::intrinsics;
 
@@ -48,7 +49,7 @@ pub extern "C" fn kmain() -> ! {
     });
 
     let keyboard = make_idt_entry!(isr33, {
-        let scancode = unsafe { pic::inb(0x60) };
+        let scancode = unsafe { inb(0x60) };
 
         if let Some(c) = keyboard::from_scancode(scancode as usize) {
             kprint!(CONTEXT, "{}", c);
