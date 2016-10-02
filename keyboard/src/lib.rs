@@ -58,6 +58,8 @@ pub enum Key {
     KKeypadAsterisk, // Keypad
     KKeypadMinus,    // Keypad
     KKeypadPlus,     // Keypad
+    KBackspace,
+    KEnter,
     KLeftShift,
     KRightShift,
 }
@@ -113,6 +115,7 @@ impl Key {
             (KBacktick, false) => '`',   (KBacktick, true) => '~',
                (KComma, false) => ',',      (KComma, true) => '<',
               (KPeriod, false) => '.',     (KPeriod, true) => '>',
+                   (KEnter, _) => '\n',
                    (KSpace, _) => ' ',
                              _ => return None,
         };
@@ -191,6 +194,8 @@ pub fn from_scancode(code: u8) -> Option<(Key, Action)> {
         0x37 => KKeypadAsterisk, // Keypad
         0x4a => KKeypadMinus,    // Keypad
         0x4e => KKeypadPlus,     // Keypad
+        0x0e => KBackspace,
+        0x1c => KEnter,
         0x2A => KLeftShift,
         0x36 => KRightShift,
         _    => return None,
