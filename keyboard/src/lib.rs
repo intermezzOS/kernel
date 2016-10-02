@@ -225,6 +225,8 @@ impl Keyboard {
         }
     }
 
+    /// Returns the `Key` at the top of the stack, or `None` if no key is
+    /// currently pressed.
     fn stack_top(&self) -> Option<Key> {
         if self.size == 0 {
             None
@@ -258,6 +260,8 @@ impl Keyboard {
         None
     }
 
+    /// Add an active `Key` to the top of stack. This is normally in response
+    /// to a key-pressed event from the keyboard.
     fn push_key(&mut self, key: Key) {
         // Don't repeat-register key presses
         if self.is_key_pressed(key) {
@@ -274,6 +278,7 @@ impl Keyboard {
         self.size += 1;
     }
 
+    /// Remove an active/pressed `Key` from the stack.
     fn clear_key(&mut self, key: Key) {
         for i in 0..self.size {
             let k = self.stack[i].unwrap();
@@ -293,6 +298,7 @@ impl Keyboard {
         }
     }
 
+    /// Scans the stack to determine if the given `Key` is pressed.
     fn is_key_pressed(&self, key: Key) -> bool {
         for i in 0..self.size {
             match self.stack[i] {
@@ -317,6 +323,8 @@ impl Keyboard {
         false
     }
 
+    /// Returns the ASCII code for the top (most recent) key on the stack.
+    /// Takes active/pressed modifier keys into account.
     pub fn ascii(&self) -> Option<char> {
         if let Some(key) = self.stack_top() {
             let shift = self.is_shift_pressed();
