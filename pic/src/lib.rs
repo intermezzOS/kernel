@@ -4,20 +4,29 @@
 extern crate x86;
 use x86::shared::io::{inb, outb};
 
-/* PIC input/output ports */
+// PIC input/output ports
 const PIC1_CMD_IO_PORT: u16 = 0x0020;
 const PIC2_CMD_IO_PORT: u16 = 0x00A0;
 const PIC1_DATA_IO_PORT: u16 = 0x0021;
 const PIC2_DATA_IO_PORT: u16 = 0x00A1;
 
-/* PIC commands */
+// PIC commands
 const ICW1: u8 = 0x11;
 const ICW4: u8 = 0x1;
 
-/* new inetrrupt vector offsets for remmaped PICs */
+// new inetrrupt vector offsets for remmaped PICs
 const PIC1_VECTOR_OFFSET: u8 = 0x20;
 const PIC2_VECTOR_OFFSET: u8 = 0x28;
 
+/// Initializes and remaps PIC interrupts to other vectors numbers.
+/// Hardware interrupts are mapped to 8-15 (primary PIC) and
+/// 70-78 (secondary PIC) vector numbers. This leads to problem
+/// in protected mode as 7-8 vector numbers are reserved for
+/// exceptions.
+///
+/// This function remaps interrupts to new vector number offsets,
+/// from 0x20 for the primary PIC and from 0x28 for secondary and
+/// bind primary PIC with secondary PIC through IRQ 2 line.
 pub fn remap() {
     unsafe {
         let pic1_mask = inb(PIC1_DATA_IO_PORT);
