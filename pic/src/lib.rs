@@ -14,7 +14,7 @@ const PIC2_DATA_IO_PORT: u16 = 0x00A1;
 const ICW1: u8 = 0x11;
 const ICW4: u8 = 0x1;
 
-// new inetrrupt vector offsets for remmaped PICs
+// new interrupt vector offsets for remapped PICs
 const PIC1_VECTOR_OFFSET: u8 = 0x20;
 const PIC2_VECTOR_OFFSET: u8 = 0x28;
 
