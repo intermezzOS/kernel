@@ -22,7 +22,7 @@ macro_rules! kdebugln {
 macro_rules! kdebug {
     ($ctx:ident, $($arg:tt)*) => ({
         use core::fmt::Write;
-		let mut serial = $ctx.serial.lock();
+        let mut serial = $ctx.serial.lock();
         serial.write_fmt(format_args!($($arg)*)).unwrap();
     });
 }
