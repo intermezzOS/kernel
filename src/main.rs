@@ -38,7 +38,7 @@ lazy_static! {
 
 #[no_mangle]
 pub extern "C" fn kmain() -> ! {
-	kdebugln!(CONTEXT, "kmain start");
+    kdebugln!(CONTEXT, "kmain start");
 
     pic::remap();
 

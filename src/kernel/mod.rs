@@ -15,7 +15,7 @@ mod kdebug;
 pub struct Context {
     pub vga: Mutex<Vga<&'static mut [u8]>>,
     pub idt: IdtRef,
-	pub serial: Mutex<Serial>,
+    pub serial: Mutex<Serial>,
 }
 
 impl Context {
@@ -27,7 +27,7 @@ impl Context {
         Context {
             vga: Mutex::new(Vga::new(slice)),
             idt: IdtRef::new(),
-			serial: Mutex::new(Serial::new()),
+            serial: Mutex::new(Serial::new()),
         }
     }
 }
