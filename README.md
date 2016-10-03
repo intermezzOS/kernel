@@ -39,18 +39,12 @@ linker = "/Users/yourusername/opt/bin/x86_64-pc-elf-gcc"
 
 Where `yourusername` is your username.
 
-This project uses the xargo crate. To get it:
-
- Before install necessary dependencies, for Ubuntu 16.04, we need to install libssl-dev:
- ```bash
- $ sudo apt-get install libssl-dev
- ```
-
-Now install xargo:
+This project uses the xargo crate (https://github.com/japaric/xargo). To get it:
 
  ```bash
  $ cargo install xargo
  ```
+ Note: xargo has a few dependencies, check its readme to make sure you've got them installed.
 
 After all that setup, it’s as easy as:
 
