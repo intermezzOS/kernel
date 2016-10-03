@@ -37,6 +37,8 @@ lazy_static! {
 
 #[no_mangle]
 pub extern "C" fn kmain() -> ! {
+	kdebugln!(CONTEXT, "kmain start");
+
     pic::remap();
 
     let gpf = make_idt_entry!(isr13, {

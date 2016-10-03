@@ -1,4 +1,4 @@
-cargo: 
+cargo:
 	xargo build --release --target x86_64-unknown-intermezzos-gnu
 
 # cargo test fails for some reason, not sure why yet
@@ -16,3 +16,6 @@ iso: cargo grub.cfg
 
 run: iso
 	qemu-system-x86_64 -cdrom target/os.iso
+
+debug: iso
+	qemu-system-x86_64 -cdrom target/os.iso -serial file:/tmp/serial.log
