@@ -39,7 +39,7 @@ impl Serial {
             data: unsafe { Port::new(PORT) },
             status: unsafe { Port::new(PORT + 5u16) },
         }
-	}
+    }
 
 
     pub fn write_byte(&mut self, byte: u8) {

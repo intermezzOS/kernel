@@ -3,7 +3,7 @@
 /// # Examples
 ///
 /// ```ignore
-/// kdebug!("Hello, World!");
+/// kdebugln!("Hello, World!");
 /// ```
 #[macro_export]
 macro_rules! kdebugln {
@@ -16,7 +16,7 @@ macro_rules! kdebugln {
 /// # Examples
 ///
 /// ```ignore
-/// kprint!("Hello, World!");
+/// kdebug!("Hello, World!");
 /// ```
 #[macro_export]
 macro_rules! kdebug {
