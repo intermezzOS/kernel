@@ -14,7 +14,7 @@ Make sure you have a nightly Rust installed. Something like this:
 
 ```bash
 $ rustc --version
-rustc 1.10.0-nightly (267cde259 2016-05-25)
+rustc 1.14.0-nightly (289f3a4ca 2016-09-29)
 ```
 
 If you don’t have Rust installed (and maybe even if you've installed Rust some
@@ -44,7 +44,7 @@ This project uses the xargo crate (https://github.com/japaric/xargo). To get it:
  ```bash
  $ cargo install xargo
  ```
- Note: xargo has a few dependencies, check its readme to make sure you've got them installed.
+ Note: xargo has a few dependencies, check it's readme to make sure you've got them installed.
 
 After all that setup, it’s as easy as:
 
