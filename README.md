@@ -39,7 +39,7 @@ linker = "/Users/yourusername/opt/bin/x86_64-pc-elf-gcc"
 
 Where `yourusername` is your username.
 
-This project uses the xargo crate (https://github.com/japaric/xargo). To get it:
+This project uses the [xargo](https://github.com/japaric/xargo) crate. To get it:
 
  ```bash
  $ cargo install xargo
