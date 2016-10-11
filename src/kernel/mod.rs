@@ -27,7 +27,7 @@ impl Context {
         Context {
             vga: Mutex::new(Vga::new(slice)),
             idt: IdtRef::new(),
-            serial: Mutex::new(Serial::new()),
+            serial: Mutex::new(Serial::new(0x3F8)), // COM1 Serial Port
         }
     }
 }

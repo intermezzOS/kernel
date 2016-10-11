@@ -14,30 +14,29 @@ use core::fmt::Write;
 
 use cpuio::Port;
 
-const PORT: u16 = 0x3F8; // COM1
-
 pub struct Serial {
     data: Port<u8>,
     status: Port<u8>,
 }
 
 impl Serial {
-    pub fn new() -> Serial {
+    pub fn new(port: u16) -> Serial {
 
         // Initialize
         unsafe {
-            Port::new(PORT + 1u16).write(0x00u8);  // Disable interrupts
-            Port::new(PORT + 3u16).write(0x80u8);  // Enable DLAB (to set baud rate divisor)
-            Port::new(PORT + 0u16).write(0x03u8);  // Set divisor to 3 (lo byte) for 38400hz baud
-            Port::new(PORT + 1u16).write(0x00u8);  //                  (hi byte)
-            Port::new(PORT + 3u16).write(0x03u8);  // 8 bits, no parity, one stop bit
-            Port::new(PORT + 2u16).write(0xC7u8);  // Enable FIFO, clear them, with 14b threshold
-            Port::new(PORT + 4u16).write(0x0Bu8);  // IRQs enabled, RTS/DSR set
+            Port::new(port + 1u16).write(0x00u8);  // Disable interrupts
+            Port::new(port + 3u16).write(0x80u8);  // Enable DLAB (to set baud rate divisor)
+            Port::new(port + 0u16).write(0x03u8);  // Set divisor to 3 (lo byte) for 38400hz baud
+            Port::new(port + 1u16).write(0x00u8);  //                  (hi byte)
+            Port::new(port + 3u16).write(0x03u8);  // 8 bits, no parity, one stop bit
+            Port::new(port + 2u16).write(0xC7u8);  // Enable FIFO, clear them, with 14b threshold
+            Port::new(port + 4u16).write(0x0Bu8);  // IRQs enabled, RTS/DSR set
+            Port::new(port + 1u16).write(0x01u8);  // Enable interrupts
         }
 
         Serial {
-            data: unsafe { Port::new(PORT) },
-            status: unsafe { Port::new(PORT + 5u16) },
+            data: unsafe { Port::new(port) },
+            status: unsafe { Port::new(port + 5u16) },
         }
     }
 

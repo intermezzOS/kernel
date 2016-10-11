@@ -63,9 +63,19 @@ pub extern "C" fn kmain() -> ! {
         pic::eoi_for(33);
     });
 
+    // Serial (COM1) uses IRQ4 on PIC1 (32), so IDT index is 36
+    let serial = make_idt_entry!(isr36, {
+        let mut serial = CONTEXT.serial.lock();
+        let byte = serial.read_byte();
+        kprint!(CONTEXT, "{}", byte as char);
+
+        pic::eoi_for(36);
+    });
+
     CONTEXT.idt.set_handler(13, gpf);
     CONTEXT.idt.set_handler(32, timer);
     CONTEXT.idt.set_handler(33, keyboard);
+    CONTEXT.idt.set_handler(36, serial);
 
     CONTEXT.idt.enable_interrupts();
 
