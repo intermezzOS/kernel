@@ -1,6 +1,9 @@
 [root]
 name = "pic"
 version = "0.1.0"
+dependencies = [
+ "x86 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+]
 
 [[package]]
 name = "bitflags"

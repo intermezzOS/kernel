@@ -18,6 +18,7 @@ extern crate console;
 extern crate interrupts;
 extern crate x86;
 use x86::bits64::irq::IdtEntry;
+use x86::shared::io::{inb};
 
 use core::intrinsics;
 
@@ -49,7 +50,7 @@ pub extern "C" fn kmain() -> ! {
     // Keyboard uses IRQ1 and PIC1 has been remapped to 0x20 (32); therefore
     // the index in the IDT for IRQ1 will be 32 + 1 = 33
     let keyboard = make_idt_entry!(isr33, {
-        let scancode = unsafe { pic::inb(0x60) };
+        let scancode = unsafe { inb(0x60) };
 
         {
             let mut keyboard = CONTEXT.keyboard.lock();
