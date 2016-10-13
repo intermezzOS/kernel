@@ -7,62 +7,64 @@ pub enum Action {
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Key {
-    KA,
-    KB,
-    KC,
-    KD,
-    KE,
-    KF,
-    KG,
-    KH,
-    KI,
-    KJ,
-    KK,
-    KL,
-    KM,
-    KN,
-    KO,
-    KP,
-    KQ,
-    KR,
-    KS,
-    KT,
-    KU,
-    KV,
-    KW,
-    KX,
-    KY,
-    KZ,
-    K0,
-    K1,
-    K2,
-    K3,
-    K4,
-    K5,
-    K6,
-    K7,
-    K8,
-    K9,
-    KBacktick,
-    KDash,
-    KEqual,
-    KTab,
-    KBackslash,
-    KSpace,
-    KLeftSquareBracket,
-    KRightSquareBracket,
-    KSemicolon,
-    KApostrophe,
-    KComma,
-    KPeriod,
-    KSlash,
-    KKeypadAsterisk, // Keypad
-    KKeypadMinus,    // Keypad
-    KKeypadPlus,     // Keypad
-    KBackspace,
-    KEnter,
-    KLeftShift,
-    KRightShift,
+    A,
+    B,
+    C,
+    D,
+    E,
+    F,
+    G,
+    H,
+    I,
+    J,
+    K,
+    L,
+    M,
+    N,
+    O,
+    P,
+    Q,
+    R,
+    S,
+    T,
+    U,
+    V,
+    W,
+    X,
+    Y,
+    Z,
+    // These are the numbers along the top row of the keyboard, *not* the ones
+    // to the right on the keypad.
+    Keyboard0,
+    Keyboard1,
+    Keyboard2,
+    Keyboard3,
+    Keyboard4,
+    Keyboard5,
+    Keyboard6,
+    Keyboard7,
+    Keyboard8,
+    Keyboard9,
+    Backtick,
+    Dash,
+    Equal,
+    Tab,
+    Backslash,
+    Space,
+    LeftSquareBracket,
+    RightSquareBracket,
+    Semicolon,
+    Apostrophe,
+    Comma,
+    Period,
+    Slash,
+    KeypadAsterisk, // Keypad
+    KeypadMinus, // Keypad
+    KeypadPlus, // Keypad
+    Backspace,
+    Enter,
+    LeftShift,
+    RightShift,
 }
 
 impl Key {
@@ -74,51 +76,51 @@ impl Key {
         use Key::*;
 
         let character = match (self, shift) {
-                   (KA, false) => 'a',          (KA, true) => 'A',
-                   (KB, false) => 'b',          (KB, true) => 'B',
-                   (KC, false) => 'c',          (KC, true) => 'C',
-                   (KD, false) => 'd',          (KD, true) => 'D',
-                   (KE, false) => 'e',          (KE, true) => 'E',
-                   (KF, false) => 'f',          (KF, true) => 'F',
-                   (KG, false) => 'g',          (KG, true) => 'G',
-                   (KH, false) => 'h',          (KH, true) => 'H',
-                   (KI, false) => 'i',          (KI, true) => 'I',
-                   (KJ, false) => 'j',          (KJ, true) => 'J',
-                   (KK, false) => 'k',          (KK, true) => 'K',
-                   (KL, false) => 'l',          (KL, true) => 'L',
-                   (KM, false) => 'm',          (KM, true) => 'M',
-                   (KN, false) => 'n',          (KN, true) => 'N',
-                   (KO, false) => 'o',          (KO, true) => 'O',
-                   (KP, false) => 'p',          (KP, true) => 'P',
-                   (KQ, false) => 'q',          (KQ, true) => 'Q',
-                   (KR, false) => 'r',          (KR, true) => 'R',
-                   (KS, false) => 's',          (KS, true) => 'S',
-                   (KT, false) => 't',          (KT, true) => 'T',
-                   (KU, false) => 'u',          (KU, true) => 'U',
-                   (KV, false) => 'v',          (KV, true) => 'V',
-                   (KW, false) => 'w',          (KW, true) => 'W',
-                   (KX, false) => 'x',          (KX, true) => 'X',
-                   (KY, false) => 'y',          (KY, true) => 'Y',
-                   (KZ, false) => 'z',          (KZ, true) => 'Z',
-                   (K0, false) => '0',          (K0, true) => ')',
-                   (K1, false) => '1',          (K1, true) => '!',
-                   (K2, false) => '2',          (K2, true) => '@',
-                   (K3, false) => '3',          (K3, true) => '#',
-                   (K4, false) => '4',          (K4, true) => '$',
-                   (K5, false) => '5',          (K5, true) => '%',
-                   (K6, false) => '6',          (K6, true) => '^',
-                   (K7, false) => '7',          (K7, true) => '&',
-                   (K8, false) => '8',          (K8, true) => '*',
-                   (K9, false) => '9',          (K9, true) => '(',
-           (KBackslash, false) => '\\', (KBackslash, true) => '|',
-            (KBacktick, false) => '`',   (KBacktick, true) => '~',
-               (KComma, false) => ',',      (KComma, true) => '<',
-              (KPeriod, false) => '.',     (KPeriod, true) => '>',
-               (KBackspace, _) => '\x08',
-                   (KEnter, _) => '\n',
-                   (KSpace, _) => ' ',
-                     (KTab, _) => '\t',
-                             _ => return None,
+            (A, false) => 'a',          (A, true) => 'A',
+            (B, false) => 'b',          (B, true) => 'B',
+            (C, false) => 'c',          (C, true) => 'C',
+            (D, false) => 'd',          (D, true) => 'D',
+            (E, false) => 'e',          (E, true) => 'E',
+            (F, false) => 'f',          (F, true) => 'F',
+            (G, false) => 'g',          (G, true) => 'G',
+            (H, false) => 'h',          (H, true) => 'H',
+            (I, false) => 'i',          (I, true) => 'I',
+            (J, false) => 'j',          (J, true) => 'J',
+            (K, false) => 'k',          (K, true) => 'K',
+            (L, false) => 'l',          (L, true) => 'L',
+            (M, false) => 'm',          (M, true) => 'M',
+            (N, false) => 'n',          (N, true) => 'N',
+            (O, false) => 'o',          (O, true) => 'O',
+            (P, false) => 'p',          (P, true) => 'P',
+            (Q, false) => 'q',          (Q, true) => 'Q',
+            (R, false) => 'r',          (R, true) => 'R',
+            (S, false) => 's',          (S, true) => 'S',
+            (T, false) => 't',          (T, true) => 'T',
+            (U, false) => 'u',          (U, true) => 'U',
+            (V, false) => 'v',          (V, true) => 'V',
+            (W, false) => 'w',          (W, true) => 'W',
+            (X, false) => 'x',          (X, true) => 'X',
+            (Y, false) => 'y',          (Y, true) => 'Y',
+            (Z, false) => 'z',          (Z, true) => 'Z',
+            (Keyboard0, false) => '0',  (Keyboard0, true) => ')',
+            (Keyboard1, false) => '1',  (Keyboard1, true) => '!',
+            (Keyboard2, false) => '2',  (Keyboard2, true) => '@',
+            (Keyboard3, false) => '3',  (Keyboard3, true) => '#',
+            (Keyboard4, false) => '4',  (Keyboard4, true) => '$',
+            (Keyboard5, false) => '5',  (Keyboard5, true) => '%',
+            (Keyboard6, false) => '6',  (Keyboard6, true) => '^',
+            (Keyboard7, false) => '7',  (Keyboard7, true) => '&',
+            (Keyboard8, false) => '8',  (Keyboard8, true) => '*',
+            (Keyboard9, false) => '9',  (Keyboard9, true) => '(',
+            (Backslash, false) => '\\', (Backslash, true) => '|',
+            (Backtick, false) => '`',   (Backtick, true) => '~',
+            (Comma, false) => ',',      (Comma, true) => '<',
+            (Period, false) => '.',     (Period, true) => '>',
+            (Backspace, _) => '\x08',
+            (Enter, _) => '\n',
+            (Space, _) => ' ',
+            (Tab, _) => '\t',
+            _ => return None,
         };
 
         Some(character)
@@ -138,69 +140,69 @@ pub fn from_scancode(code: u8) -> Option<(Key, Action)> {
     // Set 1 has the release codes for the basic keys offset by 0x80 from the
     // press codes for the key
     let (code, action) = match code {
-        0x00...0x58 => (code,        Action::Pressed),
+        0x00...0x58 => (code, Action::Pressed),
         0x81...0xD8 => (code - 0x80, Action::Released),
         _ => return None,
     };
 
     let key = match code {
-        0x1e => KA,
-        0x30 => KB,
-        0x2e => KC,
-        0x20 => KD,
-        0x12 => KE,
-        0x21 => KF,
-        0x22 => KG,
-        0x23 => KH,
-        0x17 => KI,
-        0x24 => KJ,
-        0x25 => KK,
-        0x26 => KL,
-        0x32 => KM,
-        0x31 => KN,
-        0x18 => KO,
-        0x19 => KP,
-        0x10 => KQ,
-        0x13 => KR,
-        0x1f => KS,
-        0x14 => KT,
-        0x16 => KU,
-        0x2f => KV,
-        0x11 => KW,
-        0x2d => KX,
-        0x15 => KY,
-        0x2c => KZ,
-        0x0b => K0,
-        0x02 => K1,
-        0x03 => K2,
-        0x04 => K3,
-        0x05 => K4,
-        0x06 => K5,
-        0x07 => K6,
-        0x08 => K7,
-        0x09 => K8,
-        0x0a => K9,
-        0x29 => KBacktick,
-        0x0c => KDash,
-        0x0d => KEqual,
-        0x0f => KTab,
-        0x2b => KBackslash,
-        0x39 => KSpace,
-        0x1a => KLeftSquareBracket,
-        0x1b => KRightSquareBracket,
-        0x27 => KSemicolon,
-        0x28 => KApostrophe,
-        0x33 => KComma,
-        0x34 => KPeriod,
-        0x35 => KSlash,
-        0x37 => KKeypadAsterisk, // Keypad
-        0x4a => KKeypadMinus,    // Keypad
-        0x4e => KKeypadPlus,     // Keypad
-        0x0e => KBackspace,
-        0x1c => KEnter,
-        0x2A => KLeftShift,
-        0x36 => KRightShift,
-        _    => return None,
+        0x1e => A,
+        0x30 => B,
+        0x2e => C,
+        0x20 => D,
+        0x12 => E,
+        0x21 => F,
+        0x22 => G,
+        0x23 => H,
+        0x17 => I,
+        0x24 => J,
+        0x25 => K,
+        0x26 => L,
+        0x32 => M,
+        0x31 => N,
+        0x18 => O,
+        0x19 => P,
+        0x10 => Q,
+        0x13 => R,
+        0x1f => S,
+        0x14 => T,
+        0x16 => U,
+        0x2f => V,
+        0x11 => W,
+        0x2d => X,
+        0x15 => Y,
+        0x2c => Z,
+        0x0b => Keyboard0,
+        0x02 => Keyboard1,
+        0x03 => Keyboard2,
+        0x04 => Keyboard3,
+        0x05 => Keyboard4,
+        0x06 => Keyboard5,
+        0x07 => Keyboard6,
+        0x08 => Keyboard7,
+        0x09 => Keyboard8,
+        0x0a => Keyboard9,
+        0x29 => Backtick,
+        0x0c => Dash,
+        0x0d => Equal,
+        0x0f => Tab,
+        0x2b => Backslash,
+        0x39 => Space,
+        0x1a => LeftSquareBracket,
+        0x1b => RightSquareBracket,
+        0x27 => Semicolon,
+        0x28 => Apostrophe,
+        0x33 => Comma,
+        0x34 => Period,
+        0x35 => Slash,
+        0x37 => KeypadAsterisk, // Keypad
+        0x4a => KeypadMinus,    // Keypad
+        0x4e => KeypadPlus,     // Keypad
+        0x0e => Backspace,
+        0x1c => Enter,
+        0x2A => LeftShift,
+        0x36 => RightShift,
+        _ => return None,
     };
 
     Some((key, action))
@@ -249,12 +251,10 @@ impl Keyboard {
                 self.push_key(key);
 
                 if key.is_ascii() {
-                    return self.ascii()
+                    return self.ascii();
                 }
-            },
-            Action::Released => {
-                self.clear_key(key);
-            },
+            }
+            Action::Released => self.clear_key(key),
         }
 
         None
@@ -265,7 +265,7 @@ impl Keyboard {
     fn push_key(&mut self, key: Key) {
         // Don't repeat-register key presses
         if self.is_key_pressed(key) {
-            return
+            return;
         }
 
         // Guard against overflow
@@ -284,7 +284,7 @@ impl Keyboard {
             let k = self.stack[i].unwrap();
 
             if k != key {
-                continue
+                continue;
             } else {
                 // Shift everything after the value forwards over it and then
                 // shrink the size
@@ -293,7 +293,7 @@ impl Keyboard {
                 }
                 self.stack[self.size - 1] = None;
                 self.size -= 1;
-                break
+                break;
             }
         }
     }
@@ -304,9 +304,9 @@ impl Keyboard {
             match self.stack[i] {
                 Some(k) => {
                     if k == key {
-                        return true
+                        return true;
                     }
-                },
+                }
                 None => (),
             }
         }
@@ -316,7 +316,7 @@ impl Keyboard {
     fn is_shift_pressed(&self) -> bool {
         for i in 0..self.size {
             match self.stack[i] {
-                Some(Key::KLeftShift) => return true,
+                Some(Key::LeftShift) => return true,
                 _ => (),
             }
         }
@@ -346,38 +346,38 @@ mod tests {
         assert_eq!(keyboard.size, 0);
         assert_eq!(keyboard.stack[0], None);
 
-        keyboard.push_key(Key::KA);
+        keyboard.push_key(Key::A);
         assert_eq!(keyboard.size, 1);
-        assert_eq!(keyboard.stack[0], Some(Key::KA));
+        assert_eq!(keyboard.stack[0], Some(Key::A));
         assert_eq!(keyboard.stack[1], None);
 
         // Doesn't double-push
-        keyboard.push_key(Key::KA);
+        keyboard.push_key(Key::A);
         assert_eq!(keyboard.size, 1);
-        assert_eq!(keyboard.stack[0], Some(Key::KA));
+        assert_eq!(keyboard.stack[0], Some(Key::A));
         assert_eq!(keyboard.stack[1], None);
 
-        keyboard.push_key(Key::KB);
+        keyboard.push_key(Key::B);
         assert_eq!(keyboard.size, 2);
-        assert_eq!(keyboard.stack[0], Some(Key::KA));
-        assert_eq!(keyboard.stack[1], Some(Key::KB));
+        assert_eq!(keyboard.stack[0], Some(Key::A));
+        assert_eq!(keyboard.stack[1], Some(Key::B));
         assert_eq!(keyboard.stack[2], None);
     }
 
     #[test]
     fn clears_key() {
         let mut keyboard = Keyboard::new();
-        keyboard.push_key(Key::KLeftShift);
-        keyboard.push_key(Key::KA);
+        keyboard.push_key(Key::LeftShift);
+        keyboard.push_key(Key::A);
         assert_eq!(keyboard.size, 2);
-        assert_eq!(keyboard.stack[0], Some(Key::KLeftShift));
-        assert_eq!(keyboard.stack[1], Some(Key::KA));
+        assert_eq!(keyboard.stack[0], Some(Key::LeftShift));
+        assert_eq!(keyboard.stack[1], Some(Key::A));
         assert_eq!(keyboard.stack[2], None);
 
         // Check that it removes it and shifts everything down
-        keyboard.clear_key(Key::KLeftShift);
+        keyboard.clear_key(Key::LeftShift);
         assert_eq!(keyboard.size, 1);
-        assert_eq!(keyboard.stack[0], Some(Key::KA));
+        assert_eq!(keyboard.stack[0], Some(Key::A));
         assert_eq!(keyboard.stack[1], None);
     }
 
@@ -388,7 +388,7 @@ mod tests {
         let result = keyboard.input(0x1e); // "A" pressed
         assert_eq!(result, Some('a'));
         assert_eq!(keyboard.size, 1);
-        assert_eq!(keyboard.stack[0], Some(Key::KA));
+        assert_eq!(keyboard.stack[0], Some(Key::A));
 
         let result = keyboard.input(0x9e); // "A" released
         assert_eq!(result, None);
@@ -402,19 +402,19 @@ mod tests {
         let result = keyboard.input(0x2a); // Left shift pressed
         assert_eq!(result, None);
         assert_eq!(keyboard.size, 1);
-        assert_eq!(keyboard.stack[0], Some(Key::KLeftShift));
+        assert_eq!(keyboard.stack[0], Some(Key::LeftShift));
 
         // Check that the modifier is applied to the character
         let result = keyboard.input(0x1e); // "A" pressed
         assert_eq!(result, Some('A'));
         assert_eq!(keyboard.size, 2);
-        assert_eq!(keyboard.stack[1], Some(Key::KA));
+        assert_eq!(keyboard.stack[1], Some(Key::A));
 
         // And that it's still applied upon repeat ticks
         let result = keyboard.input(0x1e); // "A" pressed
         assert_eq!(result, Some('A'));
         assert_eq!(keyboard.size, 2);
-        assert_eq!(keyboard.stack[1], Some(Key::KA));
+        assert_eq!(keyboard.stack[1], Some(Key::A));
 
         let result = keyboard.input(0x9e); // "A" released
         assert_eq!(result, None);
@@ -428,6 +428,6 @@ mod tests {
         let result = keyboard.input(0x30); // "B" pressed
         assert_eq!(result, Some('b'));
         assert_eq!(keyboard.size, 1);
-        assert_eq!(keyboard.stack[0], Some(Key::KB));
+        assert_eq!(keyboard.stack[0], Some(Key::B));
     }
 }
