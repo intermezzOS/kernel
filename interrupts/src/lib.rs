@@ -3,6 +3,10 @@
 #![feature(const_fn)]
 #![no_std]
 
+//! Interrupts
+//! This module contains methods and macros to create and register interrupt descriptors and
+//! interrupt handlers
+
 extern crate x86;
 extern crate pic;
 extern crate spin;
