@@ -1,11 +1,11 @@
+//! Interrupts
+//! This module contains methods and macros to create and register interrupt descriptors and
+//! interrupt handlers
+
 #![feature(asm)]
 #![feature(naked_functions)]
 #![feature(const_fn)]
 #![no_std]
-
-//! Interrupts
-//! This module contains methods and macros to create and register interrupt descriptors and
-//! interrupt handlers
 
 extern crate x86;
 extern crate pic;
@@ -16,6 +16,9 @@ use x86::shared::dtables;
 use x86::shared::dtables::DescriptorTablePointer;
 use x86::bits64::irq::IdtEntry;
 
+/// Creates an IDT entry.
+///
+/// Creates an IDT entry that executes the expression in `body`.
 #[macro_export]
 macro_rules! make_idt_entry {
     ($name:ident, $body:expr) => {{
@@ -79,8 +82,14 @@ macro_rules! make_idt_entry {
     }};
 }
 
+/// The Interrupt Descriptor Table
+///
+/// The CPU will look at this table to find the appropriate interrupt handler.
+///
 static IDT: Mutex<[IdtEntry; 256]> = Mutex::new([IdtEntry::MISSING; 256]);
 
+/// Pointer to the Interrupt Descriptor Table
+///
 pub struct IdtRef {
     ptr: DescriptorTablePointer<IdtEntry>,
     idt: &'static Mutex<[IdtEntry; 256]>,
@@ -89,6 +98,8 @@ pub struct IdtRef {
 unsafe impl Sync for IdtRef {}
 
 impl IdtRef {
+    /// Creates a new IdtRef
+    ///
     pub fn new() -> IdtRef {
         let r = IdtRef {
             ptr: DescriptorTablePointer::new_idtp(&IDT.lock()[..]),
@@ -97,17 +108,18 @@ impl IdtRef {
 
         // This block is safe because by referencing IDT above, we know that we've constructed an
         // IDT.
-        unsafe {
-            dtables::lidt(&r.ptr)
-        };
+        unsafe { dtables::lidt(&r.ptr) };
 
         r
     }
 
+    /// Sets an IdtEntry as a handler for interrupt specified by `index`
+    ///
     pub fn set_handler(&self, index: usize, entry: IdtEntry) {
         self.idt.lock()[index] = entry;
     }
 
+    /// Enables interrupts
     pub fn enable_interrupts(&self) {
         // This unsafe fn is okay becuase, by virtue of having an IdtRef, we know that we have a
         // valid Idt.
