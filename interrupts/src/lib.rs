@@ -98,7 +98,7 @@ pub struct IdtRef {
 unsafe impl Sync for IdtRef {}
 
 impl IdtRef {
-    /// Creates a new IdtRef
+    /// Creates a new pointer struct to the IDT.
     ///
     pub fn new() -> IdtRef {
         let r = IdtRef {
