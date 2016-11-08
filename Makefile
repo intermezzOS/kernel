@@ -4,6 +4,9 @@ cargo:
 # cargo test fails for some reason, not sure why yet
 test:
 	cd console && cargo test
+	cd interrupts && cargo test
+	cd keyboard && cargo test
+	cd pic && cargo test
 
 iso: cargo grub.cfg
 	mkdir -p target/isofiles/boot/grub

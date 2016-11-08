@@ -1,6 +1,7 @@
 [package]
-name = "console"
+name = "pic"
 version = "0.1.0"
 authors = ["The intermezzOS team"]
 
 [dependencies]
+x86 = "0.8.0"
