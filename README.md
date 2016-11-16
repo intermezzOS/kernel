@@ -40,8 +40,6 @@ You'll also need to set this in your `~/.cargo/config`:
 linker = "/usr/local/bin/x86_64-pc-elf-gcc"
 ```
 
-Where `yourusername` is your username.
-
 After all that setup, it’s as easy as:
 
 ```bash
