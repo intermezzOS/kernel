@@ -28,13 +28,16 @@ Then get this stuff:
 * `grub-mkrescue`: you may also need to install `xorriso`
 * `qemu-system-x86_64`
 
-If you're on OS X, you might want to use [this
-script](http://intermezzos.github.io/book/appendix/osx-install.html) to get
-them. You'll also need to set this in your `~/.cargo/config`:
+If you're on macOS, you can install the dependencies using [Homebrew](http://brew.sh) with the following commands:
+```bash
+$ brew tap homebrew/bundle
+$ brew bundle
+```
+You'll also need to set this in your `~/.cargo/config`:
 
 ```toml
 [target.x86_64-unknown-intermezzos-gnu]
-linker = "/Users/yourusername/opt/bin/x86_64-pc-elf-gcc"
+linker = "/usr/local/bin/x86_64-pc-elf-gcc"
 ```
 
 Where `yourusername` is your username.
