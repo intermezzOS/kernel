@@ -44,7 +44,8 @@ This project uses the [xargo](https://github.com/japaric/xargo) crate. To get it
  ```bash
  $ cargo install xargo
  ```
- Note: xargo has a few dependencies, check it's readme to make sure you've got them installed.
+ 
+ Note: xargo has a few dependencies, check its readme to make sure you've got them installed.
 
 After all that setup, it’s as easy as:
 
@@ -54,7 +55,7 @@ $ make run
 
 This will:
 
-* Xargo builds libcore for our x86_64-unknown-intermezzos-gnu target
+* Build libcore for our x86_64-unknown-intermezzos-gnu target with Xargo
 * Build the Rust code with Cargo
 * Compile the bit of assembly needed to boot
 * Link it all together
