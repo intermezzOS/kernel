@@ -14,7 +14,7 @@ Make sure you have a nightly Rust installed. Something like this:
 
 ```bash
 $ rustc --version
-rustc 1.13.0-nightly (267cde259 2016-05-25)
+rustc 1.14.0-nightly (289f3a4ca 2016-09-29)
 ```
 
 If you don’t have Rust installed (and maybe even if you've installed Rust some
@@ -39,6 +39,14 @@ linker = "/Users/yourusername/opt/bin/x86_64-pc-elf-gcc"
 
 Where `yourusername` is your username.
 
+This project uses the [xargo](https://github.com/japaric/xargo) crate. To get it:
+
+ ```bash
+ $ cargo install xargo
+ ```
+ 
+ Note: xargo has a few dependencies, check its readme to make sure you've got them installed.
+
 After all that setup, it’s as easy as:
 
 ```bash
@@ -47,6 +55,7 @@ $ make run
 
 This will:
 
+* Build libcore for our x86_64-unknown-intermezzos-gnu target with Xargo
 * Build the Rust code with Cargo
 * Compile the bit of assembly needed to boot
 * Link it all together
