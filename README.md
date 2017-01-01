@@ -10,23 +10,49 @@ want to chat.
 
 ## Building
 
-Make sure you have a nightly Rust installed. Something like this:
+To build intermezzOS, first you'll need the source:
 
 ```bash
-$ rustc --version
-rustc 1.14.0-nightly (289f3a4ca 2016-09-29)
+$ git clone https://github.com/intermezzOS/kernel
+$ cd kernel
 ```
 
-If you don’t have Rust installed (and maybe even if you've installed Rust some
-other way), you should use [rustup](https://rustup.rs/) to get it; it makes
-using multiple Rust versions very easy.
+Next, make sure you're using nightly Rust, and that you have the source
+code installed as well. The official way to do this is with the `rustup`
+tool [from Rust's website](http://rust-lang.org/install.html).
 
-Then get this stuff:
+```bash
+$ rustup override add nightly
+$ rustup component add rust-src
+$ rustup update nightly
+```
+
+You'll also need [xargo](https://github.com/japaric/xargo). To get it:
+
+ ```bash
+ $ cargo install xargo
+ ```
+ 
+You'll also need some other things installed on your system; how you get
+them depends on what system you're running. Consult their documentation to
+figure out exactly how to install:
 
 * `nasm`
 * `ld`
 * `grub-mkrescue`: you may also need to install `xorriso`
 * `qemu-system-x86_64`
+
+If you're on Bash On Windows, you'll need the `grub-pc-bin` package, as well as
+an X server of some kind, like
+[xming](https://sourceforge.net/projects/xming/). You'll also need to run
+this:
+
+```bash
+$ export DISPLAY=:0
+```
+
+You can put it in your `~/.bashrc` file to have it automatically work on each
+session.
 
 If you're on OS X, you might want to use [this
 script](http://intermezzos.github.io/book/appendix/osx-install.html) to get
@@ -38,14 +64,6 @@ linker = "/Users/yourusername/opt/bin/x86_64-pc-elf-gcc"
 ```
 
 Where `yourusername` is your username.
-
-This project uses the [xargo](https://github.com/japaric/xargo) crate. To get it:
-
- ```bash
- $ cargo install xargo
- ```
- 
- Note: xargo has a few dependencies, check its readme to make sure you've got them installed.
 
 After all that setup, it’s as easy as:
 
