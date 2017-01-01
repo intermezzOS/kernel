@@ -1,3 +1,5 @@
+.PHONY: cargo test iso run
+
 ifeq ($(shell grub-mkrescue -? &>/dev/null; echo $$?),0)
     grub-mkrescue = grub-mkrescue
 else
