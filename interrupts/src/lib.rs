@@ -1,7 +1,7 @@
 #![feature(asm)]
 #![feature(naked_functions)]
 #![feature(const_fn)]
-#![no_std]
+#![cfg_attr(not(test), no_std)]
 
 extern crate x86;
 extern crate pic;

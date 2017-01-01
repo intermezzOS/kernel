@@ -3,8 +3,11 @@
 #![feature(naked_functions)]
 #![feature(core_intrinsics)]
 
-#![no_std]
-#![no_main]
+#![cfg_attr(not(test), no_std)]
+#![cfg_attr(not(test), no_main)]
+
+#[cfg(test)]
+extern crate core;
 
 #[macro_use]
 extern crate lazy_static;

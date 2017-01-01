@@ -1,5 +1,5 @@
 #![feature(asm)]
-#![no_std]
+#![cfg_attr(not(test), no_std)]
 
 extern crate x86;
 use x86::shared::io::{inb, outb};

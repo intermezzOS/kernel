@@ -1,12 +1,12 @@
-cargo: 
+clean:
+	xargo clean
+
+cargo:
 	xargo build --release --target x86_64-unknown-intermezzos-gnu
 
-# cargo test fails for some reason, not sure why yet
+# xargo test does NOT work with the intermezzos target. Don't know why.
 test:
-	cd console && cargo test
-	cd interrupts && cargo test
-	cd keyboard && cargo test
-	cd pic && cargo test
+	xargo test
 
 iso: cargo grub.cfg
 	mkdir -p target/isofiles/boot/grub

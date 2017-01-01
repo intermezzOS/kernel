@@ -1,4 +1,4 @@
-#![no_std]
+#![cfg_attr(not(test), no_std)]
 
 /// Decode a code in the PS/2 scan code set 1 (legacy set).
 ///

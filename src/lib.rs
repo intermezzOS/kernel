@@ -1,5 +1,9 @@
 #![feature(const_fn)]
-#![no_std]
+
+#![cfg_attr(not(test), no_std)]
+
+#[cfg(test)]
+extern crate core;
 
 extern crate console;
 extern crate interrupts;
