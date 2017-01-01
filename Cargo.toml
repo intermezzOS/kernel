@@ -15,6 +15,7 @@ console = { path = "console" }
 interrupts = { path = "interrupts" }
 pic = { path = "pic" }
 keyboard = { path = "keyboard" }
+serial = { path = "serial" }
 
 [profile.dev]
 panic = "abort"

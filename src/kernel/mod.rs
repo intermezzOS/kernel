@@ -4,14 +4,18 @@ use console::Vga;
 
 use interrupts::IdtRef;
 
+use serial::Serial;
+
 use spin::Mutex;
 
 #[macro_use]
 mod kprint;
+mod kdebug;
 
 pub struct Context {
     pub vga: Mutex<Vga<&'static mut [u8]>>,
     pub idt: IdtRef,
+    pub serial: Mutex<Serial>,
 }
 
 impl Context {
@@ -23,6 +27,7 @@ impl Context {
         Context {
             vga: Mutex::new(Vga::new(slice)),
             idt: IdtRef::new(),
+            serial: Mutex::new(Serial::new(0x3F8)), // COM1 Serial Port
         }
     }
 }
