@@ -3,8 +3,29 @@ language: rust
 rust:
   - nightly
 
+os:
+  - linux
+  - osx
+
+cache:
+  cargo: true
+  directories:
+    - /usr/local/bin/x86_64-pc-elf-*
+    - /usr/local/bin/grub*
+    # brew directories on OS X
+    - /usr/local/Cellar/x86_64-pc-elf-*
+    - /usr/local/Cellar/grub
+
+before_install:
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      brew update && brew tap homebrew/bundle &&
+      travis_wait 120 brew bundle;
+      printf "\n\n[target.x86_64unknown-intermezzos-gnu]\nlinker = \"/usr/local/bin/x86_64-pc-elf-gcc\"" >> $HOME/.cargo/config;
+    fi
+
 install:
-  - sudo apt-get install grub-common
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install grub-common; fi
   - export PATH="$PATH:$(rustc --print sysroot)/cargo/bin"
   - curl -sf "https://raw.githubusercontent.com/japaric/rust-everywhere/master/install.sh" | bash -s -- --from japaric/xargo
 
