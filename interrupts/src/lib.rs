@@ -114,7 +114,7 @@ impl IdtRef {
         self.idt.lock()[index] = entry;
     }
 
-    /// Enables interrupts
+    /// Enables interrupts.
     pub fn enable_interrupts(&self) {
         // This unsafe fn is okay becuase, by virtue of having an IdtRef, we know that we have a
         // valid Idt.
