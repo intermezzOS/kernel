@@ -1,4 +1,3 @@
-//! Interrupts
 //! This module contains methods and macros to create and register interrupt descriptors and
 //! interrupt handlers
 
@@ -85,11 +84,9 @@ macro_rules! make_idt_entry {
 /// The Interrupt Descriptor Table
 ///
 /// The CPU will look at this table to find the appropriate interrupt handler.
-///
 static IDT: Mutex<[IdtEntry; 256]> = Mutex::new([IdtEntry::MISSING; 256]);
 
 /// Pointer to the Interrupt Descriptor Table
-///
 pub struct IdtRef {
     ptr: DescriptorTablePointer<IdtEntry>,
     idt: &'static Mutex<[IdtEntry; 256]>,
@@ -99,7 +96,6 @@ unsafe impl Sync for IdtRef {}
 
 impl IdtRef {
     /// Creates a new pointer struct to the IDT.
-    ///
     pub fn new() -> IdtRef {
         let r = IdtRef {
             ptr: DescriptorTablePointer::new_idtp(&IDT.lock()[..]),
@@ -113,14 +109,12 @@ impl IdtRef {
         r
     }
 
-    /// Sets an IdtEntry as a handler for interrupt specified by `index`
-    ///
+    /// Sets an IdtEntry as a handler for interrupt specified by `index`.
     pub fn set_handler(&self, index: usize, entry: IdtEntry) {
         self.idt.lock()[index] = entry;
     }
 
     /// Enables interrupts
-    ///
     pub fn enable_interrupts(&self) {
         // This unsafe fn is okay becuase, by virtue of having an IdtRef, we know that we have a
         // valid Idt.
