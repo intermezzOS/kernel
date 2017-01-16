@@ -16,8 +16,17 @@ pub struct Vga<T: AsMut<[u8]>> {
     position: usize,
 }
 
+impl Vga<&'static mut [u8]> {
+    pub fn new() -> Vga<&'static mut [u8]> {
+        unsafe {
+            Vga::from_raw(core::slice::from_raw_parts_mut(0xb8000 as *mut u8, ROWS * COL_BYTES))
+        }
+    }
+}
+
 impl<T: AsMut<[u8]>> Vga<T> {
-    pub fn new(mut slice: T) -> Vga<T> {
+    // for testing
+    pub unsafe fn from_raw(mut slice: T) -> Vga<T> {
         // we must have enough bytes of backing storage to make this work.
         assert_eq!(slice.as_mut().len(), ROWS * COL_BYTES);
 
@@ -89,7 +98,9 @@ mod tests {
     fn write_a_letter() {
         let mut mock_memory = [0u8; ROWS * COL_BYTES];
 
-        let mut vga = Vga::new(&mut mock_memory[..]);
+        let mut vga = unsafe {
+            Vga::from_raw(&mut mock_memory[..])
+        };
 
         vga.write_str("a").unwrap();
 
@@ -100,7 +111,10 @@ mod tests {
     #[test]
     fn write_a_word() {
         let mut mock_memory = [0u8; ROWS * COL_BYTES];
-        let mut vga = Vga::new(&mut mock_memory[..]);
+
+        let mut vga = unsafe {
+            Vga::from_raw(&mut mock_memory[..])
+        };
 
         let word = "word";
         vga.write_str(word).unwrap();
@@ -118,7 +132,9 @@ mod tests {
     #[test]
     fn write_multiple_words() {
         let mut mock_memory = [0u8; ROWS * COL_BYTES];
-        let mut vga = Vga::new(&mut mock_memory[..]);
+        let mut vga = unsafe {
+            Vga::from_raw(&mut mock_memory[..])
+        };
 
         vga.write_str("hello ").unwrap();
         vga.write_str("world").unwrap();
@@ -150,7 +166,9 @@ mod tests {
     #[test]
     fn write_newline() {
         let mut mock_memory = [0u8; ROWS * COL_BYTES];
-        let mut vga = Vga::new(&mut mock_memory[..]);
+        let mut vga = unsafe {
+            Vga::from_raw(&mut mock_memory[..])
+        };
 
         vga.write_str("hello\nworld\n!").unwrap();
 
@@ -181,7 +199,9 @@ mod tests {
     #[test]
     fn write_scroll() {
         let mut mock_memory = [0u8; ROWS * COL_BYTES];
-        let mut vga = Vga::new(&mut mock_memory[..]);
+        let mut vga = unsafe {
+            Vga::from_raw(&mut mock_memory[..])
+        };
 
         for b in "abcdefghijklmnopqrstuvwxyz".bytes() {
             vga.write_byte(b);

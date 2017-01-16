@@ -1,5 +1,3 @@
-use core;
-
 use console::Vga;
 
 use interrupts::IdtRef;
@@ -16,12 +14,8 @@ pub struct Context {
 
 impl Context {
     pub fn new() -> Context {
-        let slice = unsafe {
-            core::slice::from_raw_parts_mut(0xb8000 as *mut u8, 4000)
-        };
-
         Context {
-            vga: Mutex::new(Vga::new(slice)),
+            vga: Mutex::new(Vga::new()),
             idt: IdtRef::new(),
         }
     }
