@@ -1,5 +1,3 @@
-use core;
-
 use console::Vga;
 
 use interrupts::IdtRef;
@@ -10,18 +8,14 @@ use spin::Mutex;
 mod kprint;
 
 pub struct Context {
-    pub vga: Mutex<Vga<&'static mut [u8]>>,
+    pub vga: Mutex<Vga<'static>>,
     pub idt: IdtRef,
 }
 
 impl Context {
     pub fn new() -> Context {
-        let slice = unsafe {
-            core::slice::from_raw_parts_mut(0xb8000 as *mut u8, 4000)
-        };
-
         Context {
-            vga: Mutex::new(Vga::new(slice)),
+            vga: Mutex::new(Vga::new()),
             idt: IdtRef::new(),
         }
     }

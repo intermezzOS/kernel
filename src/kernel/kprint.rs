@@ -24,6 +24,5 @@ macro_rules! kprint {
         use core::fmt::Write;
         let mut vga = $ctx.vga.lock();
         vga.write_fmt(format_args!($($arg)*)).unwrap();
-        vga.flush();
     });
 }
