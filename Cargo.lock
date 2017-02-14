@@ -2,7 +2,7 @@
 name = "pic"
 version = "0.1.0"
 dependencies = [
- "x86 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "x86 0.8.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -39,7 +39,7 @@ dependencies = [
  "pic 0.1.0",
  "rlibc 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "spin 0.4.4 (registry+https://github.com/rust-lang/crates.io-index)",
- "x86 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "x86 0.8.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -48,7 +48,7 @@ version = "0.1.0"
 dependencies = [
  "pic 0.1.0",
  "spin 0.4.4 (registry+https://github.com/rust-lang/crates.io-index)",
- "x86 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "x86 0.8.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -212,7 +212,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "x86"
-version = "0.8.0"
+version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bitflags 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -247,4 +247,4 @@ dependencies = [
 "checksum serde 0.6.15 (registry+https://github.com/rust-lang/crates.io-index)" = "c97b18e9e53de541f11e497357d6c5eaeb39f0cb9c8734e274abe4935f6991fa"
 "checksum serde_json 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)" = "b5aaee47e038bf9552d30380d3973fff2593ee0a76d81ad4c581f267cdcadf36"
 "checksum spin 0.4.4 (registry+https://github.com/rust-lang/crates.io-index)" = "f0f7035cd2694c317f8ff90efb00feb9e7268febbf6e9b28a8d16da8eb202493"
-"checksum x86 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)" = "289a79c6ffe63e7948823bc7e6b617856325c752dfec28c4ba50f50a824f55a2"
+"checksum x86 0.8.1 (registry+https://github.com/rust-lang/crates.io-index)" = "ada1976e1004a0b5999beb7403541af96637e8f439b97d86c8c9abef2e0e7d19"

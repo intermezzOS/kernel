@@ -5,5 +5,5 @@ authors = ["The intermezzOS team"]
 
 [dependencies]
 spin = "0.4.4"
-x86 = "0.8.0"
+x86 = "0.8.1"
 pic = { path = "../pic" }
