@@ -10,7 +10,9 @@
 	"target-endian": "little",
 	"target-pointer-width": "64",
 	"features": "-mmx,-fxsr,-sse,-sse2,+soft-float",
-	"pre-link-args": ["-Tlayout.ld", "-Wl,-n", "-nostartfiles"],
+	"pre-link-args": {
+		"gcc": ["-Tlayout.ld", "-Wl,-n", "-nostartfiles"]
+	},
 	"disable-redzone": true,
 	"eliminate-frame-pointer": false
 }
