@@ -3,7 +3,8 @@
 	"cpu": "x86-64",
 	"data-layout": "e-m:e-i64:64-f80:128-n8:16:32:64-S128",
 	"executables": true,
-        "linker-flavor": "gcc",
+	"linker": "gcc",
+	"linker-flavor": "gcc",
 	"llvm-target": "x86_64-unknown-none-gnu",
 	"no-compiler-rt": true,
 	"os": "intermezzos",
@@ -11,7 +12,11 @@
 	"target-pointer-width": "64",
 	"features": "-mmx,-fxsr,-sse,-sse2,+soft-float",
 	"pre-link-args": {
-		"gcc": ["-Tlayout.ld", "-Wl,-n", "-nostartfiles"]
+		"gcc": [
+			"-Wl,--script=layout.ld",
+			"-Wl,--nmagic",
+			"-nostartfiles"
+		]
 	},
 	"disable-redzone": true,
 	"eliminate-frame-pointer": false
