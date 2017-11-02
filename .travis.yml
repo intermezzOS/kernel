@@ -8,7 +8,8 @@ cache:
 
 install:
   - sudo apt-get install grub-common
-  - cargo install xargo
+  - export PATH="$PATH:$HOME/.cargo/bin"
+  - which xargo || cargo install xargo
 
 script:
   - make test
