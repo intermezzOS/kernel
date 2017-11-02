@@ -3,10 +3,12 @@ language: rust
 rust:
   - nightly
 
+cache:
+  - cargo
+
 install:
   - sudo apt-get install grub-common
-  - export PATH="$PATH:$(rustc --print sysroot)/cargo/bin"
-  - curl -sf "https://raw.githubusercontent.com/japaric/rust-everywhere/master/install.sh" | bash -s -- --from japaric/xargo
+  - cargo install xargo
 
 script:
   - make test
