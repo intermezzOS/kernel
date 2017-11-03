@@ -22,8 +22,6 @@ use x86::shared::io::{inb};
 
 use core::intrinsics;
 
-extern crate keyboard;
-
 extern crate pic;
 
 #[cfg(not(test))]
@@ -54,8 +52,12 @@ pub extern "C" fn kmain() -> ! {
     let keyboard = make_idt_entry!(isr33, {
         let scancode = unsafe { inb(0x60) };
 
-        if let Some(c) = keyboard::from_scancode(scancode as usize) {
-            kprint!(CONTEXT, "{}", c);
+        {
+            let mut keyboard = CONTEXT.keyboard.lock();
+
+            if let Some(c) = keyboard.input(scancode) {
+                kprint!(CONTEXT, "{}", c);
+            }
         }
 
         pic::eoi_for(33);
