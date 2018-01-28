@@ -10,7 +10,8 @@ else
     endif
 endif
 
-cargo: 
+cargo:  
+	RUST_TARGET_PATH=$(pwd)
 	xargo build --release --target x86_64-unknown-intermezzos-gnu
 
 # cargo test fails for some reason, not sure why yet
