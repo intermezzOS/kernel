@@ -54,8 +54,7 @@ $ export DISPLAY=:0
 You can put it in your `~/.bashrc` file to have it automatically work on each
 session.
 
-If you're on OS X, you might want to use [this
-script](http://intermezzos.github.io/book/appendix/osx-install.html) to get
+If you're on OS X, you might want to use [this script](mac_install.sh) to get
 them. You'll also need to set this in your `~/.cargo/config`:
 
 ```toml
