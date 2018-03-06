@@ -11,7 +11,7 @@ else
 endif
 
 cargo: 
-	xargo build --release --target x86_64-unknown-intermezzos-gnu
+	RUST_TARGET_PATH=$(shell pwd) xargo build --release --target x86_64-unknown-intermezzos-gnu
 
 # cargo test fails for some reason, not sure why yet
 test:
