@@ -1,6 +1,22 @@
 [package]
-name = "kernel"
+name = "intermezzos"
 version = "0.1.0"
-authors = ["The intermezzOS project developers"]
+authors = ["steveklabnik <steve@steveklabnik.com>"]
+
+[workspace]
 
 [dependencies]
+rlibc = "1.0"
+
+[dependencies.vga]
+path = "vga"
+
+[[bin]]
+name = "intermezzos"
+test = false
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
