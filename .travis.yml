@@ -6,7 +6,10 @@ rust:
 cache:
   - cargo
 
+before_install:
+  - rustup component add rustfmt-preview      
   - which xargo || cargo install xargo
 
 script:
   - cargo test
+  - cargo fmt -- --write-mode=diff

@@ -24,8 +24,8 @@ pub fn colorcode(foreground: Color, background: Color) -> u8 {
 
 #[cfg(test)]
 mod tests {
-    use color::Color;
     use color;
+    use color::Color;
 
     #[test]
     fn colorcode() {

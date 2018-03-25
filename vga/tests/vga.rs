@@ -1,5 +1,5 @@
-extern crate vga;
 extern crate core;
+extern crate vga;
 
 use core::fmt::Write;
 use vga::Vga;
@@ -11,7 +11,7 @@ fn create() {
     Vga::new(&mut mock_memory);
 }
 
-fn check_write<T: Write>(_: T) { }
+fn check_write<T: Write>(_: T) {}
 
 #[test]
 fn write() {

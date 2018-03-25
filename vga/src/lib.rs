@@ -69,8 +69,8 @@ impl<T: AsMut<[u8]>> Vga<T> {
                 self.buffer[prev_position] = self.buffer[current_position];
             }
         }
-         
-        for cb in 0..COL_BYTES/2 {
+
+        for cb in 0..COL_BYTES / 2 {
             self.buffer[((ROWS - 1) * COL_BYTES) + (cb * 2)] = ' ' as u8;
         }
 
@@ -93,8 +93,8 @@ mod tests {
     use Vga;
     use core::fmt::Write;
 
-    use ROWS;
     use COL_BYTES;
+    use ROWS;
 
     #[test]
     fn write_a_letter() {
@@ -200,7 +200,7 @@ mod tests {
         }
 
         assert_eq!(vga.buffer[0], 'c' as u8);
-        for cb in 0..COL_BYTES/2 {
+        for cb in 0..COL_BYTES / 2 {
             assert_eq!(vga.buffer[(ROWS - 1) * COL_BYTES + (cb * 2)], ' ' as u8);
         }
     }
