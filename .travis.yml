@@ -3,6 +3,11 @@ language: rust
 rust:
   - nightly
 
+    
+os:
+  - linux
+  - osx
+
 cache:
   - cargo
 
