@@ -8,13 +8,21 @@ os:
   - linux
   - osx
 
-cache:
-  - cargo
-
-before_install:
+before_script:
   - rustup component add rustfmt-preview      
-  - which xargo || cargo install xargo
+  - rustup component add rust-src
+  - (test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)
+  - (test -x $HOME/.cargo/bin/xargo || cargo install xargo)
+  - (test -x $HOME/.cargo/bin/bootimage || cargo install bootimage)
+  - cargo install-update -a
 
 script:
   - cargo test
+  - bootimage --target intermezzos
   - cargo fmt -- --write-mode=diff
+
+cache:
+  directories:
+    - $HOME/.cargo
+    - $HOME/.xargo
+    - $TRAVIS_BUILD_DIR/target
