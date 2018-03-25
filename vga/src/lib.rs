@@ -2,6 +2,7 @@
 
 use core::fmt;
 use core::fmt::Write;
+use core::ptr;
 
 mod color;
 use color::Color;
@@ -29,7 +30,17 @@ impl<T: AsMut<[u8]>> Vga<T> {
     }
 
     pub fn flush(&mut self) {
-        self.slice.as_mut().clone_from_slice(&self.buffer);
+        // we wanted to do this...
+        // self.slice.as_mut().clone_from_slice(&self.buffer);
+        // but alas, it doesn't work, as memcpy and volatile is bad news
+        unsafe {
+            let p = self.slice.as_mut();
+
+            for (p, byte) in p.iter_mut().zip(self.buffer.iter()) {
+                let p = p as *mut u8;
+                ptr::write_volatile(p, *byte);
+            }
+        }
     }
 
     fn write_byte(&mut self, byte: u8) {
@@ -58,8 +69,8 @@ impl<T: AsMut<[u8]>> Vga<T> {
                 self.buffer[prev_position] = self.buffer[current_position];
             }
         }
-         
-        for cb in 0..COL_BYTES/2 {
+
+        for cb in 0..COL_BYTES / 2 {
             self.buffer[((ROWS - 1) * COL_BYTES) + (cb * 2)] = ' ' as u8;
         }
 
@@ -82,8 +93,8 @@ mod tests {
     use Vga;
     use core::fmt::Write;
 
-    use ROWS;
     use COL_BYTES;
+    use ROWS;
 
     #[test]
     fn write_a_letter() {
@@ -189,7 +200,7 @@ mod tests {
         }
 
         assert_eq!(vga.buffer[0], 'c' as u8);
-        for cb in 0..COL_BYTES/2 {
+        for cb in 0..COL_BYTES / 2 {
             assert_eq!(vga.buffer[(ROWS - 1) * COL_BYTES + (cb * 2)], ' ' as u8);
         }
     }

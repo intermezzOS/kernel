@@ -3,20 +3,26 @@ language: rust
 rust:
   - nightly
 
-cache:
-  - cargo
+    
+os:
+  - linux
+  - osx
 
-install:
-  - sudo apt-get install grub-common
-  - export PATH="$PATH:$HOME/.cargo/bin"
-  - which xargo || cargo install xargo
+before_script:
+  - rustup component add rustfmt-preview      
+  - rustup component add rust-src
+  - (test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)
+  - (test -x $HOME/.cargo/bin/xargo || cargo install xargo)
+  - (test -x $HOME/.cargo/bin/bootimage || cargo install bootimage)
+  - cargo install-update -a
 
 script:
-  - make test
+  - cargo test
+  - bootimage --target intermezzos
+  - cargo fmt -- --write-mode=diff
 
-addons:
-  apt:
-    packages:
-      - nasm
-      - libssh2-1
-      - xorriso
+cache:
+  directories:
+    - $HOME/.cargo
+    - $HOME/.xargo
+    - $TRAVIS_BUILD_DIR/target

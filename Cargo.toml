@@ -1,20 +1,19 @@
 [package]
 name = "intermezzos"
 version = "0.1.0"
-authors = ["The intermezzOS team"]
-build = "build.rs"
+authors = ["steveklabnik <steve@steveklabnik.com>"]
 
 [workspace]
 
 [dependencies]
-lazy_static = { version = "0.2.1", features = ["spin_no_std"] }
-rlibc = "1.0.0"
-spin = "0.4.4"
-x86 = "0.8.1"
-console = { path = "console" }
-interrupts = { path = "interrupts" }
-pic = { path = "pic" }
-keyboard = { path = "keyboard" }
+rlibc = "1.0"
+
+[dependencies.vga]
+path = "vga"
+
+[[bin]]
+name = "intermezzos"
+test = false
 
 [profile.dev]
 panic = "abort"

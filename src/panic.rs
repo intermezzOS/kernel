@@ -1,11 +1,12 @@
-use core::fmt;
-use ::CONTEXT;
+use core;
 
 #[lang = "panic_fmt"]
 #[no_mangle]
-pub extern fn rust_begin_panic(msg: fmt::Arguments,
-                               file: &'static str,
-                               line: u32) -> ! {
-    kprintln!(CONTEXT, "KERNEL PANIC in {}:{}! Message: {}", file, line, msg);
+pub extern "C" fn rust_begin_panic(
+    _msg: core::fmt::Arguments,
+    _file: &'static str,
+    _line: u32,
+    _column: u32,
+) -> ! {
     loop {}
 }
