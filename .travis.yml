@@ -6,17 +6,7 @@ rust:
 cache:
   - cargo
 
-install:
-  - sudo apt-get install grub-common
-  - export PATH="$PATH:$HOME/.cargo/bin"
   - which xargo || cargo install xargo
 
 script:
-  - make test
-
-addons:
-  apt:
-    packages:
-      - nasm
-      - libssh2-1
-      - xorriso
+  - cargo test

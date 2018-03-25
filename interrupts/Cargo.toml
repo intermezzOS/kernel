@@ -1,9 +1,0 @@
-[package]
-name = "interrupts"
-version = "0.1.0"
-authors = ["The intermezzOS team"]
-
-[dependencies]
-spin = "0.4.4"
-x86 = "0.8.1"
-pic = { path = "../pic" }
