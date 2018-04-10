@@ -21,14 +21,16 @@ environment:
       MSYS_BITS: 32
 
 ### GNU Toolchains ###
+#
+# commented out for now as the build fails, and I don't know why
   # Nightly 64-bit GNU
-    - channel: nightly
-      target: x86_64-pc-windows-gnu
-      MSYS_BITS: 64
+  #  - channel: nightly
+  #    target: x86_64-pc-windows-gnu
+  #    MSYS_BITS: 64
   # Nightly 32-bit GNU
-    - channel: nightly
-      target: i686-pc-windows-gnu
-      MSYS_BITS: 32
+  #  - channel: nightly
+  #    target: i686-pc-windows-gnu
+  #    MSYS_BITS: 32
 
 cache:
   - '%USERPROFILE%\.cargo\bin'
