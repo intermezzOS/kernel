@@ -21,16 +21,14 @@ environment:
       MSYS_BITS: 32
 
 ### GNU Toolchains ###
-#
-# commented out for now as the build fails, and I don't know why
   # Nightly 64-bit GNU
-  #  - channel: nightly
-  #    target: x86_64-pc-windows-gnu
-  #    MSYS_BITS: 64
+    - channel: nightly
+      target: x86_64-pc-windows-gnu
+      MSYS_BITS: 64
   # Nightly 32-bit GNU
-  #  - channel: nightly
-  #    target: i686-pc-windows-gnu
-  #    MSYS_BITS: 32
+    - channel: nightly
+      target: i686-pc-windows-gnu
+      MSYS_BITS: 32
 
 cache:
   - '%USERPROFILE%\.cargo\bin'
@@ -63,6 +61,9 @@ build: false
 
 before_test:
   - set PATH=C:\msys64\mingw%MSYS_BITS%\bin;C:\msys64\usr\bin;%PATH%
+  # Fix undefined references to __acrt_iob_func()
+  - sed -rie "s/#define std([[:alpha:]]+)[[:space:]]+\(__acrt_iob_func\(([[:digit:]]+)\)\)/#define std\1 (\&__iob_func()[\2])/" "C:\msys64\mingw64\x86_64-w64-mingw32\include\stdio.h"
+  - sed -rie "s/#define std([[:alpha:]]+)[[:space:]]+\(__acrt_iob_func\(([[:digit:]]+)\)\)/#define std\1 (\&__iob_func()[\2])/" "C:\msys64\mingw32\i686-w64-mingw32\include\stdio.h"
   - rustup component add rust-src
   - set RUST_BACKTRACE=1
   - if not exist %USERPROFILE%\.cargo\bin\cargo-install-update.exe cargo install cargo-update
