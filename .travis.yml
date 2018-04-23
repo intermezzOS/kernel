@@ -18,7 +18,7 @@ before_script:
 
 script:
   - cargo test
-  - bootimage --target intermezzos
+  - bootimage build --target intermezzos
   - cargo fmt -- --write-mode=diff
 
 cache:
