@@ -90,8 +90,8 @@ impl<T: AsMut<[u8]>> Write for Vga<T> {
 
 #[cfg(test)]
 mod tests {
-    use Vga;
     use core::fmt::Write;
+    use Vga;
 
     use COL_BYTES;
     use ROWS;
