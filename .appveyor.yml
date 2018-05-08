@@ -76,4 +76,4 @@ before_test:
 # environment variable.
 test_script:
   - cargo test
-  - bootimage build --target intermezzos
+  - bootimage build --target intermezzos.json
