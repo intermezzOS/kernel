@@ -35,7 +35,6 @@ cache:
   - '%USERPROFILE%\.cargo\config'
   - '%USERPROFILE%\.cargo\env'
   - '%USERPROFILE%\.cargo\.crates.toml'
-  - '%USERPROFILE%\.xargo'
   - target
 
 ## Install Script ##
@@ -67,7 +66,7 @@ before_test:
   - rustup component add rust-src
   - set RUST_BACKTRACE=1
   - if not exist %USERPROFILE%\.cargo\bin\cargo-install-update.exe cargo install cargo-update
-  - if not exist %USERPROFILE%\.cargo\bin\xargo.exe cargo install xargo
+  - if not exist %USERPROFILE%\.cargo\bin\cargo-xbuild.exe cargo install cargo-xbuild
   - if not exist %USERPROFILE%\.cargo\bin\bootimage.exe cargo install bootimage
   - cargo install-update -a
 
@@ -76,4 +75,4 @@ before_test:
 # environment variable.
 test_script:
   - cargo test
-  - bootimage build --target intermezzos
+  - bootimage build --target intermezzos.json
