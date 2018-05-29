@@ -18,7 +18,7 @@ before_script:
 
 script:
   - cargo test
-  - bootimage build --target intermezzos.json
+  - bootimage build
   - cargo fmt -- --check
 
 cache: cargo
