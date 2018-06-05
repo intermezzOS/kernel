@@ -1,12 +1,8 @@
-use core;
+use core::intrinsics;
+use core::panic::PanicInfo;
 
-#[lang = "panic_fmt"]
+#[panic_implementation]
 #[no_mangle]
-pub extern "C" fn rust_begin_panic(
-    _msg: core::fmt::Arguments,
-    _file: &'static str,
-    _line: u32,
-    _column: u32,
-) -> ! {
-    loop {}
+pub fn panic(_info: &PanicInfo) -> ! {
+    unsafe { intrinsics::abort() }
 }
