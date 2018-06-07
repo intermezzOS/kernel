@@ -1,4 +1,5 @@
 #![no_std]
+#![feature(nll)]
 
 use core::fmt;
 use core::fmt::Write;
@@ -120,12 +121,10 @@ mod tests {
     #[test]
     fn write_a_letter() {
         let mut mock_memory = [0u8; ROWS * COLS * 2];
-        {
-            let mut vga = Vga::new(&mut mock_memory[..]);
+        let mut vga = Vga::new(&mut mock_memory[..]);
 
-            vga.write_str("a").unwrap();
-            vga.flush();
-        }
+        vga.write_str("a").unwrap();
+        vga.flush();
 
         assert_eq!(mock_memory[0], b'a');
         assert_eq!(mock_memory[1], 0x02);
@@ -134,13 +133,11 @@ mod tests {
     #[test]
     fn write_a_word() {
         let mut mock_memory = [0u8; ROWS * COLS * 2];
-        {
-            let mut vga = Vga::new(&mut mock_memory[..]);
+        let mut vga = Vga::new(&mut mock_memory[..]);
 
-            let word = "word";
-            vga.write_str(word).unwrap();
-            vga.flush();
-        }
+        let word = "word";
+        vga.write_str(word).unwrap();
+        vga.flush();
 
         assert_eq!(mock_memory[0], b'w');
         assert_eq!(mock_memory[1], 0x02);
@@ -155,13 +152,11 @@ mod tests {
     #[test]
     fn write_multiple_words() {
         let mut mock_memory = [0u8; ROWS * COLS * 2];
-        {
-            let mut vga = Vga::new(&mut mock_memory[..]);
+        let mut vga = Vga::new(&mut mock_memory[..]);
 
-            vga.write_str("hello ").unwrap();
-            vga.write_str("world").unwrap();
-            vga.flush();
-        }
+        vga.write_str("hello ").unwrap();
+        vga.write_str("world").unwrap();
+        vga.flush();
 
         assert_eq!(mock_memory[0], b'h');
         assert_eq!(mock_memory[1], 0x02);
@@ -190,12 +185,10 @@ mod tests {
     #[test]
     fn write_newline() {
         let mut mock_memory = [0u8; ROWS * COLS * 2];
-        {
-            let mut vga = Vga::new(&mut mock_memory[..]);
+        let mut vga = Vga::new(&mut mock_memory[..]);
 
-            vga.write_str("hello\nworld\n!").unwrap();
-            vga.flush();
-        }
+        vga.write_str("hello\nworld\n!").unwrap();
+        vga.flush();
 
         assert_eq!(mock_memory[0], b'h');
         assert_eq!(mock_memory[1], 0x02);
@@ -224,16 +217,14 @@ mod tests {
     #[test]
     fn write_scroll() {
         let mut mock_memory = [0u8; ROWS * COLS * 2];
-        {
-            let mut vga = Vga::new(&mut mock_memory[..]);
+        let mut vga = Vga::new(&mut mock_memory[..]);
 
-            for b in "abcdefghijklmnopqrstuvwxyz".bytes() {
-                vga.write_byte(b);
-                vga.write_byte('\n' as u8);
-            }
-
-            vga.flush();
+        for b in "abcdefghijklmnopqrstuvwxyz".bytes() {
+            vga.write_byte(b);
+            vga.write_byte('\n' as u8);
         }
+
+        vga.flush();
 
         assert_eq!(mock_memory[0], b'c');
 
