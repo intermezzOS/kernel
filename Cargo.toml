@@ -10,6 +10,7 @@ default-target = "intermezzos.json"
 
 [dependencies]
 rlibc = "1.0"
+bootloader_precompiled = "0.2.0"
 
 [dependencies.vga]
 path = "vga"

@@ -7,6 +7,7 @@ extern crate rlibc;
 extern crate vga;
 #[macro_use]
 extern crate intermezzos;
+extern crate bootloader_precompiled;
 
 #[cfg(not(test))]
 pub mod panic;

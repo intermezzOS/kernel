@@ -1,10 +1,24 @@
 [[package]]
+name = "bootloader_precompiled"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "os_bootinfo 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "intermezzos"
 version = "0.1.0"
 dependencies = [
+ "bootloader_precompiled 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rlibc 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "vga 0.1.0",
 ]
+
+[[package]]
+name = "os_bootinfo"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "rlibc"
@@ -16,4 +30,6 @@ name = "vga"
 version = "0.1.0"
 
 [metadata]
+"checksum bootloader_precompiled 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "245362094f3e7e5c801e71646a672c1fa895c033ca47473278e3d99af6300be6"
+"checksum os_bootinfo 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "66481dbeb5e773e7bd85b63cd6042c30786f834338288c5ec4f3742673db360a"
 "checksum rlibc 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "fc874b127765f014d792f16763a81245ab80500e2ad921ed4ee9e82481ee08fe"
