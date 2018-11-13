@@ -1,4 +1,3 @@
-#![feature(panic_handler)]
 #![feature(core_intrinsics)]
 #![no_std]
 #![no_main]
