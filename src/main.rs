@@ -2,11 +2,10 @@
 #![no_std]
 #![no_main]
 
-extern crate rlibc;
 extern crate vga;
 #[macro_use]
 extern crate intermezzos;
-extern crate bootloader_precompiled;
+extern crate bootloader;
 
 #[cfg(not(test))]
 pub mod panic;
