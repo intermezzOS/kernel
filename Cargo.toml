@@ -9,7 +9,7 @@ default-target = "intermezzos.json"
 [workspace]
 
 [dependencies]
-bootloader = "0.3.4"
+bootloader = "0.6.4"
 
 [dependencies.vga]
 path = "vga"
