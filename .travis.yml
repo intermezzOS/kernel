@@ -10,6 +10,7 @@ os:
 before_script:
   - rustup component add rustfmt-preview
   - rustup component add rust-src
+  - rustup component add llvm-tools-preview
   - (test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)
   - (test -x $HOME/.cargo/bin/cargo-xbuild || cargo install cargo-xbuild)
   - (test -x $HOME/.cargo/bin/bootimage || cargo install bootimage)
