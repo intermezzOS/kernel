@@ -8,7 +8,7 @@ os:
   - osx
 
 before_script:
-  - rustup component add rustfmt-preview
+  - rustup component add rustfmt
   - rustup component add rust-src
   - rustup component add llvm-tools-preview
   - (test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)

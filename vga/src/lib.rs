@@ -232,5 +232,4 @@ mod tests {
             assert_eq!(mock_memory[(ROWS - 1) * COLS * 2 + (cb * 2)], b' ');
         }
     }
-
 }

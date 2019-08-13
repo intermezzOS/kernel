@@ -60,5 +60,4 @@ mod tests {
         assert_eq!(character.character, b'c');
         assert_eq!(character.attribute, 0xF8);
     }
-
 }
